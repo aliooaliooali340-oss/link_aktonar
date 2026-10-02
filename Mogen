@@ -1,0 +1,2786 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a4d9e">
+<title>BluePost</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { -webkit-text-size-adjust:100%; }
+
+:root {
+  --blue:#0a4d9e; --blue-2:#1a5fb4; --blue-light:#4a90e2; --blue-bg:#e8f1fb;
+  --blue-glow:rgba(10,77,158,0.2);
+  --bg:#f5f7fa; --white:#fff;
+  --text:#1a1a1a; --text-dim:#6b7280; --text-muted:#9ca3af;
+  --border:#e5e7eb;
+  --green:#10b981; --red:#ef4444; --orange:#f59e0b; --purple:#8b5cf6;
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.04);
+  --shadow:0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg:0 8px 24px rgba(10,77,158,0.12);
+  --radius:16px; --radius-sm:12px; --radius-lg:22px;
+  --primary:var(--blue);
+  --primary-2:var(--blue-2);
+  --primary-glow:var(--blue-glow);
+  --primary-bg:var(--blue-bg);
+}
+
+body {
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,'Noto Kufi Arabic',sans-serif;
+  background:var(--bg); color:var(--text); direction:rtl;
+  min-height:100vh; min-height:100dvh;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  overscroll-behavior-y:contain;
+}
+
+/* HEADER */
+.header {
+  position:sticky; top:0; z-index:100;
+  background:var(--white); padding-top:env(safe-area-inset-top);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.header-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 16px; height:56px; gap:8px;
+}
+.header-logo {
+  display:flex; align-items:center; gap:8px;
+  font-size:22px; font-weight:900; letter-spacing:-0.5px;
+}
+.logo-icon {
+  width:36px; height:26px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:14px; font-weight:900;
+  box-shadow:0 4px 10px var(--primary-glow);
+}
+.header-actions { display:flex; align-items:center; gap:4px; }
+.header-icon-btn {
+  width:42px; height:42px; border:none; background:transparent;
+  color:var(--text); font-size:20px; cursor:pointer; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; font-family:inherit;
+}
+.header-icon-btn:active { background:var(--bg); }
+.header-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; cursor:pointer; border:2px solid var(--border);
+}
+.header-avatar img { width:100%; height:100%; object-fit:cover; }
+
+/* PAGES */
+.page {
+  display:none;
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity 0.28s ease, transform 0.28s ease;
+}
+.page.active {
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+.page.fade-out {
+  display:block;
+  opacity:0;
+  transform:translateY(-6px);
+}
+
+/* FEED */
+.feed { padding:12px 12px 20px; }
+
+.post-card {
+  background:var(--white); border-radius:var(--radius);
+  margin-bottom:14px; overflow:hidden;
+  border:1px solid var(--border); box-shadow:var(--shadow-sm);
+}
+.post-head {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px;
+}
+.post-head .avatar {
+  width:42px; height:42px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0; cursor:pointer;
+  transition:transform 0.15s;
+}
+.post-head .avatar:active { transform:scale(0.94); }
+.post-head .avatar img { width:100%; height:100%; object-fit:cover; }
+.post-head .info { flex:1; min-width:0; cursor:pointer; }
+.post-head .info .name {
+  font-size:14px; font-weight:800;
+  display:flex; align-items:center; gap:4px;
+}
+.post-head .info .meta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.post-head .menu-btn {
+  width:34px; height:34px; border:none; background:transparent;
+  color:var(--text-dim); font-size:18px; cursor:pointer;
+  border-radius:50%; font-family:inherit;
+}
+
+.post-image {
+  width:100%; background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; position:relative;
+}
+.post-image img { width:100%; height:auto; max-height:600px; object-fit:contain; display:block; }
+
+.post-text {
+  padding:12px 14px 8px; font-size:14px;
+  line-height:1.7; word-break:break-word;
+  white-space:pre-wrap;
+}
+.post-text a {
+  color:var(--primary); text-decoration:none;
+  font-weight:700; word-break:break-all;
+}
+.post-text a:active { opacity:0.7; }
+
+.post-cat {
+  display:inline-block; margin:0 14px 8px;
+  background:var(--primary-bg); color:var(--primary);
+  padding:3px 10px; border-radius:12px;
+  font-size:11px; font-weight:800;
+}
+
+.post-actions {
+  display:flex; border-top:1px solid var(--border);
+  padding:6px 4px;
+}
+.post-actions button {
+  flex:1; padding:10px 6px; border:none; background:transparent;
+  color:var(--text-dim); font-size:13px; font-weight:700;
+  cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+  gap:5px; border-radius:8px;
+}
+.post-actions button:active { background:var(--bg); }
+.post-actions button.liked { color:var(--red); }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0;
+  background:var(--white); border-top:1px solid var(--border);
+  display:flex; justify-content:space-around; align-items:center;
+  padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index:1000; box-shadow:0 -2px 12px rgba(0,0,0,0.05);
+}
+.nav-item {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:3px; padding:5px 0; border:none; background:transparent;
+  color:var(--text-dim); font-size:10px; font-weight:700;
+  cursor:pointer; font-family:inherit; max-width:80px;
+  transition:color 0.2s;
+}
+.nav-item .nav-icon { font-size:22px; line-height:1; transition:transform 0.2s; }
+.nav-item.active { color:var(--primary); }
+.nav-item.active .nav-icon { transform:scale(1.15); }
+.nav-item.post-btn .nav-icon {
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; width:44px; height:44px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; box-shadow:0 6px 14px var(--primary-glow);
+  margin-top:-10px;
+}
+.nav-item.post-btn { color:var(--primary); font-weight:800; }
+
+/* AUTH SCREEN */
+#authScreen {
+  position:fixed; inset:0; z-index:5000;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2),var(--blue-light));
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  overflow-y:auto;
+}
+.auth-card {
+  background:var(--white); border-radius:26px;
+  padding:34px 26px; width:100%; max-width:420px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.35);
+  text-align:center; margin:auto;
+}
+.auth-logo {
+  width:76px; height:76px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  border-radius:22px; margin:0 auto 18px;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:36px; font-weight:900;
+  box-shadow:0 12px 30px var(--primary-glow);
+}
+.auth-card h1 { font-size:24px; font-weight:900; margin-bottom:6px; }
+.auth-card .sub { color:var(--text-dim); font-size:13px; margin-bottom:22px; }
+
+.auth-btn {
+  width:100%; padding:14px 16px; border-radius:14px;
+  font-size:14px; font-weight:800; cursor:pointer;
+  font-family:inherit; display:flex; align-items:center;
+  justify-content:center; gap:10px; margin-bottom:10px;
+  border:1px solid var(--border);
+  transition:transform 0.15s;
+}
+.auth-btn:active { transform:scale(0.97); }
+.auth-btn.primary {
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border-color:var(--primary);
+  box-shadow:0 8px 20px var(--primary-glow);
+}
+
+.auth-input {
+  width:100%; padding:14px 16px; border:1px solid var(--border);
+  border-radius:12px; font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  margin-bottom:10px; text-align:right;
+  transition:all 0.2s;
+}
+.auth-input:focus {
+  border-color:var(--primary); background:#fff;
+  box-shadow:0 0 0 4px var(--primary-glow);
+}
+.auth-error {
+  color:var(--red); font-size:12px; font-weight:700;
+  min-height:18px; margin-bottom:8px;
+}
+.auth-toggle {
+  color:var(--primary); font-size:13px; font-weight:700;
+  cursor:pointer; margin-top:14px; display:inline-block;
+}
+
+/* MODAL */
+.modal-bg {
+  position:fixed; inset:0; background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(6px); z-index:4000;
+  display:none; align-items:flex-end; justify-content:center;
+  opacity:0;
+  transition:opacity 0.25s;
+}
+.modal-bg.show {
+  display:flex;
+  opacity:1;
+}
+.modal {
+  background:var(--white); border-radius:24px 24px 0 0;
+  width:100%; max-width:560px; max-height:92vh;
+  overflow-y:auto; padding:20px;
+  transform:translateY(20px);
+  transition:transform 0.28s cubic-bezier(0.34,1.2,0.64,1);
+}
+.modal-bg.show .modal { transform:translateY(0); }
+
+.modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:18px;
+}
+.modal-header h3 { font-size:18px; font-weight:900; }
+.modal-close {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--bg); border:none; color:var(--text-dim);
+  font-size:16px; cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* IMAGE UPLOAD */
+.image-upload {
+  width:100%; aspect-ratio:1/1; background:var(--bg);
+  border:2px dashed var(--border); border-radius:16px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  cursor:pointer; overflow:hidden; margin-bottom:14px;
+  transition:border-color 0.2s, background 0.2s;
+}
+.image-upload:hover { border-color:var(--primary); background:var(--primary-bg); }
+.image-upload img { width:100%; height:100%; object-fit:cover; }
+.image-upload .upload-hint {
+  text-align:center; color:var(--text-dim); padding:20px;
+}
+.image-upload .upload-hint .icon {
+  font-size:52px; display:block; margin-bottom:10px; opacity:0.5;
+}
+.image-upload .upload-hint strong {
+  display:block; font-size:15px; color:var(--text);
+  font-weight:800; margin-bottom:4px;
+}
+
+/* AVATAR UPLOAD */
+.avatar-upload {
+  width:110px; height:110px; border-radius:50%;
+  background:var(--bg); border:2px dashed var(--border);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; overflow:hidden; margin:0 auto 16px;
+  position:relative; transition:border-color 0.2s;
+}
+.avatar-upload:hover { border-color:var(--primary); }
+.avatar-upload img { width:100%; height:100%; object-fit:cover; }
+.avatar-upload .avatar-hint {
+  font-size:40px; color:var(--text-muted);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:6px;
+}
+.avatar-upload .avatar-hint small {
+  font-size:10px; color:var(--text-dim);
+  font-weight:700;
+}
+
+.field-row { margin-bottom:14px; }
+.field-row label {
+  display:block; font-size:12px; font-weight:800;
+  color:var(--text-dim); margin-bottom:6px;
+}
+.field-row textarea,
+.field-row input,
+.field-row select {
+  width:100%; padding:12px 14px;
+  border:1px solid var(--border); border-radius:12px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none; resize:vertical;
+  transition:all 0.2s;
+}
+.field-row textarea { min-height:80px; }
+.field-row textarea:focus,
+.field-row input:focus,
+.field-row select:focus {
+  border-color:var(--primary); background:#fff;
+  box-shadow:0 0 0 4px var(--primary-glow);
+}
+
+.btn {
+  padding:13px 18px; border:none; border-radius:12px;
+  font-size:14px; font-weight:800; cursor:pointer;
+  font-family:inherit; display:inline-flex;
+  align-items:center; justify-content:center; gap:8px;
+  transition:transform 0.15s;
+}
+.btn:active { transform:scale(0.97); }
+.btn-primary {
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; box-shadow:0 8px 20px var(--primary-glow);
+  width:100%;
+}
+.btn-secondary {
+  background:var(--bg); color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-danger { background:var(--red); color:#fff; }
+
+/* MENU */
+.menu-list {
+  display:flex; flex-direction:column; gap:6px;
+}
+.menu-item {
+  padding:14px 16px; border-radius:12px;
+  background:var(--bg); border:none;
+  font-size:14px; font-weight:700;
+  font-family:inherit; text-align:right;
+  cursor:pointer; display:flex;
+  align-items:center; gap:10px;
+}
+.menu-item:active { background:var(--border); }
+.menu-item.danger { color:var(--red); }
+
+/* SEARCH */
+.search-bar {
+  padding:12px 16px 8px;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+}
+.search-input {
+  width:100%; height:44px; padding:0 18px;
+  border:1px solid var(--border); border-radius:22px;
+  background:var(--bg); color:var(--text);
+  font-size:14px; font-family:inherit; outline:none;
+  transition:all 0.2s;
+}
+.search-input:focus {
+  border-color:var(--primary); background:#fff;
+  box-shadow:0 0 0 4px var(--primary-glow);
+}
+.users-list { padding:12px 16px 20px; }
+.user-row {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px; background:var(--white);
+  border-radius:14px; margin-bottom:10px;
+  border:1px solid var(--border); cursor:pointer;
+}
+.user-row .avatar {
+  width:48px; height:48px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0;
+}
+.user-row .avatar img { width:100%; height:100%; object-fit:cover; }
+.user-row .info { flex:1; min-width:0; }
+.user-row .info strong {
+  display:block; font-size:14px;
+  font-weight:800; margin-bottom:2px;
+}
+.user-row .info small { font-size:12px; color:var(--text-dim); }
+.user-row .follow-btn {
+  padding:7px 14px; border-radius:20px;
+  background:var(--primary); color:#fff;
+  border:none; font-size:12px; font-weight:800;
+  cursor:pointer; font-family:inherit;
+  white-space:nowrap;
+}
+
+/* CHAT */
+.chat-list { padding:0 0 20px; }
+.chat-row {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px; background:var(--white);
+  border-bottom:1px solid var(--border); cursor:pointer;
+}
+.chat-row .avatar {
+  width:52px; height:52px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:20px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0;
+}
+.chat-row .avatar img { width:100%; height:100%; object-fit:cover; }
+.chat-row .info { flex:1; min-width:0; }
+.chat-row .info strong {
+  display:block; font-size:14px; font-weight:800;
+  margin-bottom:3px;
+}
+.chat-row .info small {
+  font-size:12px; color:var(--text-dim);
+  display:block; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap;
+}
+.chat-row .menu-btn {
+  width:36px; height:36px; border:none; background:transparent;
+  color:var(--text-dim); font-size:18px; cursor:pointer;
+  border-radius:50%; font-family:inherit;
+}
+
+#chatView {
+  position:fixed; inset:0; z-index:4500;
+  background:var(--bg); display:none;
+  flex-direction:column;
+}
+#chatView.show { display:flex; }
+
+.chat-header {
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+  display:flex; align-items:center; gap:12px;
+}
+.chat-header .back-btn {
+  width:38px; height:38px; border:none; background:transparent;
+  font-size:20px; cursor:pointer; border-radius:50%;
+  font-family:inherit;
+}
+.chat-header .chat-user { flex:1; display:flex; align-items:center; gap:10px; }
+.chat-header .chat-user .avatar {
+  width:38px; height:38px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.chat-header .chat-user .avatar img { width:100%; height:100%; object-fit:cover; }
+.chat-header .chat-user strong { font-size:14px; font-weight:800; }
+.chat-header .chat-user small {
+  display:block; font-size:11px; color:var(--green);
+  font-weight:700;
+}
+
+.chat-messages {
+  flex:1; overflow-y:auto; padding:16px 14px;
+  display:flex; flex-direction:column; gap:8px;
+  scroll-behavior:smooth;
+}
+.msg {
+  max-width:78%; padding:10px 14px;
+  border-radius:18px; font-size:14px;
+  line-height:1.5; word-break:break-word;
+  position:relative;
+}
+.msg.me {
+  align-self:flex-start;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border-bottom-right-radius:4px;
+}
+.msg.other {
+  align-self:flex-end;
+  background:var(--white); color:var(--text);
+  border:1px solid var(--border);
+  border-bottom-left-radius:4px;
+}
+.msg .time {
+  font-size:10px; opacity:0.7;
+  margin-top:4px; display:block;
+  text-align:left;
+}
+.msg .msg-menu {
+  position:absolute; top:4px; left:4px;
+  background:rgba(0,0,0,0.2); color:#fff;
+  border:none; border-radius:50%; width:22px; height:22px;
+  font-size:12px; cursor:pointer; display:none;
+  align-items:center; justify-content:center;
+}
+.msg:active .msg-menu { display:flex; }
+.msg .msg-menu.show { display:flex; }
+
+/* Chat input - FIXED TO BOTTOM */
+.chat-input-bar {
+  background:var(--white); border-top:1px solid var(--border);
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  display:flex; gap:8px; align-items:flex-end;
+  position:sticky; bottom:0;
+  transition:transform 0.2s ease, padding 0.2s ease;
+}
+.chat-input-bar textarea {
+  flex:1; padding:10px 14px;
+  border:1px solid var(--border); border-radius:22px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  resize:none; max-height:120px; min-height:42px;
+}
+.chat-input-bar textarea:focus {
+  border-color:var(--primary); background:#fff;
+}
+.chat-input-bar button {
+  width:44px; height:44px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border:none; font-size:18px;
+  cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+/* PROFILE */
+.profile-header {
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:20px 16px 16px; text-align:center;
+}
+.profile-avatar {
+  width:96px; height:96px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:36px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; margin:0 auto 12px;
+  box-shadow:0 10px 30px var(--primary-glow);
+  border:3px solid var(--white);
+  cursor:pointer;
+}
+.profile-avatar img { width:100%; height:100%; object-fit:cover; }
+.profile-name {
+  font-size:20px; font-weight:900;
+  display:flex; align-items:center; justify-content:center;
+  gap:6px; margin-bottom:4px;
+}
+.profile-email { font-size:13px; color:var(--text-dim); margin-bottom:14px; }
+.profile-bio {
+  font-size:13px; color:var(--text-dim);
+  margin-bottom:14px; padding:0 10px; line-height:1.6;
+}
+
+.profile-stats {
+  display:flex; justify-content:space-around;
+  padding:14px 0; border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border); margin-bottom:14px;
+}
+.profile-stat { text-align:center; }
+.profile-stat .num {
+  font-size:18px; font-weight:900;
+  color:var(--primary); line-height:1;
+}
+.profile-stat .lbl {
+  font-size:11px; color:var(--text-dim);
+  font-weight:700; margin-top:4px;
+}
+
+.profile-actions {
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+}
+.profile-actions .btn {
+  padding:9px 14px; font-size:12px;
+}
+
+/* Profile links */
+.profile-links {
+  display:flex; flex-direction:column; gap:6px;
+  margin-bottom:14px;
+}
+.profile-link-item {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 12px; background:var(--primary-bg);
+  border-radius:10px; font-size:13px; font-weight:700;
+  color:var(--primary); text-decoration:none;
+  cursor:pointer; border:none; font-family:inherit;
+  text-align:right;
+}
+.profile-link-item .link-icon { font-size:16px; }
+.profile-link-item .link-name { flex:1; }
+
+.profile-tabs {
+  display:flex; background:var(--white);
+  border-bottom:1px solid var(--border); margin-bottom:12px;
+}
+.profile-tab {
+  flex:1; padding:14px 8px;
+  background:transparent; border:none;
+  font-size:13px; font-weight:800;
+  color:var(--text-dim); cursor:pointer;
+  font-family:inherit; position:relative;
+}
+.profile-tab.active { color:var(--primary); }
+.profile-tab.active::after {
+  content:''; position:absolute; bottom:0; right:20%; left:20%;
+  height:3px; background:var(--primary); border-radius:3px 3px 0 0;
+}
+
+.posts-grid-mini {
+  display:grid; grid-template-columns:repeat(3, 1fr);
+  gap:2px; padding:2px;
+}
+.posts-grid-mini .mini {
+  aspect-ratio:1/1; background:var(--bg);
+  overflow:hidden; position:relative; cursor:pointer;
+}
+.posts-grid-mini .mini img {
+  width:100%; height:100%; object-fit:cover;
+}
+.posts-grid-mini .mini.text-only {
+  display:flex; align-items:center; justify-content:center;
+  padding:10px; background:var(--primary-bg);
+  color:var(--primary); font-size:12px;
+  font-weight:800; text-align:center;
+  overflow:hidden;
+}
+.posts-grid-mini .mini .mini-stats {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+  color:#fff; padding:6px 8px;
+  font-size:11px; font-weight:800;
+  display:flex; gap:10px;
+}
+
+/* EMPTY */
+.empty { text-align:center; padding:60px 20px; color:var(--text-dim); }
+.empty .icon { font-size:64px; display:block; margin-bottom:14px; opacity:0.4; }
+.empty h3 { font-size:16px; color:var(--text); font-weight:800; margin-bottom:6px; }
+.empty p { font-size:13px; }
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:calc(env(safe-area-inset-bottom) + 90px);
+  left:50%; transform:translateX(-50%) translateY(100px);
+  background:var(--text); color:#fff;
+  padding:12px 22px; border-radius:30px;
+  font-size:13px; font-weight:700;
+  z-index:9999; opacity:0;
+  transition:0.3s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none; max-width:90%;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.success { background:var(--green); }
+.toast.error { background:var(--red); }
+.toast.warn { background:var(--orange); }
+
+/* REPORT */
+.report-reasons {
+  display:flex; flex-direction:column; gap:8px; margin-bottom:14px;
+}
+.report-reason {
+  padding:12px 14px; border-radius:10px;
+  border:1px solid var(--border); background:var(--white);
+  cursor:pointer; font-size:13px; font-weight:700;
+  font-family:inherit; text-align:right;
+}
+.report-reason.selected {
+  border-color:var(--primary); background:var(--primary-bg);
+  color:var(--primary);
+}
+
+/* Comments section in post viewer */
+.comment-item {
+  padding:10px; background:var(--bg); border-radius:10px; margin-bottom:6px;
+  position:relative;
+}
+.comment-item .comment-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:4px;
+}
+.comment-item .comment-author {
+  font-size:12px; font-weight:800;
+}
+.comment-item .comment-menu-btn {
+  width:28px; height:28px; border:none; background:transparent;
+  color:var(--text-dim); font-size:14px; cursor:pointer;
+  border-radius:50%; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+}
+.comment-item .comment-text {
+  font-size:13px; margin-top:4px; line-height:1.6;
+}
+.comment-item .comment-time {
+  font-size:10px; color:var(--text-dim); margin-top:4px; display:block;
+}
+.comment-item .comment-actions {
+  display:flex; gap:8px; margin-top:8px; padding-top:8px;
+  border-top:1px solid var(--border);
+}
+.comment-item .comment-actions button {
+  padding:5px 10px; border-radius:8px; border:none;
+  font-size:11px; font-weight:700; font-family:inherit;
+  cursor:pointer;
+}
+.comment-item .comment-actions .edit-btn {
+  background:var(--primary-bg); color:var(--primary);
+}
+.comment-item .comment-actions .delete-btn {
+  background:#fee; color:var(--red);
+}
+
+/* Profile viewer modal */
+.profile-viewer-card {
+  text-align:center; padding:10px;
+}
+.profile-viewer-avatar {
+  width:100px; height:100px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:38px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; margin:0 auto 14px;
+  border:3px solid var(--white);
+  box-shadow:0 10px 30px var(--primary-glow);
+}
+.profile-viewer-avatar img { width:100%; height:100%; object-fit:cover; }
+.profile-viewer-name {
+  font-size:20px; font-weight:900; margin-bottom:4px;
+}
+.profile-viewer-username {
+  font-size:13px; color:var(--text-dim); margin-bottom:10px;
+}
+.profile-viewer-bio {
+  font-size:13px; color:var(--text-dim);
+  margin-bottom:14px; line-height:1.6;
+}
+.profile-viewer-stats {
+  display:flex; justify-content:space-around;
+  padding:14px 0; border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border); margin-bottom:14px;
+}
+.profile-viewer-stats .stat { text-align:center; }
+.profile-viewer-stats .stat .num {
+  font-size:18px; font-weight:900; color:var(--primary);
+}
+.profile-viewer-stats .stat .lbl {
+  font-size:11px; color:var(--text-dim); font-weight:700;
+  margin-top:4px;
+}
+.profile-viewer-actions {
+  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+}
+.profile-viewer-actions .btn {
+  padding:10px 16px; font-size:12px;
+}
+
+/* Color picker */
+.color-grid {
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;
+  margin-bottom:16px;
+}
+.color-swatch {
+  width:100%; aspect-ratio:1/1; border-radius:50%;
+  border:3px solid transparent; cursor:pointer;
+  transition:transform 0.2s;
+}
+.color-swatch:active { transform:scale(0.9); }
+.color-swatch.selected {
+  border-color:var(--text);
+  box-shadow:0 0 0 3px var(--white), 0 0 0 6px var(--primary);
+}
+
+/* Spacing helpers for input above keyboard */
+.page-content-padded {
+  padding-bottom:90px;
+}
+
+/* When keyboard open - adjust positions */
+body.keyboard-open .chat-input-bar {
+  padding-bottom:calc(10px + env(safe-area-inset-bottom) + 60px);
+}
+body.keyboard-open .post-comment-bar {
+  padding-bottom:calc(10px + env(safe-area-inset-bottom) + 60px);
+}
+body.keyboard-open .chat-messages {
+  padding-bottom:80px;
+}
+
+/* Comment input bar at bottom */
+.post-comment-bar {
+  position:fixed; bottom:72px; left:0; right:0;
+  background:var(--white); border-top:1px solid var(--border);
+  padding:10px 12px;
+  display:flex; gap:8px; align-items:flex-end;
+  z-index:500;
+  transition:transform 0.2s ease, padding 0.2s ease;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.04);
+}
+.post-comment-bar textarea {
+  flex:1; padding:10px 14px;
+  border:1px solid var(--border); border-radius:22px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  resize:none; max-height:100px; min-height:42px;
+}
+.post-comment-bar textarea:focus {
+  border-color:var(--primary); background:#fff;
+}
+.post-comment-bar button {
+  width:44px; height:44px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border:none; font-size:18px;
+  cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+/* Post viewer needs padding for comment bar */
+#postViewerModal .modal {
+  padding-bottom:80px;
+}
+
+/* Link input group */
+.link-input-group {
+  display:flex; gap:8px; margin-bottom:10px;
+}
+.link-input-group input {
+  flex:1;
+}
+.link-input-group .link-icon-select {
+  width:60px; padding:12px 8px;
+  border:1px solid var(--border); border-radius:12px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  text-align:center;
+}
+
+/* Settings list */
+.settings-section {
+  margin-bottom:20px;
+}
+.settings-section h4 {
+  font-size:13px; font-weight:800; color:var(--text-dim);
+  margin-bottom:10px; padding:0 4px;
+}
+.settings-item {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px; background:var(--bg);
+  border-radius:12px; margin-bottom:6px;
+  border:none; font-family:inherit; font-size:14px;
+  font-weight:700; cursor:pointer; width:100%;
+  text-align:right;
+}
+.settings-item:active { background:var(--border); }
+.settings-item .icon { font-size:18px; }
+.settings-item .arrow { margin-right:auto; color:var(--text-muted); }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">▶</div>
+    <h1>BluePost</h1>
+    <p class="sub">شارك لحظاتك مع العالم</p>
+
+    <div id="authLoginForm">
+      <input type="text" id="loginUsername" class="auth-input" placeholder="👤 اسم المستخدم" autocomplete="off" autocorrect="off" autocapitalize="off">
+      <input type="password" id="loginPassword" class="auth-input" placeholder="🔑 الرمز السري" autocomplete="new-password">
+      <div class="auth-error" id="loginError"></div>
+      <button class="auth-btn primary" id="loginBtn">🔓 دخول</button>
+      <span class="auth-toggle" id="goToSignup">ليس لديك حساب؟ أنشئ حساباً</span>
+    </div>
+
+    <div id="authSignupForm" style="display:none;">
+      <input type="text" id="signupUsername" class="auth-input" placeholder="👤 اسم المستخدم (بالإنجليزية)" autocomplete="off" autocorrect="off" autocapitalize="off">
+      <input type="password" id="signupPassword" class="auth-input" placeholder="🔑 الرمز السري (6+)" autocomplete="new-password">
+      <input type="password" id="signupPassword2" class="auth-input" placeholder="🔑 تأكيد الرمز" autocomplete="new-password">
+      <div class="auth-error" id="signupError"></div>
+      <button class="auth-btn primary" id="signupBtn">✨ إنشاء الحساب</button>
+      <span class="auth-toggle" id="goToLogin">لديك حساب؟ سجّل الدخول</span>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen" style="display:none;">
+  <div class="header">
+    <div class="header-row">
+      <div class="header-logo">
+        <div class="logo-icon">▶</div>
+        <span>BluePost</span>
+      </div>
+      <div class="header-actions">
+        <button class="header-icon-btn" id="notifBtn">🔔</button>
+        <div class="header-avatar" id="headerAvatar" onclick="switchTab('profile')"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page active" data-page="home">
+    <div class="feed" id="feedContainer"></div>
+  </div>
+
+  <div class="page" data-page="search">
+    <div class="search-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث عن أشخاص...">
+    </div>
+    <div class="users-list" id="searchResults"></div>
+  </div>
+
+  <div class="page" data-page="chat">
+    <div class="chat-list" id="chatList"></div>
+  </div>
+
+  <div class="page" data-page="profile">
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar" onclick="openAvatarViewer()"></div>
+      <div class="profile-name" id="profileName"></div>
+      <div class="profile-email" id="profileEmail"></div>
+      <div class="profile-bio" id="profileBio"></div>
+      <div class="profile-links" id="profileLinks"></div>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="num" id="profilePostsCount">0</div>
+          <div class="lbl">منشور</div>
+        </div>
+        <div class="profile-stat" onclick="openMyFriends()">
+          <div class="num" id="profileFriendsCount">0</div>
+          <div class="lbl">أصدقاء</div>
+        </div>
+        <div class="profile-stat">
+          <div class="num" id="profileFollowersCount">0</div>
+          <div class="lbl">متابع</div>
+        </div>
+        <div class="profile-stat">
+          <div class="num" id="profileFollowingCount">0</div>
+          <div class="lbl">يتابع</div>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn btn-primary" onclick="openEditProfile()">✏️ تعديل</button>
+        <button class="btn btn-secondary" onclick="openChangePassword()">🔑 الرمز</button>
+        <button class="btn btn-secondary" onclick="openSettings()">⚙️</button>
+        <button class="btn btn-secondary" onclick="logout()">🚪 خروج</button>
+        <button class="btn btn-danger" onclick="deleteMyAccount()">🗑 حذف</button>
+      </div>
+    </div>
+
+    <div class="posts-grid-mini" id="profilePostsGrid"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-item active" data-tab="home" onclick="switchTab('home')">
+      <span class="nav-icon">🏠</span>
+      <span>الرئيسية</span>
+    </button>
+    <button class="nav-item" data-tab="search" onclick="switchTab('search')">
+      <span class="nav-icon">🔍</span>
+      <span>بحث</span>
+    </button>
+    <button class="nav-item post-btn" data-tab="post" onclick="openCreatePost()">
+      <span class="nav-icon">＋</span>
+      <span>نشر</span>
+    </button>
+    <button class="nav-item" data-tab="chat" onclick="switchTab('chat')">
+      <span class="nav-icon">💌</span>
+      <span>رسائل</span>
+    </button>
+    <button class="nav-item" data-tab="profile" onclick="switchTab('profile')">
+      <span class="nav-icon">👤</span>
+      <span>حسابي</span>
+    </button>
+  </div>
+</div>
+
+<!-- CREATE POST MODAL -->
+<div class="modal-bg" id="createPostModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📝 منشور جديد</h3>
+      <button class="modal-close" onclick="closeModal('createPostModal')">✕</button>
+    </div>
+
+    <div class="image-upload" id="imageUploadArea">
+      <div class="upload-hint" id="uploadHint">
+        <span class="icon">📷</span>
+        <strong>إضافة صورة (اختياري)</strong>
+        <small>اضغط لاختيار صورة</small>
+      </div>
+      <input type="file" id="postImageInput" accept="image/*" style="display:none;">
+    </div>
+
+    <div class="field-row">
+      <label>نص المنشور</label>
+      <textarea id="postText" placeholder="اكتب شيئاً... أو الصق رابطاً (YouTube, Telegram, Google, Facebook)"></textarea>
+    </div>
+
+    <button class="btn btn-primary" id="publishBtn">📤 نشر</button>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal-bg" id="reportModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🚨 إبلاغ</h3>
+      <button class="modal-close" onclick="closeModal('reportModal')">✕</button>
+    </div>
+    <div class="report-reasons" id="reportReasons"></div>
+    <div class="field-row">
+      <label>وصف إضافي (اختياري)</label>
+      <textarea id="reportDesc" placeholder="اشرح المشكلة..."></textarea>
+    </div>
+    <button class="btn btn-primary" id="submitReportBtn">📤 إرسال البلاغ</button>
+  </div>
+</div>
+
+<!-- POST MENU MODAL -->
+<div class="modal-bg" id="postMenuModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>خيارات المنشور</h3>
+      <button class="modal-close" onclick="closeModal('postMenuModal')">✕</button>
+    </div>
+    <div class="menu-list" id="postMenuList"></div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-bg" id="editProfileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>✏️ تعديل الملف</h3>
+      <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+    </div>
+
+    <div class="avatar-upload" id="avatarUploadArea">
+      <div class="avatar-hint" id="avatarHint">
+        <span>📷</span>
+        <small>صورة البروفايل</small>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+    </div>
+
+    <div class="field-row">
+      <label>الاسم</label>
+      <input type="text" id="editName">
+    </div>
+    <div class="field-row">
+      <label>نبذة</label>
+      <textarea id="editBio" placeholder="اكتب نبذة..."></textarea>
+    </div>
+
+    <div class="field-row">
+      <label>الرابط الأول (مثال: قناتي على YouTube)</label>
+      <div class="link-input-group">
+        <input type="text" id="editLink1Icon" class="link-icon-select" placeholder="▶️" maxlength="2">
+        <input type="text" id="editLink1Name" placeholder="اسم الرابط">
+      </div>
+      <input type="url" id="editLink1Url" placeholder="https://..." style="margin-top:8px;">
+    </div>
+
+    <div class="field-row">
+      <label>الرابط الثاني (مثال: موقعي المفضل)</label>
+      <div class="link-input-group">
+        <input type="text" id="editLink2Icon" class="link-icon-select" placeholder="🔗" maxlength="2">
+        <input type="text" id="editLink2Name" placeholder="اسم الرابط">
+      </div>
+      <input type="url" id="editLink2Url" placeholder="https://..." style="margin-top:8px;">
+    </div>
+
+    <button class="btn btn-primary" id="saveProfileBtn">💾 حفظ</button>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal-bg" id="changePassModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🔑 تغيير الرمز السري</h3>
+      <button class="modal-close" onclick="closeModal('changePassModal')">✕</button>
+    </div>
+    <div class="field-row">
+      <label>الرمز القديم</label>
+      <input type="password" id="oldPass" placeholder="••••••">
+    </div>
+    <div class="field-row">
+      <label>الرمز الجديد</label>
+      <input type="password" id="newPass" placeholder="••••••">
+    </div>
+    <div class="field-row">
+      <label>تأكيد الرمز الجديد</label>
+      <input type="password" id="newPass2" placeholder="••••••">
+    </div>
+    <div class="auth-error" id="changePassError"></div>
+    <button class="btn btn-primary" id="savePassBtn">💾 حفظ</button>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-bg" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>⚙️ الإعدادات</h3>
+      <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+    </div>
+
+    <div class="settings-section">
+      <h4>🎨 لون التطبيق</h4>
+      <div class="color-grid" id="colorGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- POST VIEWER MODAL -->
+<div class="modal-bg" id="postViewerModal">
+  <div class="modal" style="padding:0; padding-bottom:80px;">
+    <div id="postViewerContent"></div>
+  </div>
+</div>
+
+<!-- PROFILE VIEWER MODAL -->
+<div class="modal-bg" id="profileViewerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>الملف الشخصي</h3>
+      <button class="modal-close" onclick="closeModal('profileViewerModal')">✕</button>
+    </div>
+    <div id="profileViewerContent"></div>
+  </div>
+</div>
+
+<!-- FRIENDS MODAL -->
+<div class="modal-bg" id="friendsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>👥 أصدقائي</h3>
+      <button class="modal-close" onclick="closeModal('friendsModal')">✕</button>
+    </div>
+    <div id="friendsList"></div>
+  </div>
+</div>
+
+<!-- COMMENT MENU MODAL -->
+<div class="modal-bg" id="commentMenuModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>خيارات التعليق</h3>
+      <button class="modal-close" onclick="closeModal('commentMenuModal')">✕</button>
+    </div>
+    <div class="menu-list" id="commentMenuList"></div>
+  </div>
+</div>
+
+<!-- CHAT VIEW -->
+<div id="chatView">
+  <div class="chat-header">
+    <button class="back-btn" onclick="closeChat()">←</button>
+    <div class="chat-user" onclick="openProfileViewer(STATE.currentChatUser)">
+      <div class="avatar" id="chatHeaderAvatar"></div>
+      <div>
+        <strong id="chatHeaderName"></strong>
+        <small>🟢 متصل</small>
+      </div>
+    </div>
+    <button class="header-icon-btn" onclick="openChatMenu()">⋯</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-bar">
+    <textarea id="chatInput" placeholder="اكتب رسالة..." rows="1"></textarea>
+    <button id="chatSendBtn">➤</button>
+  </div>
+</div>
+
+<!-- COMMENT INPUT BAR (fixed) -->
+<div class="post-comment-bar" id="postCommentBar" style="display:none;">
+  <textarea id="commentInputBar" placeholder="اكتب تعليقاً..." rows="1"></textarea>
+  <button onclick="addCommentFromBar()">➤</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+/* ============================================
+   🔥 FIREBASE CONFIG
+   ============================================ */
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBHnknMBiVdigipFyLMNkdFcm_tOQKWc-4",
+  authDomain: "aktubar98.firebaseapp.com",
+  databaseURL: "https://aktubar98-default-rtdb.firebaseio.com",
+  projectId: "aktubar98",
+  storageBucket: "aktubar98.appspot.com",
+  messagingSenderId: "679902534827",
+  appId: "1:679902534827:android:03edb9ea18b42eaef7abee"
+};
+
+firebase.initializeApp(FIREBASE_CONFIG);
+var db = firebase.database();
+
+var $ = function(id) { return document.getElementById(id); };
+
+var STATE = {
+  user: null,
+  users: {},
+  posts: [],
+  currentChatUser: null,
+  reportTarget: null,
+  reportReason: null,
+  uploadingImage: null,
+  uploadingAvatar: null,
+  menuPostId: null,
+  menuCommentId: null,
+  currentPostId: null,
+  viewingProfileId: null,
+  chatRef: null
+};
+
+/* ============================================
+   🎨 THEME
+   ============================================ */
+var THEMES = [
+  { name:'Blue',    c1:'#0a4d9e', c2:'#1a5fb4', bg:'#e8f1fb' },
+  { name:'Purple',  c1:'#7c3aed', c2:'#8b5cf6', bg:'#f3e8ff' },
+  { name:'Pink',    c1:'#db2777', c2:'#ec4899', bg:'#fce7f3' },
+  { name:'Red',     c1:'#dc2626', c2:'#ef4444', bg:'#fee2e2' },
+  { name:'Orange',  c1:'#ea580c', c2:'#f97316', bg:'#ffedd5' },
+  { name:'Green',   c1:'#059669', c2:'#10b981', bg:'#d1fae5' },
+  { name:'Teal',    c1:'#0d9488', c2:'#14b8a6', bg:'#ccfbf1' },
+  { name:'Indigo',  c1:'#4338ca', c2:'#6366f1', bg:'#e0e7ff' },
+  { name:'Gray',    c1:'#374151', c2:'#4b5563', bg:'#f3f4f6' },
+  { name:'Black',   c1:'#000000', c2:'#1f2937', bg:'#e5e7eb' },
+  { name:'Cyan',    c1:'#0891b2', c2:'#06b6d4', bg:'#cffafe' },
+  { name:'Lime',    c1:'#65a30d', c2:'#84cc16', bg:'#ecfccb' }
+];
+
+function applyTheme(theme) {
+  var root = document.documentElement;
+  root.style.setProperty('--primary', theme.c1);
+  root.style.setProperty('--primary-2', theme.c2);
+  root.style.setProperty('--primary-bg', theme.bg);
+  root.style.setProperty('--primary-glow', hexToRgba(theme.c1, 0.2));
+  localStorage.setItem('bp_theme', JSON.stringify(theme));
+}
+
+function hexToRgba(hex, alpha) {
+  var r = parseInt(hex.slice(1,3),16);
+  var g = parseInt(hex.slice(3,5),16);
+  var b = parseInt(hex.slice(5,7),16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+function loadTheme() {
+  var saved = localStorage.getItem('bp_theme');
+  if (saved) {
+    try { applyTheme(JSON.parse(saved)); } catch(e) {}
+  }
+}
+
+function renderColorGrid() {
+  var grid = $('colorGrid');
+  var current = localStorage.getItem('bp_theme');
+  var currentName = '';
+  if (current) {
+    try { currentName = JSON.parse(current).name; } catch(e) {}
+  }
+
+  grid.innerHTML = THEMES.map(function(t, i) {
+    var selected = t.name === currentName ? 'selected' : '';
+    return '<div class="color-swatch ' + selected + '" ' +
+      'style="background:linear-gradient(135deg,' + t.c1 + ',' + t.c2 + ');" ' +
+      'onclick="selectTheme(' + i + ')" title="' + t.name + '"></div>';
+  }).join('');
+}
+
+function selectTheme(index) {
+  var t = THEMES[index];
+  applyTheme(t);
+  renderColorGrid();
+  showToast('🎨 تم تغيير اللون', 'success');
+}
+
+/* ============================================
+   🛠️ HELPERS
+   ============================================ */
+function showToast(msg, type) {
+  var t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(function() { t.className = 'toast'; }, 2500);
+}
+
+function escapeHtml(t) {
+  var d = document.createElement('div');
+  d.textContent = t == null ? '' : t;
+  return d.innerHTML;
+}
+
+function timeAgo(ts) {
+  if (!ts) return '';
+  var diff = (Date.now() - ts) / 1000;
+  if (diff < 60) return 'الآن';
+  if (diff < 3600) return Math.floor(diff / 60) + ' د';
+  if (diff < 86400) return Math.floor(diff / 3600) + ' س';
+  if (diff < 2592000) return Math.floor(diff / 86400) + ' يوم';
+  if (diff < 31536000) return Math.floor(diff / 2592000) + ' شهر';
+  return Math.floor(diff / 31536000) + ' سنة';
+}
+
+function getDeviceId() {
+  var id = localStorage.getItem('bp_device_id');
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+    localStorage.setItem('bp_device_id', id);
+  }
+  return id;
+}
+
+function getTodayKey() {
+  var d = new Date();
+  return d.getFullYear() + '_' + (d.getMonth() + 1) + '_' + d.getDate();
+}
+
+function showModal(id) { $(id).classList.add('show'); }
+function closeModal(id) { $(id).classList.remove('show'); }
+
+/* ============================================
+   🖼️ IMAGE COMPRESSION
+   ============================================ */
+function compressImage(file, maxSize, quality, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var w = img.width, h = img.height;
+
+      if (w > h) {
+        if (w > maxSize) { h = h * maxSize / w; w = maxSize; }
+      } else {
+        if (h > maxSize) { w = w * maxSize / h; h = maxSize; }
+      }
+
+      canvas.width = w;
+      canvas.height = h;
+
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+
+      var compressed = canvas.toDataURL('image/jpeg', quality);
+      callback(compressed);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ============================================
+   🔗 SMART LINKIFY
+   ============================================ */
+function linkifyText(text) {
+  if (!text) return '';
+  var escaped = escapeHtml(text);
+  var urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  return escaped.replace(urlRegex, function(url) {
+    var cleanUrl = url.replace(/[.,;!?]+$/, '');
+    var type = detectLinkType(cleanUrl);
+    var icon = '';
+    var label = '';
+
+    if (type === 'youtube') { icon = '▶️ '; label = 'فتح في YouTube'; }
+    else if (type === 'telegram') { icon = '✈️ '; label = 'فتح في Telegram'; }
+    else if (type === 'google') { icon = '🔍 '; label = 'فتح في Google'; }
+    else if (type === 'facebook') { icon = '📘 '; label = 'فتح في Facebook'; }
+    else if (type === 'instagram') { icon = '📷 '; label = 'فتح في Instagram'; }
+    else if (type === 'whatsapp') { icon = '💬 '; label = 'فتح في WhatsApp'; }
+    else if (type === 'twitter') { icon = '🐦 '; label = 'فتح في Twitter'; }
+    else { icon = '🔗 '; label = 'فتح الرابط'; }
+
+    return '<a href="javascript:void(0)" onclick="openSmartLink(\'' + cleanUrl.replace(/'/g, '\\\'') + '\')" title="' + label + '">' + icon + cleanUrl + '</a>';
+  });
+}
+
+function detectLinkType(url) {
+  var u = url.toLowerCase();
+  if (u.indexOf('youtube.com') !== -1 || u.indexOf('youtu.be') !== -1) return 'youtube';
+  if (u.indexOf('t.me') !== -1 || u.indexOf('telegram') !== -1) return 'telegram';
+  if (u.indexOf('google.') !== -1 || u.indexOf('maps.google') !== -1) return 'google';
+  if (u.indexOf('facebook.com') !== -1 || u.indexOf('fb.com') !== -1) return 'facebook';
+  if (u.indexOf('instagram.com') !== -1) return 'instagram';
+  if (u.indexOf('wa.me') !== -1 || u.indexOf('whatsapp.com') !== -1) return 'whatsapp';
+  if (u.indexOf('twitter.com') !== -1 || u.indexOf('x.com') !== -1) return 'twitter';
+  return 'generic';
+}
+
+function openSmartLink(url) {
+  if (window.AndroidApp && window.AndroidApp.openUrl) {
+    window.AndroidApp.openUrl(url);
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
+/* ============================================
+   🔐 AUTH
+   ============================================ */
+$('goToSignup').onclick = function() {
+  $('authLoginForm').style.display = 'none';
+  $('authSignupForm').style.display = 'block';
+  $('signupError').textContent = '';
+};
+
+$('goToLogin').onclick = function() {
+  $('authSignupForm').style.display = 'none';
+  $('authLoginForm').style.display = 'block';
+  $('loginError').textContent = '';
+};
+
+$('loginBtn').onclick = function() {
+  var username = $('loginUsername').value.trim().toLowerCase();
+  var pass = $('loginPassword').value;
+  var err = $('loginError');
+
+  if (!username || !pass) {
+    err.textContent = '⚠️ املأ جميع الحقول';
+    return;
+  }
+
+  err.textContent = '⏳ جاري الدخول...';
+
+  db.ref('users').orderByChild('username').equalTo(username).once('value')
+    .then(function(snap) {
+      if (!snap.exists()) {
+        err.textContent = '❌ المستخدم غير موجود';
+        return;
+      }
+
+      var found = null;
+      snap.forEach(function(child) {
+        found = { id: child.key, data: child.val() };
+      });
+
+      if (!found) {
+        err.textContent = '❌ خطأ';
+        return;
+      }
+
+      if (found.data.password !== pass) {
+        err.textContent = '❌ الرمز السري خطأ';
+        return;
+      }
+
+      if (found.data.status === 'banned') {
+        err.textContent = '🚫 حسابك محظور';
+        return;
+      }
+
+      if (found.data.status === 'suspended') {
+        var until = found.data.suspendedUntil || 0;
+        if (Date.now() < until) {
+          err.textContent = '⏸ حسابك موقوف مؤقتاً';
+          return;
+        }
+      }
+
+      localStorage.setItem('bp_user_id', found.id);
+      STATE.user = { id: found.id, data: found.data };
+      enterApp();
+    })
+    .catch(function(e) {
+      err.textContent = '❌ خطأ: ' + e.message;
+    });
+};
+
+$('signupBtn').onclick = function() {
+  var username = $('signupUsername').value.trim().toLowerCase();
+  var pass = $('signupPassword').value;
+  var pass2 = $('signupPassword2').value;
+  var err = $('signupError');
+
+  if (!username || !pass || !pass2) {
+    err.textContent = '⚠️ املأ جميع الحقول';
+    return;
+  }
+  if (username.length < 3) {
+    err.textContent = '⚠️ اسم المستخدم 3 أحرف على الأقل';
+    return;
+  }
+  if (!/^[a-z0-9_]+$/.test(username)) {
+    err.textContent = '⚠️ حروف إنجليزية وأرقام فقط';
+    return;
+  }
+  if (pass.length < 6) {
+    err.textContent = '⚠️ الرمز 6 أحرف على الأقل';
+    return;
+  }
+  if (pass !== pass2) {
+    err.textContent = '⚠️ الرمزان غير متطابقين';
+    return;
+  }
+
+  err.textContent = '⏳ جاري إنشاء الحساب...';
+
+  var deviceId = getDeviceId();
+  var todayKey = getTodayKey();
+
+  db.ref('settings/app').once('value').then(function(snap) {
+    var settings = snap.val() || {};
+    var maxAccounts = settings.maxAccountsPerDevice || 5;
+
+    return db.ref('users').orderByChild('username').equalTo(username).once('value')
+      .then(function(userSnap) {
+        if (userSnap.exists()) {
+          throw new Error('اسم المستخدم محجوز');
+        }
+        return db.ref('device_accounts/' + deviceId + '/' + todayKey).once('value');
+      })
+      .then(function(deviceSnap) {
+        var count = deviceSnap.val() || 0;
+        if (count >= maxAccounts) {
+          throw new Error('وصلت الحد الأقصى (' + maxAccounts + ') من هذا الجهاز اليوم');
+        }
+
+        var newUser = {
+          username: username,
+          name: username,
+          password: pass,
+          deviceId: deviceId,
+          createdAt: Date.now(),
+          status: 'active',
+          followers: 0,
+          following: 0,
+          friends: {},
+          verified: false,
+          photo: '',
+          bio: '',
+          links: {}
+        };
+
+        return db.ref('users').push(newUser).then(function(ref) {
+          return db.ref('device_accounts/' + deviceId + '/' + todayKey)
+            .set(count + 1)
+            .then(function() { return ref.key; });
+        });
+      });
+  })
+  .then(function(userId) {
+    localStorage.setItem('bp_user_id', userId);
+    return db.ref('users/' + userId).once('value');
+  })
+  .then(function(userSnap) {
+    STATE.user = { id: userSnap.key, data: userSnap.val() };
+    err.textContent = '';
+    enterApp();
+  })
+  .catch(function(e) {
+    err.textContent = '❌ ' + e.message;
+  });
+};
+
+/* ============================================
+   🚀 ENTER / LOGOUT
+   ============================================ */
+function enterApp() {
+  $('authScreen').style.display = 'none';
+  $('appScreen').style.display = 'block';
+  updateHeaderAvatar();
+  loadAllData();
+  showToast('👋 مرحباً ' + (STATE.user.data.name || STATE.user.data.username), 'success');
+}
+
+function logout() {
+  if (!confirm('هل تريد الخروج؟')) return;
+  localStorage.removeItem('bp_user_id');
+  location.reload();
+}
+
+function updateHeaderAvatar() {
+  var name = STATE.user.data.name || STATE.user.data.username || '؟';
+  var avatar = $('headerAvatar');
+  if (STATE.user.data.photo) {
+    avatar.innerHTML = '<img src="' + STATE.user.data.photo + '">';
+  } else {
+    avatar.textContent = name.charAt(0).toUpperCase();
+  }
+}
+
+/* ============================================
+   📥 LOAD DATA
+   ============================================ */
+function loadAllData() {
+  db.ref('users').on('value', function(snap) {
+    STATE.users = snap.val() || {};
+    if (STATE.user && STATE.users[STATE.user.id]) {
+      STATE.user.data = STATE.users[STATE.user.id];
+    }
+    renderFeed();
+    renderProfile();
+    renderChatList();
+    updateHeaderAvatar();
+  });
+
+  db.ref('posts').on('value', function(snap) {
+    var data = snap.val() || {};
+    STATE.posts = Object.keys(data).map(function(k) {
+      var p = data[k];
+      p.id = k;
+      return p;
+    }).sort(function(a, b) {
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    });
+    renderFeed();
+    renderProfile();
+  });
+}
+
+/* ============================================
+   🏠 FEED
+   ============================================ */
+function renderFeed() {
+  var feed = $('feedContainer');
+  if (!STATE.posts.length) {
+    feed.innerHTML = '<div class="empty"><span class="icon">📭</span><h3>لا توجد منشورات</h3><p>كن أول من ينشر شيئاً</p></div>';
+    return;
+  }
+
+  feed.innerHTML = STATE.posts.map(function(p) {
+    return postCardHtml(p);
+  }).join('');
+}
+
+function postCardHtml(p) {
+  var author = STATE.users[p.userId] || {};
+  var authorName = author.name || author.username || 'مستخدم';
+  var firstLetter = authorName.charAt(0).toUpperCase();
+  var avatarHtml = author.photo
+    ? '<img src="' + author.photo + '">'
+    : firstLetter;
+
+  var liked = p.likes && p.likes[STATE.user.id];
+  var likesCount = p.likes ? Object.keys(p.likes).length : 0;
+  var commentsCount = p.comments ? Object.keys(p.comments).length : 0;
+  var isMine = p.userId === STATE.user.id;
+
+  return '<div class="post-card" data-post-id="' + p.id + '">' +
+    '<div class="post-head">' +
+      '<div class="avatar" onclick="openProfileViewer(\'' + p.userId + '\')">' + avatarHtml + '</div>' +
+      '<div class="info" onclick="openProfileViewer(\'' + p.userId + '\')">' +
+        '<div class="name">' + escapeHtml(authorName) + (author.verified ? ' ⭐' : '') + '</div>' +
+        '<div class="meta">' + timeAgo(p.createdAt) + '</div>' +
+      '</div>' +
+      '<button class="menu-btn" onclick="openPostMenu(\'' + p.id + '\', ' + (isMine ? 'true' : 'false') + ')">⋯</button>' +
+    '</div>' +
+    (p.image ? '<div class="post-image"><img src="' + p.image + '" loading="lazy"></div>' : '') +
+    (p.text ? '<div class="post-text">' + linkifyText(p.text) + '</div>' : '') +
+    '<div class="post-actions">' +
+      '<button class="' + (liked ? 'liked' : '') + '" onclick="toggleLike(\'' + p.id + '\')">' +
+        (liked ? '❤️' : '🤍') + ' ' + likesCount +
+      '</button>' +
+      '<button onclick="viewPost(\'' + p.id + '\')">💬 ' + commentsCount + '</button>' +
+      '<button onclick="sharePost(\'' + p.id + '\')">📤 مشاركة</button>' +
+    '</div>' +
+  '</div>';
+}
+
+/* ============================================
+   ⋯ POST MENU
+   ============================================ */
+function openPostMenu(postId, isMine) {
+  STATE.menuPostId = postId;
+
+  var menu = $('postMenuList');
+  var html = '';
+
+  if (isMine) {
+    html += '<button class="menu-item" onclick="deleteMyPost(\'' + postId + '\')">🗑 حذف المنشور</button>';
+    html += '<button class="menu-item" onclick="editMyPost(\'' + postId + '\')">✏️ تعديل النص</button>';
+  }
+
+  html += '<button class="menu-item" onclick="copyPostLink(\'' + postId + '\')">🔗 نسخ الرابط</button>';
+  html += '<button class="menu-item danger" onclick="openReportFromMenu(\'' + postId + '\')">🚨 إبلاغ</button>';
+
+  menu.innerHTML = html;
+  showModal('postMenuModal');
+}
+
+function deleteMyPost(postId) {
+  if (!confirm('حذف هذا المنشور نهائياً؟')) return;
+  db.ref('posts/' + postId).remove().then(function() {
+    closeModal('postMenuModal');
+    showToast('🗑 تم الحذف', 'success');
+  });
+}
+
+function editMyPost(postId) {
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+
+  var newText = prompt('تعديل النص:', p.text || '');
+  if (newText === null) return;
+
+  db.ref('posts/' + postId + '/text').set(newText.trim()).then(function() {
+    closeModal('postMenuModal');
+    showToast('✅ تم التعديل', 'success');
+  });
+}
+
+function copyPostLink(postId) {
+  var link = 'bluepost://post/' + postId;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(function() {
+      closeModal('postMenuModal');
+      showToast('📋 تم نسخ الرابط', 'success');
+    });
+  } else {
+    showToast('📋 ' + link);
+  }
+}
+
+function openReportFromMenu(postId) {
+  closeModal('postMenuModal');
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+  var author = STATE.users[p.userId] || {};
+  openReport('post', postId, author.name || author.username || 'مستخدم');
+}
+
+/* ============================================
+   ❤️ LIKE
+   ============================================ */
+function toggleLike(postId) {
+  var post = STATE.posts.find(function(p) { return p.id === postId; });
+  if (!post) return;
+
+  var likes = post.likes || {};
+  if (likes[STATE.user.id]) {
+    delete likes[STATE.user.id];
+  } else {
+    likes[STATE.user.id] = true;
+  }
+
+  db.ref('posts/' + postId + '/likes').set(likes);
+}
+
+/* ============================================
+   📝 CREATE POST
+   ============================================ */
+function openCreatePost() {
+  STATE.uploadingImage = null;
+  $('uploadHint').style.display = 'block';
+  var existingImg = $('imageUploadArea').querySelector('img');
+  if (existingImg) existingImg.remove();
+  $('postText').value = '';
+  $('postImageInput').value = '';
+  showModal('createPostModal');
+}
+
+$('imageUploadArea').onclick = function() {
+  $('postImageInput').click();
+};
+
+$('postImageInput').onchange = function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+
+  showToast('⏳ جاري معالجة الصورة...');
+
+  compressImage(file, 1000, 0.7, function(compressed) {
+    STATE.uploadingImage = compressed;
+    $('uploadHint').style.display = 'none';
+
+    var existingImg = $('imageUploadArea').querySelector('img');
+    if (existingImg) existingImg.remove();
+
+    var img = document.createElement('img');
+    img.src = compressed;
+    $('imageUploadArea').appendChild(img);
+    showToast('✅ تم');
+  });
+};
+
+$('publishBtn').onclick = function() {
+  var text = $('postText').value.trim();
+
+  if (!text && !STATE.uploadingImage) {
+    showToast('⚠️ اكتب نصاً أو أضف صورة', 'warn');
+    return;
+  }
+
+  var newPost = {
+    userId: STATE.user.id,
+    authorName: STATE.user.data.name || STATE.user.data.username,
+    text: text,
+    image: STATE.uploadingImage || '',
+    createdAt: Date.now(),
+    likes: {},
+    comments: {}
+  };
+
+  showToast('⏳ جاري النشر...');
+
+  db.ref('posts').push(newPost).then(function() {
+    closeModal('createPostModal');
+    showToast('✅ تم النشر', 'success');
+  }).catch(function(e) {
+    showToast('❌ خطأ: ' + e.message, 'error');
+  });
+};
+
+/* ============================================
+   👤 PROFILE
+   ============================================ */
+function renderProfile() {
+  if (!STATE.user) return;
+
+  var name = STATE.user.data.name || STATE.user.data.username;
+  var avatar = $('profileAvatar');
+
+  if (STATE.user.data.photo) {
+    avatar.innerHTML = '<img src="' + STATE.user.data.photo + '">';
+  } else {
+    avatar.innerHTML = escapeHtml(name.charAt(0).toUpperCase());
+  }
+
+  $('profileName').textContent = name;
+  $('profileEmail').textContent = '@' + STATE.user.data.username;
+  $('profileBio').textContent = STATE.user.data.bio || '';
+
+  // Render profile links
+  var linksEl = $('profileLinks');
+  var links = STATE.user.data.links || {};
+  var linksHtml = '';
+  if (links.link1 && links.link1.url) {
+    linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + links.link1.url.replace(/'/g, '\\\'') + '\')">' +
+      '<span class="link-icon">' + (links.link1.icon || '🔗') + '</span>' +
+      '<span class="link-name">' + escapeHtml(links.link1.name || 'رابط') + '</span>' +
+    '</button>';
+  }
+  if (links.link2 && links.link2.url) {
+    linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + links.link2.url.replace(/'/g, '\\\'') + '\')">' +
+      '<span class="link-icon">' + (links.link2.icon || '🔗') + '</span>' +
+      '<span class="link-name">' + escapeHtml(links.link2.name || 'رابط') + '</span>' +
+    '</button>';
+  }
+  linksEl.innerHTML = linksHtml;
+
+  var myPosts = STATE.posts.filter(function(p) {
+    return p.userId === STATE.user.id;
+  });
+
+  $('profilePostsCount').textContent = myPosts.length;
+  $('profileFollowersCount').textContent = STATE.user.data.followers || 0;
+  $('profileFollowingCount').textContent = STATE.user.data.following || 0;
+  $('profileFriendsCount').textContent = STATE.user.data.friends ? Object.keys(STATE.user.data.friends).length : 0;
+
+  var grid = $('profilePostsGrid');
+  if (!myPosts.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1;"><span class="icon">📷</span><h3>لا توجد منشورات</h3></div>';
+    return;
+  }
+
+  grid.innerHTML = myPosts.map(function(p) {
+    var likesCount = p.likes ? Object.keys(p.likes).length : 0;
+    if (p.image) {
+      return '<div class="mini" onclick="viewPost(\'' + p.id + '\')">' +
+        '<img src="' + p.image + '">' +
+        '<div class="mini-stats">❤️ ' + likesCount + '</div>' +
+      '</div>';
+    } else {
+      return '<div class="mini text-only" onclick="viewPost(\'' + p.id + '\')">' +
+        escapeHtml((p.text || '').substring(0, 40)) +
+      '</div>';
+    }
+  }).join('');
+}
+
+function openAvatarViewer() {
+  if (STATE.user.data.photo) {
+    // Simple: open in new tab or show toast
+    showToast('📷 صورتك');
+  } else {
+    openEditProfile();
+  }
+}
+
+/* ============================================
+   ✏️ EDIT PROFILE + AVATAR
+   ============================================ */
+function openEditProfile() {
+  STATE.uploadingAvatar = STATE.user.data.photo || null;
+  $('editName').value = STATE.user.data.name || STATE.user.data.username;
+  $('editBio').value = STATE.user.data.bio || '';
+
+  var links = STATE.user.data.links || {};
+  if (links.link1) {
+    $('editLink1Icon').value = links.link1.icon || '🔗';
+    $('editLink1Name').value = links.link1.name || '';
+    $('editLink1Url').value = links.link1.url || '';
+  } else {
+    $('editLink1Icon').value = '';
+    $('editLink1Name').value = '';
+    $('editLink1Url').value = '';
+  }
+  if (links.link2) {
+    $('editLink2Icon').value = links.link2.icon || '🔗';
+    $('editLink2Name').value = links.link2.name || '';
+    $('editLink2Url').value = links.link2.url || '';
+  } else {
+    $('editLink2Icon').value = '';
+    $('editLink2Name').value = '';
+    $('editLink2Url').value = '';
+  }
+
+  var hint = $('avatarHint');
+  var existing = $('avatarUploadArea').querySelector('img');
+  if (existing) existing.remove();
+
+  if (STATE.uploadingAvatar) {
+    hint.style.display = 'none';
+    var img = document.createElement('img');
+    img.src = STATE.uploadingAvatar;
+    $('avatarUploadArea').appendChild(img);
+  } else {
+    hint.style.display = 'flex';
+  }
+
+  showModal('editProfileModal');
+}
+
+$('avatarUploadArea').onclick = function() {
+  $('avatarInput').click();
+};
+
+$('avatarInput').onchange = function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+
+  showToast('⏳ جاري معالجة الصورة...');
+
+  compressImage(file, 400, 0.75, function(compressed) {
+    STATE.uploadingAvatar = compressed;
+    $('avatarHint').style.display = 'none';
+
+    var existing = $('avatarUploadArea').querySelector('img');
+    if (existing) existing.remove();
+
+    var img = document.createElement('img');
+    img.src = compressed;
+    $('avatarUploadArea').appendChild(img);
+    showToast('✅ تم');
+  });
+};
+
+$('saveProfileBtn').onclick = function() {
+  var name = $('editName').value.trim();
+  var bio = $('editBio').value.trim();
+
+  if (!name) {
+    showToast('⚠️ اكتب الاسم', 'warn');
+    return;
+  }
+
+  var links = {};
+  var l1Icon = $('editLink1Icon').value.trim() || '🔗';
+  var l1Name = $('editLink1Name').value.trim();
+  var l1Url = $('editLink1Url').value.trim();
+  if (l1Name && l1Url) {
+    links.link1 = { icon: l1Icon, name: l1Name, url: l1Url };
+  }
+
+  var l2Icon = $('editLink2Icon').value.trim() || '🔗';
+  var l2Name = $('editLink2Name').value.trim();
+  var l2Url = $('editLink2Url').value.trim();
+  if (l2Name && l2Url) {
+    links.link2 = { icon: l2Icon, name: l2Name, url: l2Url };
+  }
+
+  var updates = {
+    name: name,
+    bio: bio,
+    photo: STATE.uploadingAvatar || '',
+    links: links
+  };
+
+  db.ref('users/' + STATE.user.id).update(updates).then(function() {
+    STATE.user.data.name = name;
+    STATE.user.data.bio = bio;
+    STATE.user.data.photo = updates.photo;
+    STATE.user.data.links = links;
+    updateHeaderAvatar();
+    renderProfile();
+    closeModal('editProfileModal');
+    showToast('✅ تم الحفظ', 'success');
+  }).catch(function(e) {
+    showToast('❌ خطأ', 'error');
+  });
+};
+
+/* ============================================
+   🔑 CHANGE PASSWORD
+   ============================================ */
+function openChangePassword() {
+  $('oldPass').value = '';
+  $('newPass').value = '';
+  $('newPass2').value = '';
+  $('changePassError').textContent = '';
+  showModal('changePassModal');
+}
+
+$('savePassBtn').onclick = function() {
+  var oldP = $('oldPass').value;
+  var newP = $('newPass').value;
+  var newP2 = $('newPass2').value;
+  var err = $('changePassError');
+
+  if (!oldP || !newP || !newP2) {
+    err.textContent = '⚠️ املأ جميع الحقول';
+    return;
+  }
+  if (oldP !== STATE.user.data.password) {
+    err.textContent = '❌ الرمز القديم خطأ';
+    return;
+  }
+  if (newP.length < 6) {
+    err.textContent = '⚠️ الرمز الجديد 6+';
+    return;
+  }
+  if (newP !== newP2) {
+    err.textContent = '⚠️ غير متطابقين';
+    return;
+  }
+
+  db.ref('users/' + STATE.user.id + '/password').set(newP)
+    .then(function() {
+      STATE.user.data.password = newP;
+      closeModal('changePassModal');
+      showToast('✅ تم تغيير الرمز', 'success');
+    })
+    .catch(function() {
+      err.textContent = '❌ خطأ';
+    });
+};
+
+/* ============================================
+   ⚙️ SETTINGS
+   ============================================ */
+function openSettings() {
+  renderColorGrid();
+  showModal('settingsModal');
+}
+
+/* ============================================
+   🗑 DELETE ACCOUNT
+   ============================================ */
+function deleteMyAccount() {
+  if (!confirm('هل أنت متأكد؟ سيتم حذف حسابك نهائياً!')) return;
+  if (!confirm('تأكيد أخير؟')) return;
+
+  showToast('⏳ جاري الحذف...');
+
+  db.ref('users/' + STATE.user.id).remove()
+    .then(function() {
+      return db.ref('posts').orderByChild('userId').equalTo(STATE.user.id).once('value');
+    })
+    .then(function(snap) {
+      var promises = [];
+      snap.forEach(function(child) {
+        promises.push(db.ref('posts/' + child.key).remove());
+      });
+      return Promise.all(promises);
+    })
+    .then(function() {
+      localStorage.removeItem('bp_user_id');
+      location.reload();
+    });
+}
+
+/* ============================================
+   🔍 SEARCH
+   ============================================ */
+$('searchInput').oninput = function() {
+  var q = this.value.trim().toLowerCase();
+  var results = $('searchResults');
+
+  if (!q) {
+    results.innerHTML = '<div class="empty"><span class="icon">🔍</span><h3>ابحث عن أشخاص</h3></div>';
+    return;
+  }
+
+  var matches = Object.keys(STATE.users).filter(function(id) {
+    var u = STATE.users[id];
+    return (u.username || '').toLowerCase().indexOf(q) !== -1 ||
+           (u.name || '').toLowerCase().indexOf(q) !== -1;
+  }).filter(function(id) { return id !== STATE.user.id; });
+
+  if (!matches.length) {
+    results.innerHTML = '<div class="empty"><span class="icon">👤</span><h3>لا نتائج</h3></div>';
+    return;
+  }
+
+  results.innerHTML = matches.map(function(id) {
+    var u = STATE.users[id];
+    var name = u.name || u.username;
+    var avatarHtml = u.photo
+      ? '<img src="' + u.photo + '">'
+      : name.charAt(0).toUpperCase();
+
+    return '<div class="user-row" onclick="openProfileViewer(\'' + id + '\')">' +
+      '<div class="avatar">' + avatarHtml + '</div>' +
+      '<div class="info">' +
+        '<strong>' + escapeHtml(name) + (u.verified ? ' ⭐' : '') + '</strong>' +
+        '<small>@' + escapeHtml(u.username) + '</small>' +
+      '</div>' +
+      '<button class="follow-btn" onclick="event.stopPropagation();openChat(\'' + id + '\')">💌 مراسلة</button>' +
+    '</div>';
+  }).join('');
+};
+
+/* ============================================
+   👤 PROFILE VIEWER (للأشخاص الآخرين)
+   ============================================ */
+function openProfileViewer(userId) {
+  if (!userId) return;
+  if (userId === STATE.user.id) {
+    switchTab('profile');
+    return;
+  }
+
+  var u = STATE.users[userId];
+  if (!u) { showToast('❌ المستخدم غير موجود', 'error'); return; }
+
+  STATE.viewingProfileId = userId;
+  var name = u.name || u.username;
+  var isFriend = STATE.user.data.friends && STATE.user.data.friends[userId];
+  var isFollowing = u.followersList && u.followersList[STATE.user.id];
+  var isFollowingMe = STATE.user.data.followingList && STATE.user.data.followingList[userId];
+
+  var avatarHtml = u.photo
+    ? '<img src="' + u.photo + '">'
+    : name.charAt(0).toUpperCase();
+
+  // Count friends
+  var friendsCount = u.friends ? Object.keys(u.friends).length : 0;
+
+  // Links
+  var linksHtml = '';
+  if (u.links) {
+    if (u.links.link1 && u.links.link1.url) {
+      linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + u.links.link1.url.replace(/'/g, '\\\'') + '\')">' +
+        '<span class="link-icon">' + (u.links.link1.icon || '🔗') + '</span>' +
+        '<span class="link-name">' + escapeHtml(u.links.link1.name || 'رابط') + '</span>' +
+      '</button>';
+    }
+    if (u.links.link2 && u.links.link2.url) {
+      linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + u.links.link2.url.replace(/'/g, '\\\'') + '\')">' +
+        '<span class="link-icon">' + (u.links.link2.icon || '🔗') + '</span>' +
+        '<span class="link-name">' + escapeHtml(u.links.link2.name || 'رابط') + '</span>' +
+      '</button>';
+    }
+  }
+
+  var posts = STATE.posts.filter(function(p) { return p.userId === userId; });
+
+  $('profileViewerContent').innerHTML =
+    '<div class="profile-viewer-card">' +
+      '<div class="profile-viewer-avatar">' + avatarHtml + '</div>' +
+      '<div class="profile-viewer-name">' + escapeHtml(name) + (u.verified ? ' ⭐' : '') + '</div>' +
+      '<div class="profile-viewer-username">@' + escapeHtml(u.username) + '</div>' +
+      (u.bio ? '<div class="profile-viewer-bio">' + escapeHtml(u.bio) + '</div>' : '') +
+      '<div class="profile-links" style="margin-bottom:14px;">' + linksHtml + '</div>' +
+      '<div class="profile-viewer-stats">' +
+        '<div class="stat"><div class="num">' + posts.length + '</div><div class="lbl">منشور</div></div>' +
+        '<div class="stat"><div class="num">' + (u.followers || 0) + '</div><div class="lbl">متابع</div></div>' +
+        '<div class="stat"><div class="num">' + (u.following || 0) + '</div><div class="lbl">يتابع</div></div>' +
+        '<div class="stat"><div class="num">' + friendsCount + '</div><div class="lbl">أصدقاء</div></div>' +
+      '</div>' +
+      '<div class="profile-viewer-actions">' +
+        '<button class="btn btn-primary" onclick="toggleFriend(\'' + userId + '\')">' +
+          (isFriend ? '👥 إزالة صديق' : '➕ إضافة صديق') +
+        '</button>' +
+        '<button class="btn btn-secondary" onclick="toggleFollow(\'' + userId + '\')">' +
+          (isFollowing ? '✅ متابعة' : '➕ متابعة') +
+        '</button>' +
+        '<button class="btn btn-secondary" onclick="openChat(\'' + userId + '\');closeModal(\'profileViewerModal\')">💌 مراسلة</button>' +
+        '<button class="btn btn-danger" onclick="openReportUser(\'' + userId + '\')">🚨 إبلاغ</button>' +
+      '</div>' +
+    '</div>';
+
+  showModal('profileViewerModal');
+}
+
+function toggleFriend(userId) {
+  if (userId === STATE.user.id) return;
+  var isFriend = STATE.user.data.friends && STATE.user.data.friends[userId];
+
+  if (isFriend) {
+    db.ref('users/' + STATE.user.id + '/friends/' + userId).remove();
+    db.ref('users/' + userId + '/friends/' + STATE.user.id).remove();
+    showToast('👥 تم إزالة الصداقة');
+  } else {
+    db.ref('users/' + STATE.user.id + '/friends/' + userId).set(true);
+    db.ref('users/' + userId + '/friends/' + STATE.user.id).set(true);
+    showToast('✅ تمت إضافة صديق', 'success');
+  }
+
+  setTimeout(function() {
+    if (STATE.viewingProfileId === userId) openProfileViewer(userId);
+  }, 300);
+}
+
+function toggleFollow(userId) {
+  var u = STATE.users[userId];
+  if (!u) return;
+  var isFollowing = u.followersList && u.followersList[STATE.user.id];
+
+  if (isFollowing) {
+    db.ref('users/' + userId + '/followersList/' + STATE.user.id).remove();
+    db.ref('users/' + STATE.user.id + '/followingList/' + userId).remove();
+    db.ref('users/' + userId + '/followers').transaction(function(v) { return Math.max(0, (v || 0) - 1); });
+    db.ref('users/' + STATE.user.id + '/following').transaction(function(v) { return Math.max(0, (v || 0) - 1); });
+    showToast('تم إلغاء المتابعة');
+  } else {
+    db.ref('users/' + userId + '/followersList/' + STATE.user.id).set(true);
+    db.ref('users/' + STATE.user.id + '/followingList/' + userId).set(true);
+    db.ref('users/' + userId + '/followers').transaction(function(v) { return (v || 0) + 1; });
+    db.ref('users/' + STATE.user.id + '/following').transaction(function(v) { return (v || 0) + 1; });
+    showToast('✅ تمت المتابعة', 'success');
+  }
+
+  setTimeout(function() {
+    if (STATE.viewingProfileId === userId) openProfileViewer(userId);
+  }, 300);
+}
+
+function openReportUser(userId) {
+  var u = STATE.users[userId];
+  openReport('user', userId, u.name || u.username);
+}
+
+function openMyFriends() {
+  var friends = STATE.user.data.friends || {};
+  var ids = Object.keys(friends);
+  var list = $('friendsList');
+
+  if (!ids.length) {
+    list.innerHTML = '<div class="empty"><span class="icon">👥</span><h3>لا أصدقاء</h3><p>ابحث عن أشخاص وأضفهم</p></div>';
+  } else {
+    list.innerHTML = ids.map(function(id) {
+      var u = STATE.users[id];
+      if (!u) return '';
+      var name = u.name || u.username;
+      var avatarHtml = u.photo ? '<img src="' + u.photo + '">' : name.charAt(0).toUpperCase();
+      return '<div class="user-row" onclick="closeModal(\'friendsModal\');openProfileViewer(\'' + id + '\')">' +
+        '<div class="avatar">' + avatarHtml + '</div>' +
+        '<div class="info">' +
+          '<strong>' + escapeHtml(name) + '</strong>' +
+          '<small>@' + escapeHtml(u.username) + '</small>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  showModal('friendsModal');
+}
+
+/* ============================================
+   💬 VIEW POST (with comments)
+   ============================================ */
+function viewPost(postId) {
+  STATE.currentPostId = postId;
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+
+  var author = STATE.users[p.userId] || {};
+  var authorName = author.name || author.username || 'مستخدم';
+  var authorAvatar = author.photo
+    ? '<img src="' + author.photo + '" style="width:100%;height:100%;object-fit:cover;">'
+    : authorName.charAt(0).toUpperCase();
+
+  var likesCount = p.likes ? Object.keys(p.likes).length : 0;
+
+  var comments = p.comments ? Object.keys(p.comments).map(function(k) {
+    var c = p.comments[k];
+    c.id = k;
+    var isMyComment = c.userId === STATE.user.id;
+    return '<div class="comment-item" data-comment-id="' + k + '">' +
+      '<div class="comment-head">' +
+        '<strong class="comment-author">' + escapeHtml(c.name) + '</strong>' +
+        (isMyComment ? '<button class="comment-menu-btn" onclick="openCommentMenu(\'' + postId + '\',\'' + k + '\')">⋯</button>' : '') +
+      '</div>' +
+      '<div class="comment-text">' + linkifyText(c.text) + '</div>' +
+      '<small class="comment-time">' + timeAgo(c.time) + '</small>' +
+    '</div>';
+  }).join('') : '';
+
+  $('postViewerContent').innerHTML =
+    '<div style="padding:20px;">' +
+      '<div class="modal-header">' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+          '<div style="width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;overflow:hidden;cursor:pointer;" onclick="closeModal(\'postViewerModal\');openProfileViewer(\'' + p.userId + '\')">' + authorAvatar + '</div>' +
+          '<h3 style="cursor:pointer;" onclick="closeModal(\'postViewerModal\');openProfileViewer(\'' + p.userId + '\')">' + escapeHtml(authorName) + '</h3>' +
+        '</div>' +
+        '<button class="modal-close" onclick="closeModal(\'postViewerModal\');hideCommentBar()">✕</button>' +
+      '</div>' +
+      (p.image ? '<img src="' + p.image + '" style="width:100%;border-radius:14px;margin-bottom:12px;">' : '') +
+      (p.text ? '<p style="font-size:14px;line-height:1.7;margin-bottom:12px;">' + linkifyText(p.text) + '</p>' : '') +
+      '<p style="font-size:12px;color:var(--text-dim);margin-bottom:14px;">❤️ ' + likesCount + ' · ' + timeAgo(p.createdAt) + '</p>' +
+      '<div style="border-top:1px solid var(--border);padding-top:12px;">' +
+        '<h4 style="margin-bottom:10px;">💬 التعليقات (' + (p.comments ? Object.keys(p.comments).length : 0) + ')</h4>' +
+        '<div id="commentsList">' + (comments || '<p style="font-size:12px;color:var(--text-dim);">لا توجد تعليقات</p>') + '</div>' +
+      '</div>' +
+    '</div>';
+
+  showModal('postViewerModal');
+  showCommentBar(postId);
+}
+
+function showCommentBar(postId) {
+  var bar = $('postCommentBar');
+  bar.style.display = 'flex';
+  $('commentInputBar').value = '';
+  $('commentInputBar').focus();
+}
+
+function hideCommentBar() {
+  $('postCommentBar').style.display = 'none';
+  STATE.currentPostId = null;
+}
+
+function addCommentFromBar() {
+  var input = $('commentInputBar');
+  var text = input.value.trim();
+  if (!text || !STATE.currentPostId) return;
+
+  db.ref('posts/' + STATE.currentPostId + '/comments').push({
+    userId: STATE.user.id,
+    name: STATE.user.data.name || STATE.user.data.username,
+    text: text,
+    time: Date.now()
+  }).then(function() {
+    input.value = '';
+    showToast('✅ تم التعليق', 'success');
+    // Refresh post viewer
+    setTimeout(function() {
+      var postId = STATE.currentPostId;
+      viewPost(postId);
+    }, 200);
+  });
+}
+
+function openCommentMenu(postId, commentId) {
+  STATE.menuCommentId = commentId;
+  var menu = $('commentMenuList');
+  menu.innerHTML =
+    '<button class="menu-item" onclick="editComment(\'' + postId + '\',\'' + commentId + '\')">✏️ تعديل التعليق</button>' +
+    '<button class="menu-item danger" onclick="deleteComment(\'' + postId + '\',\'' + commentId + '\')">🗑 حذف التعليق</button>';
+  showModal('commentMenuModal');
+}
+
+function editComment(postId, commentId) {
+  closeModal('commentMenuModal');
+  db.ref('posts/' + postId + '/comments/' + commentId).once('value').then(function(snap) {
+    var c = snap.val();
+    if (!c) return;
+    var newText = prompt('تعديل التعليق:', c.text || '');
+    if (newText === null) return;
+    db.ref('posts/' + postId + '/comments/' + commentId + '/text').set(newText.trim()).then(function() {
+      showToast('✅ تم التعديل', 'success');
+      setTimeout(function() { viewPost(postId); }, 200);
+    });
+  });
+}
+
+function deleteComment(postId, commentId) {
+  closeModal('commentMenuModal');
+  if (!confirm('حذف هذا التعليق؟')) return;
+  db.ref('posts/' + postId + '/comments/' + commentId).remove().then(function() {
+    showToast('🗑 تم الحذف', 'success');
+    setTimeout(function() { viewPost(postId); }, 200);
+  });
+}
+
+/* ============================================
+   📤 SHARE
+   ============================================ */
+function sharePost(postId) {
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+
+  var author = STATE.users[p.userId] || {};
+  var authorName = author.name || author.username || 'مستخدم';
+
+  var shareText = '📝 منشور من ' + authorName + ' على BluePost:\n\n' +
+    (p.text ? p.text + '\n\n' : '') +
+    'bluepost://post/' + postId;
+
+  if (window.AndroidApp && window.AndroidApp.shareText) {
+    window.AndroidApp.shareText(shareText);
+  } else {
+    showToast('📤 جاهز للمشاركة');
+  }
+}
+
+/* ============================================
+   💌 CHAT
+   ============================================ */
+function renderChatList() {
+  if (!STATE.user) return;
+
+  db.ref('messages').once('value').then(function(snap) {
+    var data = snap.val() || {};
+    var chats = {};
+
+    Object.keys(data).forEach(function(key) {
+      var parts = key.split('_');
+      var u1 = parts[0], u2 = parts[1];
+
+      if (u1 === STATE.user.id) chats[u2] = data[key];
+      else if (u2 === STATE.user.id) chats[u1] = data[key];
+    });
+
+    var list = $('chatList');
+    var keys = Object.keys(chats);
+
+    if (!keys.length) {
+      list.innerHTML = '<div class="empty"><span class="icon">💌</span><h3>لا توجد محادثات</h3><p>ابحث عن أشخاص وابدأ محادثة</p></div>';
+      return;
+    }
+
+    list.innerHTML = keys.map(function(uid) {
+      var u = STATE.users[uid] || {};
+      var name = u.name || u.username || 'مستخدم';
+      var avatarHtml = u.photo
+        ? '<img src="' + u.photo + '">'
+        : name.charAt(0).toUpperCase();
+
+      var msgs = chats[uid];
+      var lastKey = Object.keys(msgs).pop();
+      var lastMsg = msgs[lastKey];
+
+      return '<div class="chat-row" onclick="openChat(\'' + uid + '\')">' +
+        '<div class="avatar">' + avatarHtml + '</div>' +
+        '<div class="info">' +
+          '<strong>' + escapeHtml(name) + '</strong>' +
+          '<small>' + escapeHtml(lastMsg.text || '') + '</small>' +
+        '</div>' +
+        '<button class="menu-btn" onclick="event.stopPropagation();openChatDeleteMenu(\'' + uid + '\')">⋯</button>' +
+      '</div>';
+    }).join('');
+  });
+}
+
+function openChatDeleteMenu(userId) {
+  var u = STATE.users[userId] || {};
+  var name = u.name || u.username;
+  if (!confirm('حذف الدردشة بالكامل مع ' + name + '؟')) return;
+  var key = [STATE.user.id, userId].sort().join('_');
+  db.ref('messages/' + key).remove().then(function() {
+    showToast('🗑 تم حذف الدردشة', 'success');
+    renderChatList();
+  });
+}
+
+function openChat(userId) {
+  if (!userId || userId === STATE.user.id) return;
+
+  STATE.currentChatUser = userId;
+  var u = STATE.users[userId] || {};
+  var name = u.name || u.username || 'مستخدم';
+
+  var avatarEl = $('chatHeaderAvatar');
+  if (u.photo) {
+    avatarEl.innerHTML = '<img src="' + u.photo + '">';
+  } else {
+    avatarEl.textContent = name.charAt(0).toUpperCase();
+  }
+
+  $('chatHeaderName').textContent = name;
+  $('chatView').classList.add('show');
+  loadMessages(userId);
+}
+
+function loadMessages(userId) {
+  var key = [STATE.user.id, userId].sort().join('_');
+
+  if (STATE.chatRef) STATE.chatRef.off();
+  STATE.chatRef = db.ref('messages/' + key);
+
+  STATE.chatRef.on('value', function(snap) {
+    var data = snap.val() || {};
+    var msgs = Object.keys(data).map(function(k) {
+      var m = data[k];
+      m.id = k;
+      return m;
+    }).sort(function(a, b) {
+      return (a.time || 0) - (b.time || 0);
+    });
+
+    var container = $('chatMessages');
+    container.innerHTML = msgs.map(function(m) {
+      var mine = m.from === STATE.user.id;
+      return '<div class="msg ' + (mine ? 'me' : 'other') + '">' +
+        escapeHtml(m.text) +
+        '<span class="time">' + timeAgo(m.time) + '</span>' +
+        '<button class="msg-menu" onclick="openMsgMenu(\'' + m.id + '\')">⋯</button>' +
+      '</div>';
+    }).join('');
+
+    container.scrollTop = container.scrollHeight;
+  });
+}
+
+function openMsgMenu(msgId) {
+  if (!confirm('حذف هذه الرسالة؟')) return;
+  var key = [STATE.user.id, STATE.currentChatUser].sort().join('_');
+  db.ref('messages/' + key + '/' + msgId).remove().then(function() {
+    showToast('🗑 تم حذف الرسالة', 'success');
+  });
+}
+
+function openChatMenu() {
+  if (!STATE.currentChatUser) return;
+  var items = [
+    { label: '👤 عرض الملف', action: function() { closeChat(); openProfileViewer(STATE.currentChatUser); } },
+    { label: '🗑 حذف الدردشة بالكامل', action: function() { openChatDeleteMenu(STATE.currentChatUser); }, danger: true }
+  ];
+  // Use simple prompt for now
+  if (confirm('حذف الدردشة بالكامل؟')) {
+    var key = [STATE.user.id, STATE.currentChatUser].sort().join('_');
+    db.ref('messages/' + key).remove().then(function() {
+      showToast('🗑 تم حذف الدردشة', 'success');
+      closeChat();
+      renderChatList();
+    });
+  }
+}
+
+function closeChat() {
+  $('chatView').classList.remove('show');
+  if (STATE.chatRef) {
+    STATE.chatRef.off();
+    STATE.chatRef = null;
+  }
+  STATE.currentChatUser = null;
+}
+
+$('chatSendBtn').onclick = function() {
+  var text = $('chatInput').value.trim();
+  if (!text || !STATE.currentChatUser) return;
+
+  var key = [STATE.user.id, STATE.currentChatUser].sort().join('_');
+
+  db.ref('messages/' + key).push({
+    from: STATE.user.id,
+    to: STATE.currentChatUser,
+    text: text,
+    time: Date.now()
+  });
+
+  $('chatInput').value = '';
+};
+
+/* ============================================
+   🚨 REPORT
+   ============================================ */
+var REPORT_REASONS = [
+  'محتوى مخالف',
+  'إزعاج / تحرش',
+  'سبام',
+  'انتحال شخصية',
+  'محتوى مسيء',
+  'شيء آخر'
+];
+
+function openReport(type, targetId, targetName) {
+  STATE.reportTarget = { type: type, id: targetId, name: targetName };
+  STATE.reportReason = null;
+
+  var container = $('reportReasons');
+  container.innerHTML = REPORT_REASONS.map(function(r) {
+    return '<button class="report-reason" data-reason="' + r + '">' + r + '</button>';
+  }).join('');
+
+  container.querySelectorAll('.report-reason').forEach(function(btn) {
+    btn.onclick = function() {
+      container.querySelectorAll('.report-reason').forEach(function(b) {
+        b.classList.remove('selected');
+      });
+      btn.classList.add('selected');
+      STATE.reportReason = btn.dataset.reason;
+    };
+  });
+
+  $('reportDesc').value = '';
+  showModal('reportModal');
+}
+
+$('submitReportBtn').onclick = function() {
+  if (!STATE.reportReason) {
+    showToast('⚠️ اختر سبباً', 'warn');
+    return;
+  }
+
+  db.ref('reports').push({
+    type: STATE.reportTarget.type,
+    targetId: STATE.reportTarget.id,
+    targetName: STATE.reportTarget.name,
+    reporterId: STATE.user.id,
+    reporterName: STATE.user.data.name || STATE.user.data.username,
+    reason: STATE.reportReason,
+    description: $('reportDesc').value.trim(),
+    status: 'pending',
+    createdAt: Date.now()
+  }).then(function() {
+    closeModal('reportModal');
+    showToast('✅ تم إرسال البلاغ', 'success');
+  });
+};
+
+/* ============================================
+   🔄 TABS (مع Fade Transition)
+   ============================================ */
+function switchTab(tab) {
+  if (tab === 'post') { openCreatePost(); return; }
+
+  var currentPage = document.querySelector('.page.active');
+  var nextPage = document.querySelector('.page[data-page="' + tab + '"]');
+
+  if (!nextPage) return;
+  if (currentPage === nextPage) return;
+
+  if (currentPage) {
+    currentPage.classList.add('fade-out');
+    currentPage.classList.remove('active');
+    setTimeout(function() { currentPage.classList.remove('fade-out'); }, 300);
+  }
+
+  nextPage.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(function(n) {
+    n.classList.remove('active');
+  });
+  var navBtn = document.querySelector('.nav-item[data-tab="' + tab + '"]');
+  if (navBtn) navBtn.classList.add('active');
+
+  if (tab === 'profile') renderProfile();
+  if (tab === 'chat') renderChatList();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================
+   🔙 ANDROID BACK BUTTON
+   ============================================ */
+window.handleAndroidBack = function() {
+  if ($('postCommentBar').style.display === 'flex') {
+    hideCommentBar();
+    return 'handled';
+  }
+  if ($('chatView').classList.contains('show')) {
+    closeChat();
+    return 'handled';
+  }
+  if (document.querySelector('.modal-bg.show')) {
+    document.querySelectorAll('.modal-bg.show').forEach(function(m) {
+      m.classList.remove('show');
+    });
+    return 'handled';
+  }
+  var activePage = document.querySelector('.page.active');
+  if (activePage && activePage.dataset.page !== 'home') {
+    switchTab('home');
+    return 'handled';
+  }
+  return 'exit';
+};
+
+/* ============================================
+   🔔 NOTIFICATIONS (تجريبي)
+   ============================================ */
+$('notifBtn').onclick = function() {
+  showToast('🔔 لا توجد إشعارات جديدة');
+};
+
+/* ============================================
+   ⌨️ KEYBOARD HANDLING
+   ============================================ */
+var initialHeight = window.innerHeight;
+
+window.addEventListener('resize', function() {
+  var currentHeight = window.innerHeight;
+  if (currentHeight < initialHeight - 150) {
+    document.body.classList.add('keyboard-open');
+  } else {
+    document.body.classList.remove('keyboard-open');
+  }
+
+  // Auto-scroll chat
+  var container = $('chatMessages');
+  if (container && $('chatView').classList.contains('show')) {
+    setTimeout(function() {
+      container.scrollTop = container.scrollHeight;
+    }, 100);
+  }
+});
+
+// Auto-resize textareas
+document.addEventListener('input', function(e) {
+  if (e.target.tagName === 'TEXTAREA') {
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+  }
+});
+
+/* ============================================
+   🚦 BOOT
+   ============================================ */
+window.addEventListener('load', function() {
+  loadTheme();
+
+  var savedUserId = localStorage.getItem('bp_user_id');
+
+  if (savedUserId) {
+    db.ref('users/' + savedUserId).once('value').then(function(snap) {
+      if (snap.exists()) {
+        var data = snap.val();
+        if (data.status === 'banned') {
+          localStorage.removeItem('bp_user_id');
+          location.reload();
+          return;
+        }
+        STATE.user = { id: savedUserId, data: data };
+        enterApp();
+      } else {
+        localStorage.removeItem('bp_user_id');
+      }
+    }).catch(function() {
+      localStorage.removeItem('bp_user_id');
+    });
+  }
+});
+</script>
+
+</body>
+</html>
