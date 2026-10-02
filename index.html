@@ -1,1716 +1,1537 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>موقع اختصار روابط اكتوبر</title>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
-
-        :root {
-            /* 🎨 لوحة الألوان الجديدة: أزرق فقط */
-            --blue-light: #5ac8fa;
-            --blue: #007aff;
-            --blue-mid: #0a5cd6;
-            --blue-dark: #003d82;
-            --black: #0d1117;
-            --gray-1: #f2f2f7;
-            --gray-2: #e5e5ea;
-            --gray-3: #c7c7cc;
-            --gray-4: #8e8e93;
-            --gray-5: #48484a;
-            --white: #ffffff;
-
-            --radius-xl: 28px;
-            --radius-lg: 22px;
-            --radius-md: 16px;
-            --radius-sm: 12px;
-
-            --shadow-soft: 0 10px 30px rgba(0, 61, 130, 0.10);
-            --shadow-card: 0 4px 20px rgba(0, 61, 130, 0.06);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(180deg, #e6f3ff 0%, #f0f7ff 40%, #f5f9ff 100%);
-            background-attachment: fixed;
-            padding: 16px;
-            color: var(--black);
-            direction: rtl;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ============================================
-           زر مطوّر الموقع (يظهر في كل مكان)
-           ============================================ */
-        .dev-credit {
-            position: fixed;
-            bottom: 14px;
-            left: 14px;
-            background: rgba(0, 122, 255, 0.95);
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 6px 18px rgba(0, 122, 255, 0.35);
-            z-index: 7777;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .dev-credit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(0, 122, 255, 0.45);
-        }
-
-        .dev-credit:active { transform: scale(0.95); }
-
-        .dev-credit .dot {
-            width: 6px;
-            height: 6px;
-            background: #fff;
-            border-radius: 50%;
-            animation: pulse 1.6s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
-
-        /* ============================================
-           شاشة الدخول
-           ============================================ */
-        .auth-wrapper {
-            max-width: 420px;
-            width: 100%;
-            margin: auto;
-            margin-top: 30px;
-            padding-bottom: 70px;
-        }
-
-        .auth-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: var(--radius-xl);
-            padding: 34px 24px 28px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-card::before {
-            content: '';
-            position: absolute;
-            top: -60%; right: -60%;
-            width: 220%; height: 220%;
-            background: radial-gradient(circle at 30% 20%, rgba(0, 122, 255, 0.10), transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(90, 200, 250, 0.08), transparent 50%);
-            pointer-events: none;
-        }
-
-        .auth-card > * { position: relative; z-index: 1; }
-
-        .auth-header { text-align: center; margin-bottom: 26px; }
-
-        .auth-header .logo-box {
-            width: 72px; height: 72px;
-            margin: 0 auto 14px;
-            border-radius: 22px;
-            background: linear-gradient(135deg, var(--blue-light), var(--blue), var(--blue-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 34px;
-            box-shadow: 0 14px 34px rgba(0, 122, 255, 0.32);
-            animation: floatIcon 3.5s ease-in-out infinite;
-        }
-
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        .auth-header h1 {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--black);
-            letter-spacing: -0.4px;
-        }
-
-        .auth-header .subtitle {
-            font-size: 13px;
-            color: var(--gray-4);
-            margin-top: 4px;
-        }
-
-        .auth-tabs {
-            display: flex;
-            background: var(--gray-1);
-            border-radius: 12px;
-            padding: 3px;
-            margin-bottom: 20px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding: 9px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 9px;
-            color: var(--gray-4);
-            transition: 0.25s;
-            user-select: none;
-        }
-
-        .auth-tab.active {
-            background: #fff;
-            color: var(--blue);
-            box-shadow: 0 3px 8px rgba(0, 122, 255, 0.15);
-        }
-
-        .auth-form-group { margin-bottom: 14px; }
-
-        .auth-form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--gray-5);
-            margin-bottom: 6px;
-            padding-right: 4px;
-        }
-
-        .auth-form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid var(--gray-2);
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            transition: 0.2s;
-            background: rgba(255, 255, 255, 0.7);
-            font-family: inherit;
-            direction: ltr;
-            text-align: left;
-            color: var(--black);
-        }
-
-        .auth-form-group input:focus {
-            outline: none;
-            border-color: var(--blue);
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12);
-        }
-
-        .auth-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            color: var(--gray-5);
-            cursor: pointer;
-            user-select: none;
-            padding-right: 4px;
-        }
-
-        .auth-checkbox input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--blue); }
-
-        .auth-btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.15s ease, opacity 0.15s ease;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .auth-btn:active { transform: scale(0.97); }
-        .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .auth-btn.primary {
-            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-            color: #fff;
-            box-shadow: 0 10px 24px rgba(0, 122, 255, 0.28);
-        }
-
-        .auth-btn.google {
-            background: #fff;
-            color: var(--gray-5);
-            border: 1.5px solid var(--gray-2);
-        }
-
-        .auth-link {
-            text-align: center;
-            font-size: 13px;
-            color: var(--blue);
-            cursor: pointer;
-            margin-top: 6px;
-            font-weight: 600;
-        }
-
-        .auth-link:hover { text-decoration: underline; }
-
-        .auth-divider {
-            text-align: center;
-            margin: 16px 0;
-            font-size: 12px;
-            color: var(--gray-3);
-            position: relative;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: var(--gray-2);
-        }
-
-        .auth-divider::before { right: 0; }
-        .auth-divider::after { left: 0; }
-
-        .auth-msg {
-            padding: 11px 14px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: none;
-        }
-
-        .auth-msg.show { display: block; }
-        .auth-msg.error { background: rgba(255, 59, 48, 0.12); color: #d70015; }
-        .auth-msg.success { background: rgba(0, 122, 255, 0.12); color: var(--blue-dark); }
-
-        .auth-loader { display: none; text-align: center; padding: 10px; }
-        .auth-loader.show { display: block; }
-        .auth-loader .spin {
-            width: 26px; height: 26px;
-            border: 3px solid var(--gray-2);
-            border-top-color: var(--blue);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .footer-note {
-            text-align: center;
-            font-size: 12px;
-            color: var(--gray-3);
-            margin-top: 18px;
-            line-height: 1.6;
-        }
-
-        /* ============================================
-           لوحة التحكم
-           ============================================ */
-        #dashboardView { display: none; width: 100%; max-width: 720px; padding-bottom: 80px; }
-
-        .container {
-            max-width: 720px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: var(--radius-xl);
-            padding: 22px 18px 28px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 16px;
-            margin-bottom: 18px;
-            border-bottom: 1px solid var(--gray-2);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .topbar-left { display: flex; align-items: center; gap: 12px; }
-
-        .topbar-left .icon {
-            width: 46px; height: 46px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--blue-light), var(--blue), var(--blue-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.28);
-        }
-
-        .topbar-left h1 {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--black);
-            letter-spacing: -0.3px;
-        }
-
-        .topbar-left .sub { font-size: 11px; color: var(--gray-4); font-weight: 500; display: block; margin-top: 1px; }
-
-        .topbar-right { display: flex; align-items: center; gap: 8px; }
-
-        .icon-btn {
-            width: 40px; height: 40px;
-            border-radius: 12px;
-            background: var(--gray-1);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.15s;
-            color: var(--blue);
-        }
-
-        .icon-btn:active { transform: scale(0.92); }
-        .icon-btn:hover { background: var(--gray-2); }
-
-        .profile-btn {
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 800;
-            font-size: 17px;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-        }
-
-        .profile-btn:active { transform: scale(0.92); }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .stats-grid.five {
-            grid-template-columns: repeat(5, 1fr);
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid.five { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: var(--radius-md);
-            padding: 12px 8px;
-            text-align: center;
-            border: 1px solid var(--gray-2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card .num {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--blue-dark);
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        .stat-card .label {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--gray-4);
-            margin-top: 3px;
-        }
-
-        /* Section Title */
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--black);
-            margin: 22px 0 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-right: 4px;
-        }
-
-        .section-title .badge {
-            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-            color: #fff;
-            font-size: 11px;
-            padding: 2px 10px;
-            border-radius: 40px;
-            font-weight: 700;
-        }
-
-        /* Create Card */
-        .create-card {
-            background: rgba(230, 243, 255, 0.6);
-            border-radius: var(--radius-lg);
-            padding: 18px;
-            border: 1px solid rgba(0, 122, 255, 0.15);
-            margin-bottom: 16px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        @media (max-width: 500px) {
-            .form-row { grid-template-columns: 1fr; }
-        }
-
-        label.dash-label {
-            display: block;
-            font-weight: 600;
-            font-size: 12px;
-            color: var(--gray-5);
-            margin-bottom: 5px;
-            padding-right: 2px;
-        }
-
-        input.dash-input {
-            width: 100%;
-            padding: 13px 14px;
-            border: 1.5px solid var(--gray-2);
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            transition: 0.2s;
-            background: rgba(255, 255, 255, 0.9);
-            font-family: inherit;
-            direction: ltr;
-            text-align: right;
-            color: var(--black);
-        }
-
-        input.dash-input:focus {
-            outline: none;
-            border-color: var(--blue);
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12);
-        }
-
-        .btn {
-            padding: 14px 24px;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.15s ease;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn:active { transform: scale(0.97); }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-            color: #fff;
-            box-shadow: 0 10px 24px rgba(0, 122, 255, 0.25);
-            width: 100%;
-        }
-
-        .btn-sm {
-            padding: 8px 14px;
-            border: none;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.15s;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .btn-sm:active { transform: scale(0.95); }
-        .btn-sm.copy { background: rgba(0, 122, 255, 0.12); color: var(--blue); }
-        .btn-sm.delete { background: rgba(255, 59, 48, 0.1); color: #d70015; }
-        .btn-sm.visit { background: rgba(0, 61, 130, 0.1); color: var(--blue-dark); }
-
-        /* Link Cards */
-        .link-card {
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--gray-2);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: 0.2s;
-        }
-
-        .link-card:hover {
-            border-color: var(--blue);
-            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.08);
-        }
-
-        .link-card .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-        .link-card .info { flex: 1; min-width: 0; }
-        .link-card .link-id {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--blue);
-            background: rgba(0, 122, 255, 0.1);
-            padding: 4px 12px;
-            border-radius: 40px;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-        .link-card .dest-url { font-size: 13px; color: var(--gray-5); word-break: break-all; line-height: 1.5; }
-        .link-card .dest-url span { font-weight: 600; color: var(--black); }
-        .link-card .youtube-info { font-size: 12px; color: var(--gray-4); word-break: break-all; margin-top: 2px; }
-
-        /* Per-link mini stats */
-        .mini-stats {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            padding: 10px 8px;
-            background: var(--gray-1);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-        }
-
-        @media (max-width: 480px) {
-            .mini-stats { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        .mini-stat { text-align: center; }
-
-        .mini-stat .mnum {
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--blue-dark);
-            line-height: 1.1;
-        }
-
-        .mini-stat .mlabel {
-            font-size: 9px;
-            font-weight: 600;
-            color: var(--gray-4);
-            margin-top: 2px;
-        }
-
-        .link-card .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
-        .empty-state { text-align: center; padding: 40px 0; color: var(--gray-4); }
-        .empty-state .big-icon { font-size: 56px; display: block; margin-bottom: 12px; opacity: 0.6; }
-        .empty-state p { font-size: 14px; }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: rgba(13, 17, 23, 0.95);
-            backdrop-filter: blur(10px);
-            color: #fff;
-            padding: 13px 22px;
-            border-radius: 40px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 9999;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            text-align: center;
-            max-width: 90%;
-        }
-
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        .loader { display: none; text-align: center; padding: 16px 0; }
-        .loader.show { display: block; }
-        .spinner { width: 32px; height: 32px; border: 3px solid var(--gray-2); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
-
-        .result-box { margin-top: 12px; display: none; background: rgba(0, 122, 255, 0.08); padding: 14px; border-radius: var(--radius-md); border-right: 4px solid var(--blue); }
-        .result-box.show { display: block; }
-        .result-box .title { font-weight: 700; color: var(--blue-dark); margin-bottom: 6px; font-size: 14px; }
-        .result-box .link-display {
-            font-size: 12px;
-            color: var(--gray-5);
-            word-break: break-all;
-            background: #fff;
-            padding: 10px;
-            border-radius: var(--radius-sm);
-            margin: 6px 0;
-            direction: ltr;
-            text-align: left;
-            border: 1px solid rgba(0, 122, 255, 0.2);
-            font-family: 'SF Mono', Consolas, monospace;
-        }
-
-        /* ============================================
-           Modal: البروفايل
-           ============================================ */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 8000;
-            padding: 16px;
-        }
-
-        .modal-overlay.show { display: flex; }
-
-        .modal {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 28px;
-            width: 100%;
-            max-width: 440px;
-            padding: 24px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes modalIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--gray-2);
-        }
-
-        .modal-header h2 {
-            font-size: 19px;
-            font-weight: 800;
-            color: var(--black);
-        }
-
-        .modal-close {
-            width: 34px; height: 34px;
-            border-radius: 50%;
-            background: var(--gray-1);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            color: var(--blue);
-        }
-
-        .modal-close:active { transform: scale(0.92); }
-
-        .avatar-big {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 38px;
-            font-weight: 800;
-            margin: 0 auto 16px;
-            box-shadow: 0 12px 30px rgba(0, 122, 255, 0.3);
-        }
-
-        .profile-section {
-            background: var(--gray-1);
-            border-radius: var(--radius-md);
-            padding: 14px;
-            margin-bottom: 14px;
-            border: 1px solid var(--gray-2);
-        }
-
-        .profile-section h3 {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--gray-5);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .profile-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            font-size: 13px;
-        }
-
-        .profile-row .key { color: var(--gray-4); font-weight: 600; }
-        .profile-row .val { color: var(--black); font-weight: 700; word-break: break-all; text-align: left; direction: ltr; }
-
-        .profile-input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1.5px solid var(--gray-2);
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            margin-bottom: 10px;
-            background: #fff;
-            font-family: inherit;
-            color: var(--black);
-        }
-
-        .profile-input:focus {
-            outline: none;
-            border-color: var(--blue);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12);
-        }
-
-        .modal-btn {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
-            transition: transform 0.15s;
-        }
-
-        .modal-btn:active { transform: scale(0.97); }
-
-        .modal-btn.primary { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; }
-        .modal-btn.danger { background: rgba(255, 59, 48, 0.1); color: #d70015; }
-
-        @media (max-width: 480px) {
-            .container { padding: 16px 12px; }
-            .topbar-left h1 { font-size: 16px; }
-            .stat-card .num { font-size: 17px; }
-            .mini-stat .mnum { font-size: 13px; }
-            .auth-card { padding: 26px 18px 22px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#007aff">
+<meta name="description" content="أقوى موقع اختصار روابط عربي - اختصر روابطك، اربح المال، واسحب أرباحك بسهولة عبر شحن شدات ببجي موبايل. تسجيل مجاني وسريع.">
+<meta name="keywords" content="اختصار روابط, shortlink, ربح المال, شدات ببجي, PUBG Mobile UC, اختصار روابط اكتوبر">
+<meta name="author" content="اختصار روابط اكتوبر">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:title" content="موقع اختصار روابط اكتوبر - اربح من روابطك">
+<meta property="og:description" content="اختصر روابطك واربح المال. اسحب أرباحك عبر شحن شدات ببجي أو تحويلات بنكية.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_AR">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "موقع اختصار روابط اكتوبر",
+  "description": "أقوى موقع اختصار روابط عربي - اربح المال من روابطك",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "ar"
+}
+</script>
+
+<title>موقع اختصار روابط اكتوبر | اربح المال من روابطك</title>
+
+<!-- Preconnect for performance -->
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://aktubar98.firebaseapp.com" crossorigin>
+<link rel="dns-prefetch" href="https://is.gd">
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+
+:root{
+  --aurora-1:#7c3aed;--aurora-2:#3b82f6;--aurora-3:#06b6d4;--aurora-4:#ec4899;--aurora-5:#8b5cf6;
+  --blue-light:#5ac8fa;--blue:#007aff;--blue-mid:#0a5cd6;--blue-dark:#003d82;
+  --violet:#7c3aed;--cyan:#06b6d4;--pink:#ec4899;
+  --black:#0d1117;--gray-1:#f2f2f7;--gray-2:#e5e5ea;--gray-3:#c7c7cc;--gray-4:#8e8e93;--gray-5:#48484a;--white:#fff;
+  --radius-xl:28px;--radius-lg:22px;--radius-md:16px;--radius-sm:12px;
+  --shadow-soft:0 10px 30px rgba(124,58,237,0.15);--shadow-card:0 4px 20px rgba(59,130,246,0.10);
+  --grad-aurora:linear-gradient(135deg,#7c3aed 0%,#3b82f6 35%,#06b6d4 65%,#ec4899 100%);
+  --grad-btn:linear-gradient(135deg,#7c3aed 0%,#3b82f6 100%);
+  --grad-cyan:linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%);
+  --grad-pink:linear-gradient(135deg,#ec4899 0%,#7c3aed 100%);
+}
+
+html,body{overflow-x:hidden}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:#f7f8fc;color:var(--black);direction:rtl;min-height:100vh;
+  -webkit-font-smoothing:antialiased;position:relative;
+}
+
+/* Aurora background */
+body::before{
+  content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(124,58,237,0.18),transparent 45%),
+    radial-gradient(circle at 80% 20%,rgba(59,130,246,0.18),transparent 45%),
+    radial-gradient(circle at 30% 80%,rgba(6,182,212,0.15),transparent 45%),
+    radial-gradient(circle at 85% 75%,rgba(236,72,153,0.15),transparent 45%);
+  z-index:-1;animation:auroraMove 20s ease-in-out infinite;pointer-events:none;
+}
+@keyframes auroraMove{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5%,-5%) scale(1.1)}}
+
+/* Dev credit */
+.dev-credit{
+  position:fixed;bottom:14px;left:14px;
+  background:var(--grad-aurora);color:#fff;padding:8px 14px;border-radius:30px;
+  font-size:11px;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:5px;
+  box-shadow:0 6px 18px rgba(124,58,237,0.4);z-index:7777;
+  transition:transform .2s ease;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.dev-credit:hover{transform:translateY(-2px)}
+.dev-credit:active{transform:scale(.95)}
+.dev-credit .dot{width:6px;height:6px;background:#fff;border-radius:50%;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* ==================== AUTH SCREEN ==================== */
+.auth-wrapper{max-width:440px;width:100%;margin:auto;margin-top:30px;padding:16px 16px 80px;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.auth-card{
+  background:rgba(255,255,255,0.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  border-radius:var(--radius-xl);padding:34px 24px 28px;box-shadow:var(--shadow-soft);
+  border:1px solid rgba(255,255,255,0.95);position:relative;overflow:hidden;width:100%;
+}
+.auth-card::before{
+  content:'';position:absolute;top:-60%;right:-60%;width:220%;height:220%;
+  background:radial-gradient(circle at 30% 20%,rgba(124,58,237,0.15),transparent 50%),
+             radial-gradient(circle at 80% 80%,rgba(6,182,212,0.12),transparent 50%),
+             radial-gradient(circle at 50% 50%,rgba(236,72,153,0.08),transparent 50%);
+  pointer-events:none;animation:auroraMove 15s ease-in-out infinite;
+}
+.auth-card>*{position:relative;z-index:1}
+.auth-header{text-align:center;margin-bottom:26px}
+.auth-header .logo-box{
+  width:76px;height:76px;margin:0 auto 14px;border-radius:24px;background:var(--grad-aurora);
+  display:flex;align-items:center;justify-content:center;font-size:36px;
+  box-shadow:0 14px 34px rgba(124,58,237,0.4);animation:floatIcon 3.5s ease-in-out infinite;
+}
+@keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.auth-header h1{font-size:22px;font-weight:800;letter-spacing:-.4px;background:var(--grad-aurora);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.auth-header .subtitle{font-size:13px;color:var(--gray-4);margin-top:4px}
+.auth-tabs{display:flex;background:var(--gray-1);border-radius:12px;padding:3px;margin-bottom:20px}
+.auth-tab{flex:1;text-align:center;padding:9px;font-size:14px;font-weight:600;cursor:pointer;border-radius:9px;color:var(--gray-4);transition:.25s;user-select:none}
+.auth-tab.active{background:#fff;color:var(--violet);box-shadow:0 3px 8px rgba(124,58,237,0.18)}
+.auth-form-group{margin-bottom:14px}
+.auth-form-group label{display:block;font-size:13px;font-weight:600;color:var(--gray-5);margin-bottom:6px;padding-right:4px}
+.auth-form-group input{
+  width:100%;padding:14px 16px;border:1.5px solid var(--gray-2);border-radius:var(--radius-md);
+  font-size:15px;transition:.2s;background:rgba(255,255,255,.7);font-family:inherit;
+  direction:ltr;text-align:left;color:var(--black);
+}
+.auth-form-group input:focus{outline:none;border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px rgba(124,58,237,0.15)}
+.auth-checkbox{display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--gray-5);cursor:pointer;user-select:none;padding-right:4px}
+.auth-checkbox input{width:18px;height:18px;cursor:pointer;accent-color:var(--violet)}
+.auth-btn{
+  width:100%;padding:15px;border:none;border-radius:var(--radius-md);font-size:15px;font-weight:700;
+  cursor:pointer;transition:transform .15s ease,opacity .15s ease;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;
+}
+.auth-btn:active{transform:scale(.97)}
+.auth-btn:disabled{opacity:.6;cursor:not-allowed}
+.auth-btn.primary{background:var(--grad-btn);color:#fff;box-shadow:0 10px 24px rgba(124,58,237,0.35)}
+.auth-btn.google{background:#fff;color:var(--gray-5);border:1.5px solid var(--gray-2)}
+.auth-link{text-align:center;font-size:13px;color:var(--violet);cursor:pointer;margin-top:6px;font-weight:600}
+.auth-link:hover{text-decoration:underline}
+.auth-divider{text-align:center;margin:16px 0;font-size:12px;color:var(--gray-3);position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--gray-2)}
+.auth-divider::before{right:0}.auth-divider::after{left:0}
+.auth-msg{padding:11px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;margin-bottom:12px;display:none}
+.auth-msg.show{display:block}
+.auth-msg.error{background:rgba(255,59,48,.12);color:#d70015}
+.auth-msg.success{background:rgba(124,58,237,.12);color:var(--violet)}
+.auth-loader{display:none;text-align:center;padding:10px}
+.auth-loader.show{display:block}
+.auth-loader .spin{width:26px;height:26px;border:3px solid var(--gray-2);border-top-color:var(--violet);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.footer-note{text-align:center;font-size:12px;color:var(--gray-3);margin-top:18px;line-height:1.6}
+
+/* ==================== MAIN LAYOUT (SIDEBAR + CONTENT) ==================== */
+#appView{display:none;width:100%;min-height:100vh}
+.app-shell{display:flex;min-height:100vh;width:100%}
+
+/* Sidebar */
+.sidebar{
+  width:260px;background:linear-gradient(180deg,#1a1f2e 0%,#0d1117 100%);
+  color:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:6px;
+  position:fixed;top:0;right:0;height:100vh;overflow-y:auto;z-index:1000;
+  transition:transform .3s cubic-bezier(.175,.885,.32,1.275);
+  box-shadow:-10px 0 40px rgba(0,0,0,.15);
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.sidebar-brand{display:flex;align-items:center;gap:12px;padding:10px 8px 20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
+.sidebar-brand .brand-logo{
+  width:44px;height:44px;border-radius:14px;background:var(--grad-aurora);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 6px 18px rgba(124,58,237,0.4);flex-shrink:0;
+}
+.sidebar-brand .brand-info h2{font-size:15px;font-weight:800;letter-spacing:-.3px}
+.sidebar-brand .brand-info span{font-size:11px;color:var(--gray-4);font-weight:500;display:block;margin-top:1px}
+
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;
+  color:rgba(255,255,255,.72);font-size:14px;font-weight:600;cursor:pointer;
+  transition:.2s;position:relative;user-select:none;
+}
+.nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-item.active{background:var(--grad-btn);color:#fff;box-shadow:0 6px 18px rgba(124,58,237,0.35)}
+.nav-item .nav-icon{font-size:18px;width:22px;text-align:center;flex-shrink:0}
+.nav-item .badge-new{
+  background:linear-gradient(135deg,#ec4899,#7c3aed);color:#fff;font-size:9px;font-weight:800;
+  padding:2px 7px;border-radius:20px;margin-right:auto;
+}
+.nav-sub{padding-right:36px;display:none}
+.nav-sub.open{display:block}
+.nav-sub .nav-item{font-size:13px;padding:10px 14px}
+
+.sidebar-footer{margin-top:auto;padding:14px 8px 0;border-top:1px solid rgba(255,255,255,.08)}
+.sidebar-footer .balance-box{
+  background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(6,182,212,.15));
+  border:1px solid rgba(124,58,237,.3);border-radius:14px;padding:12px;
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;
+}
+.sidebar-footer .balance-box .bal-label{font-size:10px;color:var(--gray-4);font-weight:600}
+.sidebar-footer .balance-box .bal-num{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.sidebar-footer .logout-mini{
+  width:100%;padding:10px;border-radius:12px;background:rgba(255,59,48,.15);
+  color:#ff6b6b;border:1px solid rgba(255,59,48,.25);font-size:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:.15s;
+}
+.sidebar-footer .logout-mini:active{transform:scale(.97)}
+
+/* Main content */
+.main-area{
+  flex:1;margin-right:260px;padding:18px;min-height:100vh;transition:margin .3s;
+}
+
+/* Mobile topbar */
+.mobile-topbar{
+  display:none;justify-content:space-between;align-items:center;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  padding:10px 14px;border-radius:16px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,.06);
+  position:sticky;top:10px;z-index:999;
+}
+.mobile-topbar .menu-btn{
+  width:42px;height:42px;border-radius:12px;background:var(--grad-btn);color:#fff;
+  border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.mobile-topbar .menu-btn:active{transform:scale(.92)}
+.mobile-topbar .mob-title{font-size:15px;font-weight:800;color:var(--black)}
+.mobile-topbar .mob-bal{
+  background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(6,182,212,.12));
+  padding:6px 12px;border-radius:20px;font-size:13px;font-weight:800;color:var(--violet);
+}
+
+.overlay-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
+  z-index:999;display:none;
+}
+.overlay-backdrop.show{display:block}
+
+/* Page content */
+.page{display:none;animation:fadeSlide .3s ease}
+.page.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.page-header{margin-bottom:20px;padding:0 4px}
+.page-header h1{font-size:22px;font-weight:800;color:var(--black);letter-spacing:-.4px;display:flex;align-items:center;gap:10px}
+.page-header p{font-size:13px;color:var(--gray-4);margin-top:4px}
+.breadcrumb{font-size:12px;color:var(--gray-4);margin-top:6px}
+.breadcrumb span{color:var(--violet);font-weight:600}
+
+/* Cards */
+.card{
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-card);
+  border:1px solid rgba(255,255,255,0.95);margin-bottom:16px;
+}
+.card-title{font-size:15px;font-weight:700;color:var(--black);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* Stats Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.stat-card{
+  background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(255,255,255,0.8));
+  border-radius:var(--radius-md);padding:16px 14px;text-align:center;
+  border:1px solid rgba(124,58,237,0.1);position:relative;overflow:hidden;transition:.2s;
+}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,.12)}
+.stat-card::after{
+  content:'';position:absolute;top:0;right:0;width:60px;height:60px;
+  background:var(--grad-aurora);opacity:.08;border-radius:50%;transform:translate(30%,-30%);
+}
+.stat-card .num{font-size:22px;font-weight:800;color:var(--violet);letter-spacing:-.5px;line-height:1.1;position:relative;z-index:1}
+.stat-card .label{font-size:11px;font-weight:600;color:var(--gray-4);margin-top:4px;position:relative;z-index:1}
+
+/* Forms */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.dash-label{display:block;font-weight:600;font-size:12px;color:var(--gray-5);margin-bottom:6px;padding-right:2px}
+.dash-input,.dash-select,.dash-textarea{
+  width:100%;padding:13px 14px;border:1.5px solid var(--gray-2);border-radius:var(--radius-md);
+  font-size:14px;transition:.2s;background:rgba(255,255,255,.9);font-family:inherit;color:var(--black);
+}
+.dash-input:focus,.dash-select:focus,.dash-textarea:focus{outline:none;border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px rgba(124,58,237,0.12)}
+.dash-textarea{min-height:80px;resize:vertical;direction:ltr;text-align:right}
+input[dir="ltr"],textarea[dir="ltr"]{direction:ltr;text-align:left}
+
+/* Buttons */
+.btn{
+  padding:13px 22px;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:700;
+  cursor:pointer;transition:transform .15s ease;font-family:inherit;display:inline-flex;
+  align-items:center;justify-content:center;gap:8px;
+}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn-primary{background:var(--grad-btn);color:#fff;box-shadow:0 10px 24px rgba(124,58,237,0.3);width:100%}
+.btn-cyan{background:var(--grad-cyan);color:#fff;box-shadow:0 10px 24px rgba(6,182,212,0.3)}
+.btn-pink{background:var(--grad-pink);color:#fff;box-shadow:0 10px 24px rgba(236,72,153,0.3)}
+.btn-outline{background:transparent;color:var(--violet);border:1.5px solid var(--violet)}
+.btn-sm{padding:8px 14px;border:none;border-radius:40px;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
+.btn-sm:active{transform:scale(.95)}
+.btn-sm.copy{background:rgba(124,58,237,0.12);color:var(--violet)}
+.btn-sm.delete{background:rgba(255,59,48,0.1);color:#d70015}
+.btn-sm.visit{background:rgba(6,182,212,0.12);color:#0891b2}
+.btn-sm.edit{background:rgba(59,130,246,0.12);color:#2563eb}
+
+/* Link Cards */
+.link-card{
+  background:rgba(255,255,255,0.92);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;
+  border:1px solid var(--gray-2);display:flex;flex-direction:column;gap:12px;transition:.2s;
+}
+.link-card:hover{border-color:var(--violet);box-shadow:0 8px 24px rgba(124,58,237,0.1)}
+.link-card .top-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.link-card .info{flex:1;min-width:0}
+.link-card .link-id{font-size:12px;font-weight:800;color:var(--violet);background:rgba(124,58,237,0.1);padding:4px 12px;border-radius:40px;display:inline-block;margin-bottom:8px}
+.link-card .dest-url{font-size:13px;color:var(--gray-5);word-break:break-all;line-height:1.5}
+.link-card .dest-url span{font-weight:600;color:var(--black)}
+.link-card .youtube-info{font-size:12px;color:var(--gray-4);word-break:break-all;margin-top:2px}
+.mini-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:10px 8px;background:var(--gray-1);border-radius:var(--radius-md);border:1px solid rgba(0,0,0,.04)}
+@media(max-width:480px){.mini-stats{grid-template-columns:repeat(3,1fr)}}
+.mini-stat{text-align:center}
+.mini-stat .mnum{font-size:15px;font-weight:800;color:var(--violet);line-height:1.1}
+.mini-stat .mlabel{font-size:9px;font-weight:600;color:var(--gray-4);margin-top:2px}
+.link-card .actions{display:flex;gap:6px;flex-wrap:wrap}
+
+/* Pricing */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:12px}
+.price-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.85));
+  border-radius:var(--radius-lg);padding:18px;border:1.5px solid var(--gray-2);
+  transition:.25s;position:relative;overflow:hidden;
+}
+.price-card:hover{border-color:var(--violet);transform:translateY(-3px);box-shadow:0 12px 30px rgba(124,58,237,.18)}
+.price-card .price-icon{font-size:32px;margin-bottom:8px}
+.price-card .price-name{font-size:15px;font-weight:800;color:var(--black);margin-bottom:4px}
+.price-card .price-amount{font-size:24px;font-weight:900;background:var(--grad-btn);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.5px}
+.price-card .price-desc{font-size:12px;color:var(--gray-4);margin-top:6px;line-height:1.5}
+.price-card.highlight{border-color:var(--violet);background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(6,182,212,.05))}
+.price-card .tag{position:absolute;top:12px;left:12px;background:var(--grad-pink);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px}
+
+/* Withdraw Form */
+.withdraw-method-list{display:grid;gap:8px;margin-top:12px}
+.wm-item{
+  display:flex;justify-content:space-between;align-items:center;padding:12px 14px;
+  background:rgba(255,255,255,.7);border:1.5px solid var(--gray-2);border-radius:14px;
+  font-size:13px;font-weight:600;cursor:pointer;transition:.2s;
+}
+.wm-item:hover{border-color:var(--violet);background:rgba(124,58,237,.05)}
+.wm-item.selected{border-color:var(--violet);background:rgba(124,58,237,.08);color:var(--violet)}
+.wm-item .wm-name{display:flex;align-items:center;gap:8px}
+.wm-item .wm-min{font-size:11px;color:var(--gray-4);font-weight:700}
+.wm-item.selected .wm-min{color:var(--violet)}
+
+/* Empty state */
+.empty-state{text-align:center;padding:50px 20px;color:var(--gray-4)}
+.empty-state .big-icon{font-size:56px;display:block;margin-bottom:14px;opacity:.6}
+.empty-state p{font-size:14px;font-weight:600}
+.empty-state small{font-size:12px;color:var(--gray-3);display:block;margin-top:6px}
+
+/* Loader */
+.loader{display:none;text-align:center;padding:16px 0}
+.loader.show{display:block}
+.spinner{width:32px;height:32px;border:3px solid var(--gray-2);border-top-color:var(--violet);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+
+/* Result box */
+.result-box{margin-top:12px;display:none;background:rgba(124,58,237,.08);padding:14px;border-radius:var(--radius-md);border-right:4px solid var(--violet)}
+.result-box.show{display:block}
+.result-box .title{font-weight:700;color:var(--violet);margin-bottom:6px;font-size:14px}
+.result-box .link-display{font-size:12px;color:var(--gray-5);word-break:break-all;background:#fff;padding:10px;border-radius:var(--radius-sm);margin:6px 0;direction:ltr;text-align:left;border:1px solid rgba(124,58,237,.2);font-family:'SF Mono',Consolas,monospace}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:rgba(13,17,23,.95);backdrop-filter:blur(10px);color:#fff;padding:13px 22px;
+  border-radius:40px;font-size:14px;font-weight:600;z-index:9999;opacity:0;
+  transition:all .3s cubic-bezier(.175,.885,.32,1.275);pointer-events:none;text-align:center;max-width:90%;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Profile Avatar */
+.profile-avatar-box{position:relative;width:90px;height:90px;margin:0 auto 16px}
+.avatar-big{
+  width:90px;height:90px;border-radius:50%;background:var(--grad-aurora);display:flex;
+  align-items:center;justify-content:center;color:#fff;font-size:38px;font-weight:800;
+  box-shadow:0 12px 30px rgba(124,58,237,0.35);overflow:hidden;
+}
+.avatar-big img{width:100%;height:100%;object-fit:cover}
+.avatar-edit{
+  position:absolute;bottom:-4px;left:-4px;width:32px;height:32px;border-radius:50%;
+  background:#fff;border:2px solid var(--violet);color:var(--violet);font-size:14px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+.avatar-edit:active{transform:scale(.92)}
+
+/* Modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;
+  z-index:8000;padding:16px;
+}
+.modal-overlay.show{display:flex}
+.modal{background:rgba(255,255,255,.98);border-radius:28px;width:100%;max-width:460px;padding:24px;max-height:90vh;overflow-y:auto;animation:modalIn .3s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes modalIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--gray-2)}
+.modal-header h2{font-size:19px;font-weight:800;color:var(--black)}
+.modal-close{width:34px;height:34px;border-radius:50%;background:var(--gray-1);border:none;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--violet)}
+.modal-close:active{transform:scale(.92)}
+
+.profile-section{background:var(--gray-1);border-radius:var(--radius-md);padding:14px;margin-bottom:14px;border:1px solid var(--gray-2)}
+.profile-section h3{font-size:13px;font-weight:700;color:var(--gray-5);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.profile-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:13px;gap:10px}
+.profile-row .key{color:var(--gray-4);font-weight:600;flex-shrink:0}
+.profile-row .val{color:var(--black);font-weight:700;word-break:break-all;text-align:left;direction:ltr}
+.profile-input{width:100%;padding:12px 14px;border:1.5px solid var(--gray-2);border-radius:var(--radius-md);font-size:14px;margin-bottom:10px;background:#fff;font-family:inherit;color:var(--black)}
+.profile-input:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 4px rgba(124,58,237,.12)}
+.modal-btn{width:100%;padding:13px;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;transition:transform .15s}
+.modal-btn:active{transform:scale(.97)}
+.modal-btn.primary{background:var(--grad-btn);color:#fff}
+.modal-btn.danger{background:rgba(255,59,48,.1);color:#d70015}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar{transform:translateX(100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main-area{margin-right:0;padding:12px}
+  .mobile-topbar{display:flex}
+  .page-header h1{font-size:19px}
+}
+@media(max-width:480px){
+  .stat-card .num{font-size:18px}
+  .mini-stat .mnum{font-size:13px}
+  .auth-card{padding:26px 18px 22px}
+  .pricing-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-    <!-- ============================================
-         شاشة الدخول
-         ============================================ -->
-    <div id="authView" class="auth-wrapper">
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="logo-box">🔗</div>
-                <h1>موقع اختصار روابط اكتوبر</h1>
-                <div class="subtitle">✨ سجّل دخولك لإدارة روابطك</div>
-            </div>
+<!-- ==================== AUTH VIEW ==================== -->
+<main id="authView" class="auth-wrapper" aria-label="تسجيل الدخول">
+  <section class="auth-card" aria-labelledby="authTitle">
+    <header class="auth-header">
+      <div class="logo-box" aria-hidden="true">🔗</div>
+      <h1 id="authTitle">اختصار روابط اكتوبر</h1>
+      <p class="subtitle">✨ سجّل دخولك لإدارة روابطك وربحك</p>
+    </header>
 
-            <div class="auth-tabs">
-                <div class="auth-tab active" id="tabLogin">🔐 تسجيل الدخول</div>
-                <div class="auth-tab" id="tabSignup">✨ إنشاء حساب</div>
-            </div>
+    <nav class="auth-tabs" role="tablist" aria-label="تبويبات الدخول">
+      <button class="auth-tab active" id="tabLogin" role="tab" aria-selected="true" type="button">🔐 دخول</button>
+      <button class="auth-tab" id="tabSignup" role="tab" aria-selected="false" type="button">✨ حساب جديد</button>
+    </nav>
 
-            <div class="auth-msg" id="authMsg"></div>
+    <div class="auth-msg" id="authMsg" role="alert" aria-live="polite"></div>
 
-            <div id="loginForm">
-                <div class="auth-form-group">
-                    <label>📧 البريد الإلكتروني</label>
-                    <input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email">
-                </div>
-                <div class="auth-form-group">
-                    <label>🔒 كلمة السر</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
-                </div>
+    <form id="loginForm" onsubmit="return false;">
+      <div class="auth-form-group">
+        <label for="loginEmail">📧 البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" name="email" placeholder="your@email.com" autocomplete="username" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+      </div>
+      <div class="auth-form-group">
+        <label for="loginPassword">🔒 كلمة السر</label>
+        <input type="password" id="loginPassword" name="password" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <label class="auth-checkbox">
+        <input type="checkbox" id="rememberMe" checked>
+        <span>💾 تذكرني في هذا الجهاز</span>
+      </label>
+      <button class="auth-btn primary" id="loginBtn" type="submit">🔐 تسجيل الدخول</button>
+      <div class="auth-link" id="forgotBtn">🔑 نسيت كلمة السر؟</div>
+    </form>
 
-                <label class="auth-checkbox">
-                    <input type="checkbox" id="rememberMe" checked>
-                    <span>💾 تذكرني في هذا الجهاز</span>
-                </label>
+    <form id="signupForm" style="display:none" onsubmit="return false;">
+      <div class="auth-form-group">
+        <label for="signupEmail">📧 البريد الإلكتروني</label>
+        <input type="email" id="signupEmail" name="email" placeholder="your@email.com" autocomplete="username" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+      </div>
+      <div class="auth-form-group">
+        <label for="signupPassword">🔒 كلمة السر <span style="font-weight:400;color:#8e8e93;font-size:11px">(6 أحرف على الأقل)</span></label>
+        <input type="password" id="signupPassword" name="new-password" placeholder="••••••••" autocomplete="new-password" required>
+      </div>
+      <div class="auth-form-group">
+        <label for="signupPasswordConfirm">🔒 تأكيد كلمة السر</label>
+        <input type="password" id="signupPasswordConfirm" name="new-password-confirm" placeholder="••••••••" autocomplete="new-password" required>
+      </div>
+      <button class="auth-btn primary" id="signupBtn" type="submit">✨ إنشاء حساب</button>
+    </form>
 
-                <button class="auth-btn primary" id="loginBtn">🔐 تسجيل الدخول</button>
-                <div class="auth-link" id="forgotBtn">🔑 نسيت كلمة السر؟</div>
-            </div>
+    <div class="auth-divider" role="separator">أو</div>
 
-            <div id="signupForm" style="display:none;">
-                <div class="auth-form-group">
-                    <label>📧 البريد الإلكتروني</label>
-                    <input type="email" id="signupEmail" placeholder="your@email.com" autocomplete="email">
-                </div>
-                <div class="auth-form-group">
-                    <label>🔒 كلمة السر <span style="font-weight:400;color:#8e8e93;font-size:11px;">(6 أحرف على الأقل)</span></label>
-                    <input type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password">
-                </div>
-                <div class="auth-form-group">
-                    <label>🔒 تأكيد كلمة السر</label>
-                    <input type="password" id="signupPasswordConfirm" placeholder="••••••••" autocomplete="new-password">
-                </div>
-                <button class="auth-btn primary" id="signupBtn">✨ إنشاء حساب</button>
-            </div>
+    <button class="auth-btn google" id="googleBtn" type="button">
+      <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.1-11.3-7.6l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.6l6.2 5.2C41 35.7 44 30.2 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
+      🌐 الدخول بجوجل
+    </button>
 
-            <div class="auth-divider">أو</div>
+    <div class="auth-loader" id="authLoader" aria-live="polite"><div class="spin"></div></div>
+    <div class="footer-note">🔒 محمي بتشفير آمن • موقع اختصار روابط اكتوبر</div>
+  </section>
+</main>
 
-            <button class="auth-btn google" id="googleBtn">
-                <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.1-11.3-7.6l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.6l6.2 5.2C41 35.7 44 30.2 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
-                🌐 الدخول بجوجل
-            </button>
+<!-- ==================== APP VIEW ==================== -->
+<div id="appView">
+  <div class="app-shell">
 
-            <div class="auth-loader" id="authLoader"><div class="spin"></div></div>
-
-            <div class="footer-note">🔒 محمي بتشفير آمن</div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-label="القائمة الرئيسية">
+      <div class="sidebar-brand">
+        <div class="brand-logo" aria-hidden="true">🔗</div>
+        <div class="brand-info">
+          <h2>اختصار اكتوبر</h2>
+          <span>لوحة التحكم</span>
         </div>
-    </div>
+      </div>
 
-    <!-- ============================================
-         لوحة التحكم
-         ============================================ -->
-    <div id="dashboardView" class="container" style="display:none;">
-
-        <div class="topbar">
-            <div class="topbar-left">
-                <div class="icon">⚡</div>
-                <div>
-                    <h1>روابط اكتوبر</h1>
-                    <span class="sub" id="greetingText">👋 مرحباً بك</span>
-                </div>
-            </div>
-            <div class="topbar-right">
-                <button class="icon-btn" id="refreshBtn" title="تحديث">🔄</button>
-                <button class="profile-btn" id="profileBtn" title="الملف الشخصي">؟</button>
-            </div>
+      <nav aria-label="التنقل">
+        <div class="nav-item active" data-page="dashboard" role="button" tabindex="0">
+          <span class="nav-icon" aria-hidden="true">📊</span><span>لوحة التحكم</span>
         </div>
-
-        <div class="stats-grid five">
-            <div class="stat-card">
-                <div class="num" id="totalVisits">0</div>
-                <div class="label">👁️ زوار</div>
-            </div>
-            <div class="stat-card">
-                <div class="num" id="totalCompleted">0</div>
-                <div class="label">✅ أكملوا</div>
-            </div>
-            <div class="stat-card">
-                <div class="num" id="totalLinks">0</div>
-                <div class="label">📦 روابط</div>
-            </div>
-            <div class="stat-card">
-                <div class="num" id="totalLikes">0</div>
-                <div class="label">👍 لايكات</div>
-            </div>
-            <div class="stat-card">
-                <div class="num" id="totalComments">0</div>
-                <div class="label">💬 تعليقات</div>
-            </div>
+        <div class="nav-item" data-page="levels" role="button" tabindex="0">
+          <span class="nav-icon" aria-hidden="true">⬆️</span><span>المستويات</span>
+          <span class="badge-new">جديد</span>
         </div>
+        <div class="nav-item" data-page="manage-links" role="button" tabindex="0">
+          <span class="nav-icon" aria-hidden="true">🔗</span><span>إدارة الروابط</span>
+        </div>
+        <div class="nav-item" data-page="withdraw" role="button" tabindex="0">
+          <span class="nav-icon" aria-hidden="true">💸</span><span>طلب السحب</span>
+        </div>
+        <div class="nav-item" data-page="transactions" role="button" tabindex="0">
+          <span class="nav-icon" aria-hidden="true">📜</span><span>جميع الحالات</span>
+        </div>
+        <div class="nav-item" data-page="settings" role="button" tabindex="0">
+          <span class="nav-icon" aria-hidden="true">⚙️</span><span>الإعدادات</span>
+        </div>
+        <div class="nav-item" data-page="support" role="button" tabindex="0">
+          <span class="nav-icon" aria-hidden="true">🎧</span><span>الدعم</span>
+        </div>
+      </nav>
 
-        <div class="create-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                <h3 style="font-size:14px;font-weight:700;color:var(--black);">➕ رابط جديد</h3>
-            </div>
+      <div class="sidebar-footer">
+        <div class="balance-box">
+          <div>
+            <div class="bal-label">رصيدك الحالي</div>
+            <div class="bal-num" id="sidebarBalance">$0.00</div>
+          </div>
+          <span style="font-size:24px" aria-hidden="true">💰</span>
+        </div>
+        <button class="logout-mini" id="sidebarLogout" type="button">🚪 تسجيل الخروج</button>
+      </div>
+    </aside>
+    <div class="overlay-backdrop" id="overlayBackdrop"></div>
 
-            <div class="form-row">
-                <div>
-                    <label class="dash-label">▶️ رابط يوتيوب</label>
-                    <input type="url" id="youtubeUrlInput" class="dash-input" placeholder="https://youtu.be/..." dir="ltr">
-                </div>
-                <div>
-                    <label class="dash-label">🔗 رابط التحويل</label>
-                    <input type="url" id="mainUrlInput" class="dash-input" placeholder="https://example.com" dir="ltr">
-                </div>
-            </div>
+    <!-- MAIN AREA -->
+    <main class="main-area" aria-label="محتوى الصفحة">
 
-            <button class="btn btn-primary" id="createLinkBtn">⚡ اختصار الرابط</button>
+      <header class="mobile-topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة" type="button">☰</button>
+        <div class="mob-title">اختصار اكتوبر</div>
+        <div class="mob-bal" id="mobileBalance">$0.00</div>
+      </header>
 
-            <div id="createLoader" class="loader">
-                <div class="spinner"></div>
-                <span style="color:var(--gray-4);font-size:13px;">⏳ جاري الإنشاء...</span>
-            </div>
-
-            <div class="result-box" id="newLinkResult">
-                <div class="title">✅ تم إنشاء الرابط!</div>
-                <div class="link-display" id="generatedLinkDisplay"></div>
-                <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
-                    <button class="btn-sm copy" id="copyNewLinkBtn">📋 نسخ</button>
-                    <button class="btn-sm visit" id="openNewLinkBtn">🔗 فتح</button>
-                </div>
-            </div>
+      <!-- PAGE: DASHBOARD -->
+      <section class="page active" id="page-dashboard" aria-labelledby="dashH1">
+        <div class="page-header">
+          <h1 id="dashH1">📊 لوحة التحكم</h1>
+          <p class="breadcrumb">🏠 الرئيسية <span>›</span> لوحة التحكم</p>
+          <p id="greetingText">👋 مرحباً بك</p>
         </div>
 
-        <div class="section-title">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="num" id="totalVisits">0</div><div class="label">👁️ زوار</div></div>
+          <div class="stat-card"><div class="num" id="totalCompleted">0</div><div class="label">✅ أكملوا</div></div>
+          <div class="stat-card"><div class="num" id="totalLinks">0</div><div class="label">📦 روابط</div></div>
+          <div class="stat-card"><div class="num" id="totalLikes">0</div><div class="label">👍 لايكات</div></div>
+          <div class="stat-card"><div class="num" id="totalComments">0</div><div class="label">💬 تعليقات</div></div>
+          <div class="stat-card"><div class="num" id="totalEarnings">$0.00</div><div class="label">💵 أرباح</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">➕ إنشاء رابط جديد</div>
+          <div class="form-row">
+            <div>
+              <label class="dash-label" for="youtubeUrlInput">▶️ رابط يوتيوب</label>
+              <input type="url" id="youtubeUrlInput" class="dash-input" placeholder="https://youtu.be/..." dir="ltr" inputmode="url">
+            </div>
+            <div>
+              <label class="dash-label" for="mainUrlInput">🔗 رابط التحويل</label>
+              <input type="url" id="mainUrlInput" class="dash-input" placeholder="https://example.com" dir="ltr" inputmode="url">
+            </div>
+          </div>
+          <button class="btn btn-primary" id="createLinkBtn" type="button">⚡ اختصار الرابط</button>
+          <div id="createLoader" class="loader"><div class="spinner"></div><span style="color:var(--gray-4);font-size:13px">⏳ جاري الإنشاء...</span></div>
+          <div class="result-box" id="newLinkResult">
+            <div class="title">✅ تم إنشاء الرابط!</div>
+            <div class="link-display" id="generatedLinkDisplay"></div>
+            <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+              <button class="btn-sm copy" id="copyNewLinkBtn" type="button">📋 نسخ</button>
+              <button class="btn-sm visit" id="openNewLinkBtn" type="button">🔗 فتح</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: LEVELS -->
+      <section class="page" id="page-levels" aria-labelledby="lvlH1">
+        <div class="page-header">
+          <h1 id="lvlH1">⬆️ المستويات</h1>
+          <p class="breadcrumb">🏠 الرئيسية <span>›</span> المستويات</p>
+          <p>ارفع مستواك بزيادة عدد الزوار لتفتح مزايا وربح أعلى</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card"><div class="num" id="lvCurrent">1</div><div class="label">المستوى الحالي</div></div>
+          <div class="stat-card"><div class="num" id="lvNext">2</div><div class="label">المستوى القادم</div></div>
+          <div class="stat-card"><div class="num" id="lvProgress">0%</div><div class="label">التقدم</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🎯 شريط التقدم</div>
+          <div style="background:var(--gray-1);height:14px;border-radius:40px;overflow:hidden">
+            <div id="lvProgressBar" style="background:var(--grad-btn);height:100%;width:0%;transition:width .6s ease;border-radius:40px"></div>
+          </div>
+          <p style="font-size:12px;color:var(--gray-4);margin-top:10px" id="lvHint">تحتاج إلى 0 زائر إضافي للمستوى القادم</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📋 مستويات الربح</div>
+          <div class="pricing-grid">
+            <div class="price-card"><div class="price-icon">🥉</div><div class="price-name">المستوى 1</div><div class="price-amount">$0.5</div><div class="price-desc">لكل 1000 زيارة • 0 - 999 زائر</div></div>
+            <div class="price-card"><div class="price-icon">🥈</div><div class="price-name">المستوى 2</div><div class="price-amount">$1.0</div><div class="price-desc">لكل 1000 زيارة • 1,000 - 9,999 زائر</div></div>
+            <div class="price-card highlight"><div class="tag">🔥 الأكثر</div><div class="price-icon">🥇</div><div class="price-name">المستوى 3</div><div class="price-amount">$2.0</div><div class="price-desc">لكل 1000 زيارة • 10,000 - 49,999 زائر</div></div>
+            <div class="price-card"><div class="price-icon">💎</div><div class="price-name">المستوى 4</div><div class="price-amount">$3.0</div><div class="price-desc">لكل 1000 زيارة • 50,000+ زائر</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: MANAGE LINKS -->
+      <section class="page" id="page-manage-links" aria-labelledby="mlH1">
+        <div class="page-header">
+          <h1 id="mlH1">🔗 إدارة الروابط</h1>
+          <p class="breadcrumb">🏠 الرئيسية <span>›</span> إدارة الروابط</p>
+          <p>جميع روابطك مع الإحصائيات الكاملة وإمكانية التعديل</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
             📋 روابطي
-            <span class="badge" id="linksCount">0</span>
-        </div>
-
-        <div id="linksContainer">
+            <span style="background:var(--grad-btn);color:#fff;font-size:11px;padding:2px 10px;border-radius:40px;font-weight:700;margin-right:auto" id="linksCount">0</span>
+          </div>
+          <div id="linksContainer">
             <div class="empty-state">
-                <span class="big-icon">📭</span>
-                <p>لا توجد روابط بعد</p>
+              <span class="big-icon">📭</span>
+              <p>لا توجد روابط بعد</p>
+              <small>أنشئ أول رابط من لوحة التحكم</small>
             </div>
+          </div>
+          <div id="listLoader" class="loader"><div class="spinner"></div><span style="color:var(--gray-4);font-size:13px">⏳ جاري التحميل...</span></div>
+        </div>
+      </section>
+
+      <!-- PAGE: WITHDRAW -->
+      <section class="page" id="page-withdraw" aria-labelledby="wdH1">
+        <div class="page-header">
+          <h1 id="wdH1">💸 طلب السحب</h1>
+          <p class="breadcrumb">🏠 الرئيسية <span>›</span> طلب السحب</p>
+          <p>اسحب أرباحك عبر شحن شدات ببجي موبايل أو تحويلات أخرى</p>
         </div>
 
-        <div id="listLoader" class="loader">
-            <div class="spinner"></div>
-            <span style="color:var(--gray-4);font-size:13px;">⏳ جاري التحميل...</span>
+        <div class="card">
+          <div class="card-title">💰 رصيدك المتاح للسحب</div>
+          <div style="text-align:center;padding:14px 0">
+            <div style="font-size:36px;font-weight:900;background:var(--grad-btn);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent" id="withdrawBalance">$0.00</div>
+            <div style="font-size:12px;color:var(--gray-4);margin-top:4px">الحد الأدنى للسحب: $6.00</div>
+          </div>
         </div>
+
+        <div class="card">
+          <div class="card-title">🎮 طرق السحب المتاحة - شحن شدات ببجي موبايل</div>
+          <div class="pricing-grid">
+            <div class="price-card" data-uc="360">
+              <div class="price-icon">💎</div>
+              <div class="price-name">360 UC</div>
+              <div class="price-amount">$6</div>
+              <div class="price-desc">شحن مباشر لحساب ببجي موبايل</div>
+              <button class="btn btn-primary" style="margin-top:10px" onclick="selectUC(360,6)">اختيار</button>
+            </div>
+            <div class="price-card" data-uc="660">
+              <div class="price-icon">💎💎</div>
+              <div class="price-name">660 UC</div>
+              <div class="price-amount">$12</div>
+              <div class="price-desc">شحن مباشر لحساب ببجي موبايل</div>
+              <button class="btn btn-primary" style="margin-top:10px" onclick="selectUC(660,12)">اختيار</button>
+            </div>
+            <div class="price-card highlight" data-uc="1800">
+              <div class="tag">تواصل</div>
+              <div class="price-icon">💎💎💎</div>
+              <div class="price-name">1800 UC</div>
+              <div class="price-amount">تواصل معنا</div>
+              <div class="price-desc">يتم الاتفاق عبر تيليجرام</div>
+              <button class="btn btn-pink" style="margin-top:10px" onclick="contactTelegram(1800)">📩 تواصل</button>
+            </div>
+            <div class="price-card highlight" data-uc="3800">
+              <div class="tag">تواصل</div>
+              <div class="price-icon">💎💎💎💎</div>
+              <div class="price-name">3800 UC</div>
+              <div class="price-amount">تواصل معنا</div>
+              <div class="price-desc">يتم الاتفاق عبر تيليجرام</div>
+              <button class="btn btn-pink" style="margin-top:10px" onclick="contactTelegram(3800)">📩 تواصل</button>
+            </div>
+          </div>
+          <p style="font-size:12px;color:var(--gray-4);margin-top:14px;text-align:center">
+            💡 يمكنك شحن تطبيقات أخرى (فري فاير، وغيرها) عبر التواصل معنا على تيليجرام
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📝 معلومات السحب</div>
+          <div class="form-row">
+            <div>
+              <label class="dash-label" for="wdUcAmount">💎 الكمية (UC)</label>
+              <select class="dash-select" id="wdUcAmount">
+                <option value="">-- اختر الكمية --</option>
+                <option value="360">360 UC - $6</option>
+                <option value="660">660 UC - $12</option>
+                <option value="1800">1800 UC - تواصل</option>
+                <option value="3800">3800 UC - تواصل</option>
+              </select>
+            </div>
+            <div>
+              <label class="dash-label" for="wdPubgId">🎮 ID حساب ببجي</label>
+              <input type="text" id="wdPubgId" class="dash-input" placeholder="مثال: 5123456789" dir="ltr" inputmode="numeric" autocomplete="off">
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="dash-label" for="wdFullName">👤 الاسم الكامل</label>
+              <input type="text" id="wdFullName" class="dash-input" placeholder="اسمك" autocomplete="name">
+            </div>
+            <div>
+              <label class="dash-label" for="wdPhone">📱 رقم الهاتف / تيليجرام</label>
+              <input type="text" id="wdPhone" class="dash-input" placeholder="+20..." dir="ltr" autocomplete="tel" inputmode="tel">
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="dash-label" for="wdCountry">🌍 البلد</label>
+              <select class="dash-select" id="wdCountry" autocomplete="country-name">
+                <option value="سوريا">🇸🇾 سوريا</option>
+                <option value="مصر">🇪🇬 مصر</option>
+                <option value="الجزائر">🇩🇿 الجزائر</option>
+                <option value="المغرب">🇲🇦 المغرب</option>
+                <option value="السعودية">🇸🇦 السعودية</option>
+                <option value="العراق">🇮🇶 العراق</option>
+                <option value="اليمن">🇾🇪 اليمن</option>
+                <option value="فلسطين">🇵🇸 فلسطين</option>
+                <option value="الأردن">🇯🇴 الأردن</option>
+                <option value="لبنان">🇱🇧 لبنان</option>
+                <option value="تونس">🇹🇳 تونس</option>
+                <option value="ليبيا">🇱🇾 ليبيا</option>
+                <option value="السودان">🇸🇩 السودان</option>
+                <option value="أخرى">🌍 أخرى</option>
+              </select>
+            </div>
+            <div>
+              <label class="dash-label" for="wdCity">🏙️ المدينة</label>
+              <input type="text" id="wdCity" class="dash-input" placeholder="اسم المدينة" autocomplete="address-level2">
+            </div>
+          </div>
+          <div>
+            <label class="dash-label" for="wdAddress">🏠 العنوان الكامل</label>
+            <textarea id="wdAddress" class="dash-textarea" placeholder="العنوان بالتفصيل" autocomplete="street-address"></textarea>
+          </div>
+          <button class="btn btn-primary" style="margin-top:14px" id="wdSubmitBtn" type="button">📤 إرسال طلب السحب</button>
+        </div>
+      </section>
+
+      <!-- PAGE: TRANSACTIONS -->
+      <section class="page" id="page-transactions" aria-labelledby="txH1">
+        <div class="page-header">
+          <h1 id="txH1">📜 جميع الحالات</h1>
+          <p class="breadcrumb">🏠 الرئيسية <span>›</span> جميع الحالات</p>
+          <p>سجل كامل لطلبات السحب وحالتها</p>
+        </div>
+        <div class="card">
+          <div id="txContainer">
+            <div class="empty-state">
+              <span class="big-icon">📭</span>
+              <p>لا توجد عمليات بعد</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: SETTINGS -->
+      <section class="page" id="page-settings" aria-labelledby="stH1">
+        <div class="page-header">
+          <h1 id="stH1">⚙️ الإعدادات</h1>
+          <p class="breadcrumb">🏠 الرئيسية <span>›</span> الإعدادات</p>
+          <p>إدارة حسابك وبياناتك الشخصية</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">👤 الملف الشخصي</div>
+          <div class="profile-avatar-box">
+            <div class="avatar-big" id="settingsAvatar">؟</div>
+            <label class="avatar-edit" for="avatarUpload" title="تغيير الصورة">📷
+              <input type="file" id="avatarUpload" accept="image/*" style="display:none">
+            </label>
+          </div>
+          <div style="margin-top:12px">
+            <label class="dash-label" for="settingsName">✏️ الاسم</label>
+            <input type="text" id="settingsName" class="dash-input" placeholder="اسمك" maxlength="30" autocomplete="name">
+          </div>
+          <div style="margin-top:10px">
+            <label class="dash-label" for="settingsEmail">📧 البريد (غير قابل للتعديل)</label>
+            <input type="email" id="settingsEmail" class="dash-input" disabled style="opacity:.6" autocomplete="email">
+          </div>
+          <button class="btn btn-primary" style="margin-top:12px" id="saveProfileBtn" type="button">💾 حفظ التعديلات</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔐 تغيير كلمة المرور</div>
+          <input type="password" id="currentPassInput" class="dash-input" placeholder="كلمة السر الحالية" style="margin-bottom:10px" autocomplete="current-password">
+          <input type="password" id="newPassInput" class="dash-input" placeholder="كلمة السر الجديدة" style="margin-bottom:10px" autocomplete="new-password">
+          <input type="password" id="newPassConfirmInput" class="dash-input" placeholder="تأكيد كلمة السر الجديدة" style="margin-bottom:10px" autocomplete="new-password">
+          <button class="btn btn-primary" id="changePassBtn" type="button">🔐 تغيير كلمة المرور</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔗 رمز الإحالة الخاص بك</div>
+          <p style="font-size:12px;color:var(--gray-4);margin-bottom:10px">شارك هذا الرمز واكسب من إحالاتك</p>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="text" id="referralCode" class="dash-input" readonly dir="ltr" style="text-align:center;font-weight:800;color:var(--violet)">
+            <button class="btn btn-cyan" id="copyRefBtn" type="button" style="white-space:nowrap">📋 نسخ</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: SUPPORT -->
+      <section class="page" id="page-support" aria-labelledby="spH1">
+        <div class="page-header">
+          <h1 id="spH1">🎧 الدعم</h1>
+          <p class="breadcrumb">🏠 الرئيسية <span>›</span> الدعم</p>
+          <p>تواصل معنا لأي استفسار أو مشكلة</p>
+        </div>
+        <div class="card">
+          <div class="card-title">📩 تواصل مع فريق الدعم</div>
+          <p style="font-size:13px;color:var(--gray-5);line-height:1.8;margin-bottom:14px">
+            نرد على استفساراتك خلال 24 ساعة. يمكنك التواصل عبر:
+          </p>
+          <a href="https://t.me/telegr800" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;margin-bottom:10px">📱 تيليجرام: @telegr800</a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ==================== MODAL: EDIT LINK ==================== -->
+<div class="modal-overlay" id="editLinkModal" role="dialog" aria-modal="true" aria-labelledby="editLinkTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="editLinkTitle">✏️ تعديل الرابط</h2>
+      <button class="modal-close" id="editLinkClose" aria-label="إغلاق" type="button">✕</button>
     </div>
+    <input type="hidden" id="editLinkId">
+    <label class="dash-label" for="editMainUrl">🔗 رابط التحويل</label>
+    <input type="url" id="editMainUrl" class="dash-input" dir="ltr" style="margin-bottom:10px">
+    <label class="dash-label" for="editYoutubeUrl">▶️ رابط يوتيوب</label>
+    <input type="url" id="editYoutubeUrl" class="dash-input" dir="ltr" style="margin-bottom:10px">
+    <button class="modal-btn primary" id="saveEditLinkBtn" type="button">💾 حفظ التعديلات</button>
+  </div>
+</div>
 
-    <!-- ============================================
-         Modal: الملف الشخصي
-         ============================================ -->
-    <div class="modal-overlay" id="profileModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>👤 الملف الشخصي</h2>
-                <button class="modal-close" id="profileCloseBtn">✕</button>
-            </div>
+<!-- ==================== DEV CREDIT ==================== -->
+<a class="dev-credit" href="https://www.facebook.com/share/1Dn4faW1Ay/" target="_blank" rel="noopener">
+  <span class="dot"></span>
+  <span>مطوّر الموقع</span>
+</a>
 
-            <div class="avatar-big" id="avatarBig">؟</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-            <div class="profile-section">
-                <h3>📋 معلومات الحساب</h3>
-                <div class="profile-row">
-                    <span class="key">البريد الإلكتروني</span>
-                    <span class="val" id="profileEmail">—</span>
-                </div>
-                <div class="profile-row">
-                    <span class="key">الاسم</span>
-                    <span class="val" id="profileName">—</span>
-                </div>
-                <div class="profile-row">
-                    <span class="key">تاريخ التسجيل</span>
-                    <span class="val" id="profileCreated">—</span>
-                </div>
-            </div>
+<script>
+/* ============================================================
+   اختصار روابط اكتوبر - الكود الكامل
+   ============================================================ */
+(function(){
+'use strict';
 
-            <div class="profile-section">
-                <h3>✏️ تعديل الاسم</h3>
-                <input type="text" id="editNameInput" class="profile-input" placeholder="الاسم الجديد" maxlength="30">
-                <button class="modal-btn primary" id="saveNameBtn">💾 حفظ الاسم</button>
-            </div>
+/* ---------- Firebase Config ---------- */
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBHnknMBiVdigipFyLMNkdFcm_tOQKWc-4",
+  authDomain: "aktubar98.firebaseapp.com",
+  databaseURL: "https://aktubar98-default-rtdb.firebaseio.com",
+  projectId: "aktubar98",
+  storageBucket: "aktubar98.appspot.com",
+  messagingSenderId: "679902534827",
+  appId: "1:679902534827:android:03edb9ea18b42eaef7abee"
+};
 
-            <div class="profile-section">
-                <h3>🔒 تغيير كلمة المرور</h3>
-                <input type="password" id="currentPassInput" class="profile-input" placeholder="كلمة السر الحالية" autocomplete="current-password">
-                <input type="password" id="newPassInput" class="profile-input" placeholder="كلمة السر الجديدة" autocomplete="new-password">
-                <input type="password" id="newPassConfirmInput" class="profile-input" placeholder="تأكيد كلمة السر الجديدة" autocomplete="new-password">
-                <button class="modal-btn primary" id="changePassBtn">🔐 تغيير كلمة المرور</button>
-            </div>
+var DB=null, AUTH=null;
+var YT_KEY='AIzaSyCUnKNsevt64NbW3xg7RMsmbF5v6-Twixs';
+var VERIFY_PAGE_URL='https://1digital360.blogspot.com/p/margin-0-padding-0-box-sizing-border.html?id=';
+var RATE_PER_1000=3.00;
+var MIN_WITHDRAW=6.00;
+var MAX_ACCOUNTS_PER_IP=3;
+var TELEGRAM_USER='telegr800';
 
-            <button class="modal-btn danger" id="logoutBtnModal">🚪 تسجيل الخروج</button>
-        </div>
-    </div>
+var $=function(id){return document.getElementById(id)};
+var currentUser=null, currentProfile=null, currentGeneratedLink='';
+var allLinksCache={};
+var selectedUC=null;
 
-    <!-- ============================================
-         زر مطوّر الموقع (في كل الصفحات)
-         ============================================ -->
-    <a class="dev-credit" href="https://www.facebook.com/share/1Dn4faW1Ay/" target="_blank" rel="noopener">
-        <span class="dot"></span>
-        <span>مطوّر الموقع</span>
-    </a>
+/* ---------- Init Firebase (بعد defer) ---------- */
+function initFirebase(){
+  try{
+    if(typeof firebase==='undefined'){setTimeout(initFirebase,100);return}
+    firebase.initializeApp(FIREBASE_CONFIG);
+    DB=firebase.database();
+    AUTH=firebase.auth();
+    AUTH.onAuthStateChanged(onAuthChanged);
+  }catch(e){console.error('Firebase init error',e);setTimeout(initFirebase,300)}
+}
 
-    <div class="toast" id="toast"></div>
+/* ---------- Toasts ---------- */
+function showToast(msg,type){
+  var t=$('toast');
+  t.textContent=msg;
+  t.style.background=type==='success'?'linear-gradient(135deg,#7c3aed,#3b82f6)':
+                     type==='error'?'rgba(255,59,48,.95)':'rgba(13,17,23,.95)';
+  t.className='toast show';
+  clearTimeout(t._t);t._t=setTimeout(function(){t.className='toast'},3000);
+}
+function showAuthMsg(msg,type){
+  var a=$('authMsg');a.textContent=msg;
+  a.className='auth-msg show '+(type==='success'?'success':'error');
+  setTimeout(function(){a.className='auth-msg'},5000);
+}
+function setAuthLoading(s){$('authLoader').classList.toggle('show',s)}
 
-    <script>
-        // ============================================
-        // 1. التهيئة
-        // ============================================
-        const FIREBASE_CONFIG = {
-            apiKey: "AIzaSyBHnknMBiVdigipFyLMNkdFcm_tOQKWc-4",
-            authDomain: "aktubar98.firebaseapp.com",
-            databaseURL: "https://aktubar98-default-rtdb.firebaseio.com",
-            projectId: "aktubar98",
-            storageBucket: "aktubar98.appspot.com",
-            messagingSenderId: "679902534827",
-            appId: "1:679902534827:android:03edb9ea18b42eaef7abee"
-        };
+function generateId(){
+  var c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',r='';
+  for(var i=0;i<7;i++)r+=c.charAt(Math.floor(Math.random()*c.length));
+  return r;
+}
+function extractVideoId(url){
+  var m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&?#]+)/);
+  return m?m[1]:null;
+}
+function formatDate(ts){
+  if(!ts)return '—';
+  var d=new Date(ts);
+  return d.toLocaleDateString('ar-EG')+' '+d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
+}
+function formatDateShort(ts){
+  if(!ts)return '—';
+  return new Date(ts).toLocaleDateString('ar-EG');
+}
+function copyText(txt){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(function(){showToast('📋 تم النسخ!','success')})
+    .catch(function(){fallbackCopy(txt)});
+  }else{fallbackCopy(txt)}
+}
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea');ta.value=txt;
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showToast('📋 تم النسخ!','success')}catch(e){showToast('❌ فشل النسخ','error')}
+  ta.remove();
+}
+function getInitial(t){return t?t.trim().charAt(0).toUpperCase():'؟'}
+function escapeHtml(s){
+  if(s==null)return'';
+  return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]});
+}
 
-        firebase.initializeApp(FIREBASE_CONFIG);
-        const DB = firebase.database();
-        const AUTH = firebase.auth();
+/* ---------- Shortener ---------- */
+function shortenUrl(longUrl){
+  return fetch('https://is.gd/create.php?format=json&url='+encodeURIComponent(longUrl))
+    .then(function(r){if(!r.ok)throw 0;return r.json()})
+    .then(function(d){return d.shorturl||longUrl})
+    .catch(function(){return longUrl});
+}
 
-        const YT_KEY = 'AIzaSyCUnKNsevt64NbW3xg7RMsmbF5v6-Twixs';
-        const VERIFY_PAGE_URL = 'https://1digital360.blogspot.com/p/margin-0-padding-0-box-sizing-border.html?id=';
+/* ---------- IP protection ---------- */
+function getIP(){
+  return fetch('https://api.ipify.org?format=json')
+    .then(function(r){return r.json()}).then(function(d){return d.ip})
+    .catch(function(){return null});
+}
+function hashIP(ip){return ip.replace(/\./g,'_').replace(/:/g,'-')}
+function checkIPLimit(){
+  return getIP().then(function(ip){
+    if(!ip)return{allowed:true,key:null};
+    var key=hashIP(ip);
+    return DB.ref('ipAccounts/'+key).once('value').then(function(s){
+      var c=s.val()?Object.keys(s.val()).length:0;
+      return{allowed:c<MAX_ACCOUNTS_PER_IP,key:key,count:c};
+    });
+  });
+}
+function registerIPAccount(uid){
+  return getIP().then(function(ip){
+    if(!ip)return;
+    var key=hashIP(ip);
+    return DB.ref('ipAccounts/'+key+'/'+uid).set({createdAt:Date.now()});
+  });
+}
 
-        const $ = id => document.getElementById(id);
-        const authView = $('authView');
-        const dashboardView = $('dashboardView');
-        const authMsg = $('authMsg');
-        const authLoader = $('authLoader');
+/* ---------- Auth UI ---------- */
+function bindAuthUI(){
+  $('tabLogin').addEventListener('click',function(){
+    $('tabLogin').classList.add('active');$('tabSignup').classList.remove('active');
+    $('loginForm').style.display='block';$('signupForm').style.display='none';
+    $('tabLogin').setAttribute('aria-selected','true');$('tabSignup').setAttribute('aria-selected','false');
+  });
+  $('tabSignup').addEventListener('click',function(){
+    $('tabSignup').classList.add('active');$('tabLogin').classList.remove('active');
+    $('signupForm').style.display='block';$('loginForm').style.display='none';
+    $('tabSignup').setAttribute('aria-selected','true');$('tabLogin').setAttribute('aria-selected','false');
+  });
 
-        let currentUser = null;
-        let currentProfile = null;
-        let currentGeneratedLink = '';
+  $('loginForm').addEventListener('submit',function(e){e.preventDefault();doLogin()});
+  $('signupForm').addEventListener('submit',function(e){e.preventDefault();doSignup()});
+  $('loginBtn').addEventListener('click',function(e){e.preventDefault();doLogin()});
+  $('signupBtn').addEventListener('click',function(e){e.preventDefault();doSignup()});
+  $('forgotBtn').addEventListener('click',doForgot);
+  $('googleBtn').addEventListener('click',doGoogle);
+}
 
-        // ============================================
-        // 2. زر الرجوع خطوة بخطوة (لا يخرج من الموقع)
-        // ============================================
-        history.pushState({ page: 'home' }, '', location.href);
-
-        window.addEventListener('popstate', (e) => {
-            // إذا كان modal مفتوح → أغلقه
-            if ($('profileModal').classList.contains('show')) {
-                $('profileModal').classList.remove('show');
-                history.pushState({ page: 'home' }, '', location.href);
-                return;
-            }
-            // إذا كان المستخدم مسجلاً → ادفعه للأمام مرة أخرى
-            if (currentUser) {
-                history.pushState({ page: 'home' }, '', location.href);
-                showToast('🏠 أنت في الصفحة الرئيسية');
-                return;
-            }
-            // إذا كان في شاشة الدخول → لا تخرج
-            history.pushState({ page: 'home' }, '', location.href);
-            showToast('🏠 أنت في الصفحة الرئيسية');
+function doLogin(){
+  var email=$('loginEmail').value.trim();
+  var pass=$('loginPassword').value;
+  var rem=$('rememberMe').checked;
+  if(!email||!pass){showAuthMsg('⚠️ أدخل البريد وكلمة السر');return}
+  setAuthLoading(true);
+  var persist=rem?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION;
+  AUTH.setPersistence(persist).then(function(){return AUTH.signInWithEmailAndPassword(email,pass)})
+    .then(function(){showAuthMsg('✅ تم تسجيل الدخول','success')})
+    .catch(function(err){
+      var m='❌ خطأ في تسجيل الدخول';
+      if(err.code==='auth/user-not-found')m='❌ لا يوجد حساب بهذا البريد';
+      else if(err.code==='auth/wrong-password')m='❌ كلمة السر غير صحيحة';
+      else if(err.code==='auth/invalid-email')m='❌ البريد غير صحيح';
+      else if(err.code==='auth/too-many-requests')m='⚠️ محاولات كثيرة، حاول لاحقاً';
+      else if(err.code==='auth/invalid-credential')m='❌ البريد أو كلمة السر غير صحيحة';
+      showAuthMsg(m);
+    }).then(function(){setAuthLoading(false)});
+}
+function doSignup(){
+  var email=$('signupEmail').value.trim();
+  var pass=$('signupPassword').value;
+  var conf=$('signupPasswordConfirm').value;
+  if(!email||!pass||!conf){showAuthMsg('⚠️ املأ الحقول');return}
+  if(pass.length<6){showAuthMsg('⚠️ كلمة السر 6 أحرف على الأقل');return}
+  if(pass!==conf){showAuthMsg('⚠️ كلمتا السر غير متطابقتين');return}
+  setAuthLoading(true);
+  checkIPLimit().then(function(ip){
+    if(!ip.allowed){showAuthMsg('🚫 الحد الأقصى '+MAX_ACCOUNTS_PER_IP+' حسابات لهذا الجهاز');setAuthLoading(false);return}
+    return AUTH.createUserWithEmailAndPassword(email,pass).then(function(cred){
+      if(cred.user){
+        return registerIPAccount(cred.user.uid).then(function(){
+          return DB.ref('users/'+cred.user.uid+'/profile').set({
+            email:email,name:email.split('@')[0],createdAt:Date.now(),ipHash:ip.key||null
+          });
         });
-
-        // ============================================
-        // 3. مساعدات
-        // ============================================
-        function showToast(msg, type = 'info') {
-            const t = $('toast');
-            t.textContent = msg;
-            t.style.background = type === 'success' ? 'rgba(0, 122, 255, 0.95)' :
-                                type === 'error' ? 'rgba(255, 59, 48, 0.95)' :
-                                'rgba(13, 17, 23, 0.95)';
-            t.className = 'toast show';
-            clearTimeout(t._timeout);
-            t._timeout = setTimeout(() => t.className = 'toast', 3000);
-        }
-
-        function showAuthMsg(msg, type = 'error') {
-            authMsg.textContent = msg;
-            authMsg.className = 'auth-msg show ' + (type === 'success' ? 'success' : 'error');
-            setTimeout(() => { authMsg.className = 'auth-msg'; }, 5000);
-        }
-
-        function setAuthLoading(state) { authLoader.classList.toggle('show', state); }
-
-        function generateId() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let r = '';
-            for (let i = 0; i < 7; i++) r += chars.charAt(Math.floor(Math.random() * chars.length));
-            return r;
-        }
-
-        function extractVideoId(url) {
-            const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&?#]+)/);
-            return m ? m[1] : null;
-        }
-
-        function formatDate(ts) {
-            if (!ts) return '—';
-            const d = new Date(ts);
-            return d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-        }
-
-        function formatDateShort(ts) {
-            if (!ts) return '—';
-            const d = new Date(ts);
-            return d.toLocaleDateString('ar-EG');
-        }
-
-        function copyToClipboard(text) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => showToast('📋 تم النسخ!', 'success'));
-            } else {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                ta.remove();
-                showToast('📋 تم النسخ!', 'success');
-            }
-        }
-
-        function getInitial(txt) {
-            if (!txt) return '؟';
-            return txt.trim().charAt(0).toUpperCase();
-        }
-
-        // ============================================
-        // 4. تقصير الروابط (is.gd مجاني - بدون مفتاح)
-        // ============================================
-        async function shortenUrl(longUrl) {
-            try {
-                const res = await fetch('https://is.gd/create.php?format=json&url=' + encodeURIComponent(longUrl));
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const data = await res.json();
-                if (data.shorturl) return data.shorturl;
-                return longUrl;
-            } catch (e) {
-                console.warn('تعذر تقصير الرابط، استخدام الرابط الأصلي', e);
-                return longUrl;
-            }
-        }
-
-        // ============================================
-        // 5. حماية IP
-        // ============================================
-        const MAX_ACCOUNTS_PER_IP = 3;
-
-        async function getIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                return data.ip;
-            } catch (e) { return null; }
-        }
-
-        function hashIP(ip) { return ip.replace(/\./g, '_').replace(/:/g, '-'); }
-
-        async function checkIPLimit() {
-            const ip = await getIP();
-            if (!ip) return { allowed: true, key: null, count: 0 };
-            const key = hashIP(ip);
-            const snap = await DB.ref('ipAccounts/' + key).once('value');
-            const count = snap.val() ? Object.keys(snap.val()).length : 0;
-            return { allowed: count < MAX_ACCOUNTS_PER_IP, key, count };
-        }
-
-        async function registerIPAccount(uid) {
-            const ip = await getIP();
-            if (!ip) return;
-            const key = hashIP(ip);
-            await DB.ref('ipAccounts/' + key + '/' + uid).set({ createdAt: Date.now() });
-        }
-
-        // ============================================
-        // 6. التبويبات
-        // ============================================
-        $('tabLogin').addEventListener('click', () => {
-            $('tabLogin').classList.add('active');
-            $('tabSignup').classList.remove('active');
-            $('loginForm').style.display = 'block';
-            $('signupForm').style.display = 'none';
-        });
-        $('tabSignup').addEventListener('click', () => {
-            $('tabSignup').classList.add('active');
-            $('tabLogin').classList.remove('active');
-            $('signupForm').style.display = 'block';
-            $('loginForm').style.display = 'none';
-        });
-
-        // ============================================
-        // 7. تسجيل الدخول
-        // ============================================
-        $('loginBtn').addEventListener('click', async () => {
-            const email = $('loginEmail').value.trim();
-            const password = $('loginPassword').value;
-            const remember = $('rememberMe').checked;
-
-            if (!email || !password) { showAuthMsg('⚠️ أدخل البريد وكلمة السر'); return; }
-
-            setAuthLoading(true);
-            try {
-                const persistence = remember
-                    ? firebase.auth.Auth.Persistence.LOCAL
-                    : firebase.auth.Auth.Persistence.SESSION;
-                await AUTH.setPersistence(persistence);
-                await AUTH.signInWithEmailAndPassword(email, password);
-                showAuthMsg('✅ تم تسجيل الدخول', 'success');
-            } catch (err) {
-                let msg = '❌ خطأ في تسجيل الدخول';
-                if (err.code === 'auth/user-not-found') msg = '❌ لا يوجد حساب بهذا البريد';
-                else if (err.code === 'auth/wrong-password') msg = '❌ كلمة السر غير صحيحة';
-                else if (err.code === 'auth/invalid-email') msg = '❌ البريد غير صحيح';
-                else if (err.code === 'auth/too-many-requests') msg = '⚠️ محاولات كثيرة، حاول لاحقاً';
-                else if (err.code === 'auth/invalid-credential') msg = '❌ البريد أو كلمة السر غير صحيحة';
-                showAuthMsg(msg);
-            } finally { setAuthLoading(false); }
-        });
-
-        // ============================================
-        // 8. إنشاء حساب
-        // ============================================
-        $('signupBtn').addEventListener('click', async () => {
-            const email = $('signupEmail').value.trim();
-            const password = $('signupPassword').value;
-            const confirm = $('signupPasswordConfirm').value;
-
-            if (!email || !password || !confirm) { showAuthMsg('⚠️ املأ الحقول'); return; }
-            if (password.length < 6) { showAuthMsg('⚠️ كلمة السر 6 أحرف على الأقل'); return; }
-            if (password !== confirm) { showAuthMsg('⚠️ كلمتا السر غير متطابقتين'); return; }
-
-            setAuthLoading(true);
-            try {
-                const ipCheck = await checkIPLimit();
-                if (!ipCheck.allowed) {
-                    showAuthMsg(`🚫 الحد الأقصى ${MAX_ACCOUNTS_PER_IP} حسابات لهذا الجهاز`);
-                    setAuthLoading(false);
-                    return;
-                }
-
-                const cred = await AUTH.createUserWithEmailAndPassword(email, password);
-                if (cred.user) {
-                    await registerIPAccount(cred.user.uid);
-                    await DB.ref('users/' + cred.user.uid + '/profile').set({
-                        email,
-                        name: email.split('@')[0],
-                        createdAt: Date.now(),
-                        ipHash: ipCheck.key || null
-                    });
-                }
-                showAuthMsg('✅ تم إنشاء الحساب', 'success');
-            } catch (err) {
-                let msg = '❌ خطأ في إنشاء الحساب';
-                if (err.code === 'auth/email-already-in-use') msg = '❌ البريد مستخدم';
-                else if (err.code === 'auth/weak-password') msg = '⚠️ كلمة السر ضعيفة';
-                else if (err.code === 'auth/invalid-email') msg = '❌ البريد غير صحيح';
-                showAuthMsg(msg);
-            } finally { setAuthLoading(false); }
-        });
-
-        // ============================================
-        // 9. نسيت كلمة السر
-        // ============================================
-        $('forgotBtn').addEventListener('click', async () => {
-            const email = $('loginEmail').value.trim();
-            if (!email) { showAuthMsg('⚠️ اكتب بريدك أولاً'); return; }
-            try {
-                await AUTH.sendPasswordResetEmail(email);
-                showAuthMsg('✅ تم إرسال رابط إعادة التعيين', 'success');
-            } catch (err) { showAuthMsg('❌ تعذر الإرسال'); }
-        });
-
-        // ============================================
-        // 10. الدخول بجوجل
-        // ============================================
-        $('googleBtn').addEventListener('click', async () => {
-            setAuthLoading(true);
-            try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                provider.setCustomParameters({ prompt: 'select_account' });
-
-                const ipCheck = await checkIPLimit();
-                if (!ipCheck.allowed) {
-                    showAuthMsg(`🚫 الحد الأقصى ${MAX_ACCOUNTS_PER_IP} حسابات لهذا الجهاز`);
-                    setAuthLoading(false);
-                    return;
-                }
-
-                const result = await AUTH.signInWithPopup(provider);
-                if (result.user) {
-                    const profileSnap = await DB.ref('users/' + result.user.uid + '/profile').once('value');
-                    if (!profileSnap.exists()) {
-                        await registerIPAccount(result.user.uid);
-                        await DB.ref('users/' + result.user.uid + '/profile').set({
-                            email: result.user.email,
-                            name: result.user.displayName || result.user.email.split('@')[0],
-                            createdAt: Date.now(),
-                            ipHash: ipCheck.key || null,
-                            provider: 'google'
-                        });
-                    }
-                }
-            } catch (err) {
-                if (err.code !== 'auth/popup-closed-by-user') showAuthMsg('❌ فشل الدخول بجوجل');
-            } finally { setAuthLoading(false); }
-        });
-
-        // ============================================
-        // 11. مراقبة الدخول
-        // ============================================
-        AUTH.onAuthStateChanged(user => {
-            if (user) {
-                currentUser = user;
-                authView.style.display = 'none';
-                dashboardView.style.display = 'block';
-                loadProfile();
-                loadLinks();
-            } else {
-                currentUser = null;
-                currentProfile = null;
-                authView.style.display = 'block';
-                dashboardView.style.display = 'none';
-                $('loginPassword').value = '';
-                $('signupPassword').value = '';
-                $('signupPasswordConfirm').value = '';
-            }
-        });
-
-        // ============================================
-        // 12. تحميل البروفايل
-        // ============================================
-        async function loadProfile() {
-            if (!currentUser) return;
-            const snap = await DB.ref('users/' + currentUser.uid + '/profile').once('value');
-            currentProfile = snap.val() || {};
-
-            const name = currentProfile.name || (currentUser.email ? currentUser.email.split('@')[0] : 'مستخدم');
-            const initial = getInitial(name);
-
-            $('greetingText').textContent = '👋 مرحباً، ' + name;
-            $('profileBtn').textContent = initial;
-            $('avatarBig').textContent = initial;
-            $('profileEmail').textContent = currentUser.email || '—';
-            $('profileName').textContent = name;
-            $('profileCreated').textContent = currentProfile.createdAt ? formatDateShort(currentProfile.createdAt) : '—';
-            $('editNameInput').value = name;
-        }
-
-        // ============================================
-        // 13. إنشاء رابط
-        // ============================================
-        $('createLinkBtn').addEventListener('click', async () => {
-            if (!currentUser) return;
-
-            const mainUrl = $('mainUrlInput').value.trim();
-            const youtubeUrl = $('youtubeUrlInput').value.trim();
-
-            if (!mainUrl) { showToast('⚠️ أدخل الرابط الأساسي', 'error'); $('mainUrlInput').focus(); return; }
-            if (!youtubeUrl) { showToast('⚠️ أدخل رابط يوتيوب', 'error'); $('youtubeUrlInput').focus(); return; }
-
-            const videoId = extractVideoId(youtubeUrl);
-            if (!videoId) { showToast('⚠️ رابط يوتيوب غير صحيح', 'error'); return; }
-
-            const btn = $('createLinkBtn');
-            btn.disabled = true;
-            btn.style.opacity = '0.6';
-            $('createLoader').classList.add('show');
-            $('newLinkResult').classList.remove('show');
-
-            try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${YT_KEY}`);
-                const data = await res.json();
-
-                let currentLikes = 0, currentComments = 0;
-                if (data.items && data.items.length > 0) {
-                    currentLikes = parseInt(data.items[0].statistics.likeCount) || 0;
-                    currentComments = parseInt(data.items[0].statistics.commentCount) || 0;
-                }
-
-                const linkId = generateId();
-                const linkData = {
-                    mainUrl,
-                    youtubeUrl,
-                    videoId,
-                    initialLikes: currentLikes,
-                    initialComments: currentComments,
-                    createdAt: Date.now(),
-                    visits: 0,
-                    completed: 0,
-                    addedLikes: 0,
-                    addedComments: 0,
-                    ownerUid: currentUser.uid,
-                    ownerEmail: currentUser.email || ''
-                };
-
-                await DB.ref('links/' + linkId).set(linkData);
-
-                const longLink = VERIFY_PAGE_URL + linkId;
-                const shortLink = await shortenUrl(longLink);
-
-                currentGeneratedLink = shortLink;
-                $('generatedLinkDisplay').textContent = shortLink;
-                $('newLinkResult').classList.add('show');
-
-                // اربط الـ linkId بالرابط المختصر لاستخدامه لاحقاً
-                await DB.ref('links/' + linkId + '/shortUrl').set(shortLink);
-
-                $('mainUrlInput').value = '';
-                $('youtubeUrlInput').value = '';
-
-                showToast('✅ تم إنشاء الرابط!', 'success');
-                loadLinks();
-
-            } catch (err) {
-                console.error(err);
-                showToast('❌ حدث خطأ', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                $('createLoader').classList.remove('show');
-            }
-        });
-
-        $('copyNewLinkBtn').addEventListener('click', () => copyToClipboard($('generatedLinkDisplay').textContent));
-        $('openNewLinkBtn').addEventListener('click', () => window.open($('generatedLinkDisplay').textContent, '_blank'));
-
-        // ============================================
-        // 14. تحميل الروابط
-        // ============================================
-        function loadLinks() {
-            if (!currentUser) return;
-            $('listLoader').classList.add('show');
-
-            DB.ref('links').orderByChild('ownerUid').equalTo(currentUser.uid).once('value', snapshot => {
-                $('listLoader').classList.remove('show');
-                renderLinks(snapshot.val() || {});
-            }).catch(err => {
-                console.error('فشل الترتيب، استخدام الفلترة اليدوية', err);
-                DB.ref('links').once('value', snap => {
-                    $('listLoader').classList.remove('show');
-                    const all = snap.val() || {};
-                    const filtered = {};
-                    for (const k in all) {
-                        if (all[k].ownerUid === currentUser.uid) filtered[k] = all[k];
-                    }
-                    renderLinks(filtered);
-                });
+      }
+    }).then(function(){showAuthMsg('✅ تم إنشاء الحساب','success')});
+  }).catch(function(err){
+    var m='❌ خطأ في إنشاء الحساب';
+    if(err.code==='auth/email-already-in-use')m='❌ البريد مستخدم';
+    else if(err.code==='auth/weak-password')m='⚠️ كلمة السر ضعيفة';
+    else if(err.code==='auth/invalid-email')m='❌ البريد غير صحيح';
+    showAuthMsg(m);
+  }).then(function(){setAuthLoading(false)});
+}
+function doForgot(){
+  var email=$('loginEmail').value.trim();
+  if(!email){showAuthMsg('⚠️ اكتب بريدك أولاً');return}
+  AUTH.sendPasswordResetEmail(email).then(function(){showAuthMsg('✅ تم إرسال رابط إعادة التعيين','success')})
+    .catch(function(){showAuthMsg('❌ تعذر الإرسال')});
+}
+function doGoogle(){
+  setAuthLoading(true);
+  var provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  checkIPLimit().then(function(ip){
+    if(!ip.allowed){showAuthMsg('🚫 الحد الأقصى '+MAX_ACCOUNTS_PER_IP+' حسابات لهذا الجهاز');setAuthLoading(false);return}
+    return AUTH.signInWithPopup(provider).then(function(res){
+      if(res.user){
+        return DB.ref('users/'+res.user.uid+'/profile').once('value').then(function(s){
+          if(!s.exists()){
+            return registerIPAccount(res.user.uid).then(function(){
+              return DB.ref('users/'+res.user.uid+'/profile').set({
+                email:res.user.email,
+                name:res.user.displayName||res.user.email.split('@')[0],
+                createdAt:Date.now(),ipHash:ip.key||null,provider:'google'
+              });
             });
-        }
-
-        function renderLinks(data) {
-            const keys = Object.keys(data);
-            let totalVisits = 0, totalCompleted = 0, totalLikes = 0, totalComments = 0;
-
-            if (keys.length === 0) {
-                $('linksContainer').innerHTML = `
-                    <div class="empty-state">
-                        <span class="big-icon">📭</span>
-                        <p>لا توجد روابط بعد</p>
-                    </div>`;
-                $('totalLinks').textContent = '0';
-                $('totalVisits').textContent = '0';
-                $('totalCompleted').textContent = '0';
-                $('totalLikes').textContent = '0';
-                $('totalComments').textContent = '0';
-                $('linksCount').textContent = '0';
-                return;
-            }
-
-            keys.sort((a, b) => (data[b].createdAt || 0) - (data[a].createdAt || 0));
-
-            let html = '';
-            for (const key of keys) {
-                const link = data[key];
-                const visits = link.visits || 0;
-                const completed = link.completed || 0;
-                const addedLikes = link.addedLikes || 0;
-                const addedComments = link.addedComments || 0;
-                const incomplete = Math.max(0, visits - completed);
-
-                totalVisits += visits;
-                totalCompleted += completed;
-                totalLikes += addedLikes;
-                totalComments += addedComments;
-
-                const mainUrlDisplay = link.mainUrl ?
-                    (link.mainUrl.length > 45 ? link.mainUrl.substring(0, 45) + '...' : link.mainUrl) :
-                    'غير محدد';
-                const fullLink = link.shortUrl || (VERIFY_PAGE_URL + key);
-
-                html += `
-                    <div class="link-card">
-                        <div class="top-row">
-                            <div class="info">
-                                <div class="link-id">🆔 ${key}</div>
-                                <div class="dest-url"><span>🎯</span> ${mainUrlDisplay}</div>
-                                <div class="youtube-info">▶️ ${link.youtubeUrl || '—'}</div>
-                            </div>
-                        </div>
-
-                        <div class="mini-stats">
-                            <div class="mini-stat">
-                                <div class="mnum">${visits}</div>
-                                <div class="mlabel">👁️ زوار</div>
-                            </div>
-                            <div class="mini-stat">
-                                <div class="mnum">${completed}</div>
-                                <div class="mlabel">✅ أكملوا</div>
-                            </div>
-                            <div class="mini-stat">
-                                <div class="mnum">${incomplete}</div>
-                                <div class="mlabel">⏳ لم يكملوا</div>
-                            </div>
-                            <div class="mini-stat">
-                                <div class="mnum">${addedLikes}</div>
-                                <div class="mlabel">👍 لايكات</div>
-                            </div>
-                            <div class="mini-stat">
-                                <div class="mnum">${addedComments}</div>
-                                <div class="mlabel">💬 تعليقات</div>
-                            </div>
-                        </div>
-
-                        <div class="actions">
-                            <button class="btn-sm copy" onclick="copyLink('${fullLink}')">📋 نسخ</button>
-                            <button class="btn-sm visit" onclick="window.open('${fullLink}', '_blank')">🔗 فتح</button>
-                            <button class="btn-sm delete" onclick="deleteLink('${key}')">🗑️ حذف</button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            $('linksContainer').innerHTML = html;
-            $('totalLinks').textContent = keys.length;
-            $('totalVisits').textContent = totalVisits;
-            $('totalCompleted').textContent = totalCompleted;
-            $('totalLikes').textContent = totalLikes;
-            $('totalComments').textContent = totalComments;
-            $('linksCount').textContent = keys.length;
-        }
-
-        window.copyLink = text => copyToClipboard(text);
-
-        window.deleteLink = linkId => {
-            if (!currentUser) return;
-            if (!confirm('⚠️ تأكيد حذف الرابط؟')) return;
-
-            DB.ref('links/' + linkId).once('value').then(snap => {
-                if (!snap.exists()) { showToast('❌ غير موجود', 'error'); return; }
-                if (snap.val().ownerUid !== currentUser.uid) {
-                    showToast('🚫 لا يمكنك حذف هذا الرابط', 'error');
-                    return;
-                }
-                return DB.ref('links/' + linkId).remove();
-            }).then(() => {
-                showToast('🗑️ تم الحذف', 'success');
-                loadLinks();
-            }).catch(err => {
-                console.error(err);
-                showToast('❌ فشل الحذف', 'error');
-            });
-        };
-
-        // ============================================
-        // 15. Modal البروفايل
-        // ============================================
-        $('profileBtn').addEventListener('click', () => {
-            $('profileModal').classList.add('show');
-            history.pushState({ page: 'modal' }, '', location.href);
-            $('currentPassInput').value = '';
-            $('newPassInput').value = '';
-            $('newPassConfirmInput').value = '';
+          }
         });
+      }
+    });
+  }).catch(function(err){
+    if(err.code!=='auth/popup-closed-by-user')showAuthMsg('❌ فشل الدخول بجوجل');
+  }).then(function(){setAuthLoading(false)});
+}
 
-        $('profileCloseBtn').addEventListener('click', () => {
-            $('profileModal').classList.remove('show');
-        });
+/* ---------- On Auth Changed ---------- */
+function onAuthChanged(user){
+  if(user){
+    currentUser=user;
+    $('authView').style.display='none';
+    $('appView').style.display='block';
+    loadProfile();
+    loadLinks();
+  }else{
+    currentUser=null;currentProfile=null;
+    $('authView').style.display='flex';
+    $('appView').style.display='none';
+    $('loginPassword').value='';
+    $('signupPassword').value='';
+    $('signupPasswordConfirm').value='';
+    closeSidebar();
+  }
+}
 
-        $('profileModal').addEventListener('click', (e) => {
-            if (e.target === $('profileModal')) $('profileModal').classList.remove('show');
-        });
+/* ---------- Load Profile ---------- */
+function loadProfile(){
+  if(!currentUser)return;
+  DB.ref('users/'+currentUser.uid+'/profile').once('value').then(function(s){
+    currentProfile=s.val()||{};
+    var name=currentProfile.name||(currentUser.email?currentUser.email.split('@')[0]:'مستخدم');
+    var initial=getInitial(name);
+    $('greetingText').textContent='👋 مرحباً، '+name;
+    $('sidebarBalance').textContent='$'+(currentProfile.balance||0).toFixed(2);
+    $('mobileBalance').textContent='$'+(currentProfile.balance||0).toFixed(2);
+    $('withdrawBalance').textContent='$'+(currentProfile.balance||0).toFixed(2);
+    $('settingsAvatar').innerHTML=currentProfile.avatar
+      ?'<img src="'+currentProfile.avatar+'" alt="صورة الملف الشخصي">'
+      :initial;
+    $('settingsName').value=name;
+    $('settingsEmail').value=currentUser.email||'—';
+    $('referralCode').value=currentUser.uid.substring(0,10).toUpperCase();
+  });
+}
 
-        $('saveNameBtn').addEventListener('click', async () => {
-            const newName = $('editNameInput').value.trim();
-            if (!newName) { showToast('⚠️ أدخل الاسم', 'error'); return; }
-            if (newName.length > 30) { showToast('⚠️ الاسم طويل جداً', 'error'); return; }
+/* ---------- Sidebar / Navigation ---------- */
+function closeSidebar(){
+  $('sidebar').classList.remove('open');
+  $('overlayBackdrop').classList.remove('show');
+}
+function openSidebar(){
+  $('sidebar').classList.add('open');
+  $('overlayBackdrop').classList.add('show');
+}
+function bindNavigation(){
+  var items=document.querySelectorAll('.nav-item[data-page]');
+  items.forEach(function(el){
+    el.addEventListener('click',function(){
+      var page=el.getAttribute('data-page');
+      items.forEach(function(x){x.classList.remove('active')});
+      el.classList.add('active');
+      document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+      var target=$('page-'+page);
+      if(target)target.classList.add('active');
+      if(window.innerWidth<=900)closeSidebar();
+      if(page==='manage-links')loadLinks();
+      if(page==='transactions')loadTransactions();
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    el.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}
+    });
+  });
+  $('menuBtn').addEventListener('click',openSidebar);
+  $('overlayBackdrop').addEventListener('click',closeSidebar);
+  $('sidebarLogout').addEventListener('click',doLogout);
+}
+function doLogout(){
+  if(!confirm('هل تريد تسجيل الخروج؟'))return;
+  AUTH.signOut();
+}
 
-            try {
-                await DB.ref('users/' + currentUser.uid + '/profile/name').set(newName);
-                currentProfile.name = newName;
-                const initial = getInitial(newName);
-                $('greetingText').textContent = '👋 مرحباً، ' + newName;
-                $('profileBtn').textContent = initial;
-                $('avatarBig').textContent = initial;
-                $('profileName').textContent = newName;
-                showToast('✅ تم حفظ الاسم', 'success');
-            } catch (err) {
-                console.error(err);
-                showToast('❌ فشل الحفظ', 'error');
-            }
-        });
+/* ---------- Create Link ---------- */
+function bindCreateLink(){
+  $('createLinkBtn').addEventListener('click',createLink);
+  ['mainUrlInput','youtubeUrlInput'].forEach(function(id){
+    $(id).addEventListener('keydown',function(e){if(e.key==='Enter')createLink()});
+  });
+  $('copyNewLinkBtn').addEventListener('click',function(){
+    copyText($('generatedLinkDisplay').textContent);
+  });
+  $('openNewLinkBtn').addEventListener('click',function(){
+    window.open($('generatedLinkDisplay').textContent,'_blank');
+  });
+}
+function createLink(){
+  if(!currentUser)return;
+  var mainUrl=$('mainUrlInput').value.trim();
+  var ytUrl=$('youtubeUrlInput').value.trim();
+  if(!mainUrl){showToast('⚠️ أدخل الرابط الأساسي','error');$('mainUrlInput').focus();return}
+  if(!ytUrl){showToast('⚠️ أدخل رابط يوتيوب','error');$('youtubeUrlInput').focus();return}
+  var vid=extractVideoId(ytUrl);
+  if(!vid){showToast('⚠️ رابط يوتيوب غير صحيح','error');return}
+  var btn=$('createLinkBtn');btn.disabled=true;btn.style.opacity='.6';
+  $('createLoader').classList.add('show');
+  $('newLinkResult').classList.remove('show');
+  fetch('https://www.googleapis.com/youtube/v3/videos?part=statistics&id='+vid+'&key='+YT_KEY)
+    .then(function(r){return r.json()})
+    .then(function(data){
+      var likes=0,comments=0;
+      if(data.items&&data.items.length>0){
+        likes=parseInt(data.items[0].statistics.likeCount)||0;
+        comments=parseInt(data.items[0].statistics.commentCount)||0;
+      }
+      var linkId=generateId();
+      var linkData={
+        mainUrl:mainUrl,youtubeUrl:ytUrl,videoId:vid,
+        initialLikes:likes,initialComments:comments,
+        createdAt:Date.now(),visits:0,completed:0,addedLikes:0,addedComments:0,
+        ownerUid:currentUser.uid,ownerEmail:currentUser.email||''
+      };
+      return DB.ref('links/'+linkId).set(linkData).then(function(){
+        return shortenUrl(VERIFY_PAGE_URL+linkId);
+      }).then(function(short){
+        currentGeneratedLink=short;
+        $('generatedLinkDisplay').textContent=short;
+        $('newLinkResult').classList.add('show');
+        return DB.ref('links/'+linkId+'/shortUrl').set(short);
+      }).then(function(){
+        $('mainUrlInput').value='';$('youtubeUrlInput').value='';
+        showToast('✅ تم إنشاء الرابط!','success');
+        loadLinks();
+      });
+    }).catch(function(err){
+      console.error(err);showToast('❌ حدث خطأ','error');
+    }).then(function(){
+      btn.disabled=false;btn.style.opacity='1';
+      $('createLoader').classList.remove('show');
+    });
+}
 
-        $('changePassBtn').addEventListener('click', async () => {
-            const cur = $('currentPassInput').value;
-            const np = $('newPassInput').value;
-            const npc = $('newPassConfirmInput').value;
+/* ---------- Load & Render Links ---------- */
+function loadLinks(){
+  if(!currentUser)return;
+  $('listLoader').classList.add('show');
+  DB.ref('links').orderByChild('ownerUid').equalTo(currentUser.uid).once('value')
+    .then(function(snap){
+      $('listLoader').classList.remove('show');
+      allLinksCache=snap.val()||{};
+      renderLinks(allLinksCache);
+    }).catch(function(){
+      DB.ref('links').once('value').then(function(snap){
+        $('listLoader').classList.remove('show');
+        var all=snap.val()||{},f={};
+        for(var k in all){if(all[k].ownerUid===currentUser.uid)f[k]=all[k]}
+        allLinksCache=f;renderLinks(f);
+      });
+    });
+}
+function renderLinks(data){
+  var keys=Object.keys(data);
+  var tVisits=0,tCompleted=0,tLikes=0,tComments=0;
+  if(keys.length===0){
+    $('linksContainer').innerHTML='<div class="empty-state"><span class="big-icon">📭</span><p>لا توجد روابط بعد</p><small>أنشئ أول رابط من لوحة التحكم</small></div>';
+    $('totalLinks').textContent='0';$('totalVisits').textContent='0';
+    $('totalCompleted').textContent='0';$('totalLikes').textContent='0';
+    $('totalComments').textContent='0';$('totalEarnings').textContent='$0.00';
+    $('linksCount').textContent='0';
+    return;
+  }
+  keys.sort(function(a,b){return (data[b].createdAt||0)-(data[a].createdAt||0)});
+  var html='';
+  for(var i=0;i<keys.length;i++){
+    var key=keys[i],link=data[key];
+    var visits=link.visits||0,completed=link.completed||0;
+    var addedLikes=link.addedLikes||0,addedComments=link.addedComments||0;
+    var incomplete=Math.max(0,visits-completed);
+    tVisits+=visits;tCompleted+=completed;tLikes+=addedLikes;tComments+=addedComments;
+    var mainDisplay=link.mainUrl?
+      (link.mainUrl.length>45?link.mainUrl.substring(0,45)+'...':link.mainUrl):'غير محدد';
+    var full=link.shortUrl||(VERIFY_PAGE_URL+key);
+    html+='<div class="link-card">'+
+      '<div class="top-row"><div class="info">'+
+        '<div class="link-id">🆔 '+key+'</div>'+
+        '<div class="dest-url"><span>🎯</span> '+escapeHtml(mainDisplay)+'</div>'+
+        '<div class="youtube-info">▶️ '+escapeHtml(link.youtubeUrl||'—')+'</div>'+
+      '</div></div>'+
+      '<div class="mini-stats">'+
+        '<div class="mini-stat"><div class="mnum">'+visits+'</div><div class="mlabel">👁️ زوار</div></div>'+
+        '<div class="mini-stat"><div class="mnum">'+completed+'</div><div class="mlabel">✅ أكملوا</div></div>'+
+        '<div class="mini-stat"><div class="mnum">'+incomplete+'</div><div class="mlabel">⏳ لم يكملوا</div></div>'+
+        '<div class="mini-stat"><div class="mnum">'+addedLikes+'</div><div class="mlabel">👍 لايكات</div></div>'+
+        '<div class="mini-stat"><div class="mnum">'+addedComments+'</div><div class="mlabel">💬 تعليقات</div></div>'+
+      '</div>'+
+      '<div class="actions">'+
+        '<button class="btn-sm copy" data-act="copy" data-link="'+escapeHtml(full)+'">📋 نسخ</button>'+
+        '<button class="btn-sm visit" data-act="open" data-link="'+escapeHtml(full)+'">🔗 فتح</button>'+
+        '<button class="btn-sm edit" data-act="edit" data-id="'+key+'">✏️ تعديل</button>'+
+        '<button class="btn-sm delete" data-act="delete" data-id="'+key+'">🗑️ حذف</button>'+
+      '</div>'+
+    '</div>';
+  }
+  $('linksContainer').innerHTML=html;
+  $('totalLinks').textContent=keys.length;
+  $('totalVisits').textContent=tVisits;
+  $('totalCompleted').textContent=tCompleted;
+  $('totalLikes').textContent=tLikes;
+  $('totalComments').textContent=tComments;
+  $('totalEarnings').textContent='$'+(tVisits/1000*RATE_PER_1000).toFixed(2);
+  $('linksCount').textContent=keys.length;
 
-            if (!cur || !np || !npc) { showToast('⚠️ املأ جميع الحقول', 'error'); return; }
-            if (np.length < 6) { showToast('⚠️ كلمة السر 6 أحرف على الأقل', 'error'); return; }
-            if (np !== npc) { showToast('⚠️ كلمتا السر غير متطابقتين', 'error'); return; }
+  $('linksContainer').querySelectorAll('[data-act]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var act=b.getAttribute('data-act');
+      if(act==='copy')copyText(b.getAttribute('data-link'));
+      else if(act==='open')window.open(b.getAttribute('data-link'),'_blank');
+      else if(act==='edit')openEditLink(b.getAttribute('data-id'));
+      else if(act==='delete')deleteLink(b.getAttribute('data-id'));
+    });
+  });
+}
+function deleteLink(id){
+  if(!currentUser)return;
+  if(!confirm('⚠️ تأكيد حذف الرابط؟'))return;
+  DB.ref('links/'+id).once('value').then(function(s){
+    if(!s.exists()){showToast('❌ غير موجود','error');return}
+    if(s.val().ownerUid!==currentUser.uid){showToast('🚫 لا يمكنك حذف هذا الرابط','error');return}
+    return DB.ref('links/'+id).remove();
+  }).then(function(){showToast('🗑️ تم الحذف','success');loadLinks()})
+    .catch(function(){showToast('❌ فشل الحذف','error')});
+}
 
-            try {
-                const cred = firebase.auth.EmailAuthProvider.credential(currentUser.email, cur);
-                await currentUser.reauthenticateWithCredential(cred);
-                await currentUser.updatePassword(np);
-                $('currentPassInput').value = '';
-                $('newPassInput').value = '';
-                $('newPassConfirmInput').value = '';
-                showToast('✅ تم تغيير كلمة المرور', 'success');
-            } catch (err) {
-                console.error(err);
-                if (err.code === 'auth/wrong-password') showToast('❌ كلمة السر الحالية خاطئة', 'error');
-                else if (err.code === 'auth/requires-recent-login') showToast('⚠️ يرجى إعادة تسجيل الدخول', 'error');
-                else showToast('❌ فشل تغيير كلمة المرور', 'error');
-            }
-        });
+/* ---------- Edit Link ---------- */
+function openEditLink(id){
+  var l=allLinksCache[id];if(!l)return;
+  $('editLinkId').value=id;
+  $('editMainUrl').value=l.mainUrl||'';
+  $('editYoutubeUrl').value=l.youtubeUrl||'';
+  $('editLinkModal').classList.add('show');
+}
+function bindEditLink(){
+  $('editLinkClose').addEventListener('click',function(){$('editLinkModal').classList.remove('show')});
+  $('editLinkModal').addEventListener('click',function(e){
+    if(e.target===$('editLinkModal'))$('editLinkModal').classList.remove('show');
+  });
+  $('saveEditLinkBtn').addEventListener('click',function(){
+    var id=$('editLinkId').value;
+    var main=$('editMainUrl').value.trim();
+    var yt=$('editYoutubeUrl').value.trim();
+    if(!main||!yt){showToast('⚠️ املأ الحقول','error');return}
+    DB.ref('links/'+id).update({mainUrl:main,youtubeUrl:yt})
+      .then(function(){
+        showToast('✅ تم الحفظ','success');
+        $('editLinkModal').classList.remove('show');
+        loadLinks();
+      }).catch(function(){showToast('❌ فشل الحفظ','error')});
+  });
+}
 
-        $('logoutBtnModal').addEventListener('click', async () => {
-            if (!confirm('هل تريد تسجيل الخروج؟')) return;
-            $('profileModal').classList.remove('show');
-            await AUTH.signOut();
-        });
+/* ---------- Withdraw ---------- */
+function selectUC(uc,amount){
+  if(amount&&amount>0){
+    if((currentProfile&&currentProfile.balance||0)<amount){
+      showToast('⚠️ رصيدك غير كافٍ. تحتاج $'+amount,'error');return;
+    }
+    selectedUC=uc;
+    $('wdUcAmount').value=String(uc);
+    showToast('✅ تم اختيار '+uc+' UC','success');
+    var card=$('page-withdraw');if(card)card.scrollIntoView({behavior:'smooth'});
+  }else{
+    var bal=(currentProfile&&currentProfile.balance||0);
+    if(bal>=amount){
+      selectedUC=uc;$('wdUcAmount').value=String(uc);
+      showToast('✅ تم اختيار '+uc+' UC','success');
+    }
+  }
+}
+function contactTelegram(uc){
+  var msg=encodeURIComponent('مرحباً، أريد شحن '+uc+' UC لحساب ببجي. رصيدي: $'+((currentProfile&&currentProfile.balance)||0).toFixed(2));
+  window.open('https://t.me/'+TELEGRAM_USER+'?text='+msg,'_blank');
+}
+function bindWithdraw(){
+  $('wdSubmitBtn').addEventListener('click',submitWithdraw);
+}
+function submitWithdraw(){
+  if(!currentUser)return;
+  var uc=$('wdUcAmount').value;
+  var pubgId=$('wdPubgId').value.trim();
+  var name=$('wdFullName').value.trim();
+  var phone=$('wdPhone').value.trim();
+  var country=$('wdCountry').value;
+  var city=$('wdCity').value.trim();
+  var address=$('wdAddress').value.trim();
+  if(!uc){showToast('⚠️ اختر كمية UC','error');return}
+  if(!pubgId){showToast('⚠️ أدخل ID حساب ببجي','error');return}
+  if(!name){showToast('⚠️ أدخل اسمك الكامل','error');return}
+  if(!phone){showToast('⚠️ أدخل رقم الهاتف/تيليجرام','error');return}
+  var bal=(currentProfile&&currentProfile.balance||0);
+  var need=uc==='360'?6:uc==='660'?12:0;
+  if(need>0&&bal<need){showToast('⚠️ رصيدك غير كافٍ ($'+need+' مطلوب)','error');return}
+  var req={
+    uid:currentUser.uid,
+    email:currentUser.email||'',
+    uc:uc,price:need,pubgId:pubgId,name:name,phone:phone,
+    country:country,city:city,address:address,
+    status:'pending',createdAt:Date.now()
+  };
+  DB.ref('withdrawals').push(req).then(function(){
+    showToast('✅ تم إرسال الطلب، سيراجعه الفريق','success');
+    $('wdPubgId').value='';$('wdFullName').value='';$('wdPhone').value='';
+    $('wdCity').value='';$('wdAddress').value='';$('wdUcAmount').value='';
+  }).catch(function(){showToast('❌ فشل الإرسال','error')});
+}
 
-        $('refreshBtn').addEventListener('click', () => {
-            if (currentUser) {
-                loadLinks();
-                loadProfile();
-                showToast('🔄 تم التحديث');
-            }
-        });
+/* ---------- Transactions ---------- */
+function loadTransactions(){
+  if(!currentUser)return;
+  DB.ref('withdrawals').orderByChild('uid').equalTo(currentUser.uid).once('value')
+    .then(function(s){
+      var data=s.val()||{};
+      var keys=Object.keys(data);
+      if(keys.length===0){
+        $('txContainer').innerHTML='<div class="empty-state"><span class="big-icon">📭</span><p>لا توجد عمليات بعد</p></div>';
+        return;
+      }
+      keys.sort(function(a,b){return (data[b].createdAt||0)-(data[a].createdAt||0)});
+      var html='';
+      keys.forEach(function(k){
+        var r=data[k];
+        var statusMap={pending:'⏳ قيد المراجعة',approved:'✅ تمت الموافقة',rejected:'❌ مرفوض',completed:'🎉 مكتمل'};
+        var status=statusMap[r.status]||r.status;
+        html+='<div class="link-card">'+
+          '<div class="top-row"><div class="info">'+
+            '<div class="link-id">💎 '+escapeHtml(r.uc)+' UC</div>'+
+            '<div class="dest-url"><span>🎮</span> ID: '+escapeHtml(r.pubgId)+'</div>'+
+            '<div class="youtube-info">👤 '+escapeHtml(r.name)+' • 📱 '+escapeHtml(r.phone)+'</div>'+
+          '</div></div>'+
+          '<div class="mini-stats" style="grid-template-columns:repeat(3,1fr)">'+
+            '<div class="mini-stat"><div class="mnum">$'+(r.price||0)+'</div><div class="mlabel">💰 السعر</div></div>'+
+            '<div class="mini-stat"><div class="mnum" style="font-size:12px">'+status+'</div><div class="mlabel">📌 الحالة</div></div>'+
+            '<div class="mini-stat"><div class="mnum" style="font-size:12px">'+formatDateShort(r.createdAt)+'</div><div class="mlabel">📅 التاريخ</div></div>'+
+          '</div>'+
+        '</div>';
+      });
+      $('txContainer').innerHTML=html;
+    });
+}
 
-        // ============================================
-        // 16. Enter للتنقل
-        // ============================================
-        ['loginEmail', 'loginPassword'].forEach(id => {
-            $(id).addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
-        });
-        ['signupEmail', 'signupPassword', 'signupPasswordConfirm'].forEach(id => {
-            $(id).addEventListener('keydown', e => { if (e.key === 'Enter') $('signupBtn').click(); });
-        });
-        ['mainUrlInput', 'youtubeUrlInput'].forEach(id => {
-            $(id).addEventListener('keydown', e => { if (e.key === 'Enter') $('createLinkBtn').click(); });
-        });
+/* ---------- Settings ---------- */
+function bindSettings(){
+  $('saveProfileBtn').addEventListener('click',saveProfile);
+  $('changePassBtn').addEventListener('click',changePass);
+  $('copyRefBtn').addEventListener('click',function(){copyText($('referralCode').value)});
+  $('avatarUpload').addEventListener('change',uploadAvatar);
+}
+function saveProfile(){
+  var name=$('settingsName').value.trim();
+  if(!name){showToast('⚠️ أدخل الاسم','error');return}
+  DB.ref('users/'+currentUser.uid+'/profile/name').set(name).then(function(){
+    currentProfile.name=name;
+    $('greetingText').textContent='👋 مرحباً، '+name;
+    $('settingsAvatar').innerHTML=currentProfile.avatar
+      ?'<img src="'+currentProfile.avatar+'" alt="صورة الملف الشخصي">'
+      :getInitial(name);
+    showToast('✅ تم حفظ الاسم','success');
+  }).catch(function(){showToast('❌ فشل الحفظ','error')});
+}
+function uploadAvatar(e){
+  var f=e.target.files[0];if(!f)return;
+  if(f.size>500*1024){showToast('⚠️ الصورة كبيرة (الحد 500KB)','error');return}
+  var r=new FileReader();
+  r.onload=function(){
+    var img=r.result;
+    DB.ref('users/'+currentUser.uid+'/profile/avatar').set(img).then(function(){
+      currentProfile.avatar=img;
+      $('settingsAvatar').innerHTML='<img src="'+img+'" alt="صورة الملف الشخصي">';
+      showToast('✅ تم رفع الصورة','success');
+    }).catch(function(){showToast('❌ فشل الرفع','error')});
+  };
+  r.readAsDataURL(f);
+}
+function changePass(){
+  var cur=$('currentPassInput').value;
+  var np=$('newPassInput').value;
+  var npc=$('newPassConfirmInput').value;
+  if(!cur||!np||!npc){showToast('⚠️ املأ جميع الحقول','error');return}
+  if(np.length<6){showToast('⚠️ كلمة السر 6 أحرف على الأقل','error');return}
+  if(np!==npc){showToast('⚠️ كلمتا السر غير متطابقتين','error');return}
+  var cred=firebase.auth.EmailAuthProvider.credential(currentUser.email,cur);
+  currentUser.reauthenticateWithCredential(cred).then(function(){
+    return currentUser.updatePassword(np);
+  }).then(function(){
+    $('currentPassInput').value='';$('newPassInput').value='';$('newPassConfirmInput').value='';
+    showToast('✅ تم تغيير كلمة المرور','success');
+  }).catch(function(err){
+    if(err.code==='auth/wrong-password')showToast('❌ كلمة السر الحالية خاطئة','error');
+    else if(err.code==='auth/requires-recent-login')showToast('⚠️ يرجى إعادة تسجيل الدخول','error');
+    else showToast('❌ فشل تغيير كلمة المرور','error');
+  });
+}
 
-        setInterval(() => { if (currentUser) loadLinks(); }, 30000);
+/* ---------- Levels ---------- */
+function updateLevels(){
+  var v=parseInt($('totalVisits').textContent)||0;
+  var lv=v<1000?1:v<10000?2:v<50000?3:4;
+  var next=lv+1;
+  var prevLimit=[0,1000,10000,50000][lv-1]||0;
+  var nextLimit=[1000,10000,50000,Infinity][lv-1]||Infinity;
+  $('lvCurrent').textContent=lv;
+  $('lvNext').textContent=lv<4?next:'—';
+  var pct=lv>=4?100:Math.min(100,Math.round((v-prevLimit)/(nextLimit-prevLimit)*100));
+  $('lvProgress').textContent=pct+'%';
+  $('lvProgressBar').style.width=pct+'%';
+  $('lvHint').textContent=lv>=4?'🎉 وصلت لأعلى مستوى!':('تحتاج '+(nextLimit-v)+' زائر إضافي للمستوى '+next);
+}
 
-        console.log('🚀 Dashboard Loaded');
-    </script>
+/* ---------- Event Hooks for cross updates ---------- */
+var _origRenderLinks=renderLinks;
+renderLinks=function(d){_origRenderLinks(d);updateLevels()};
+
+/* ---------- Boot ---------- */
+function boot(){
+  initFirebase();
+  bindAuthUI();
+  bindNavigation();
+  bindCreateLink();
+  bindEditLink();
+  bindWithdraw();
+  bindSettings();
+  setInterval(function(){if(currentUser)loadLinks()},30000);
+  console.log('🚀 Dashboard Loaded');
+}
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
+else boot();
+
+/* Expose functions used in HTML inline handlers */
+window.selectUC=selectUC;
+window.contactTelegram=contactTelegram;
+})();
+</script>
 </body>
 </html>
