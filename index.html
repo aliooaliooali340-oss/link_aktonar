@@ -2,884 +2,1228 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#007aff">
-<meta name="description" content="أقوى موقع اختصار روابط عربي - اختصر روابطك، اربح المال، واسحب أرباحك بسهولة عبر شحن شدات ببجي موبايل. تسجيل مجاني وسريع.">
-<meta name="keywords" content="اختصار روابط, shortlink, ربح المال, شدات ببجي, PUBG Mobile UC, اختصار روابط اكتوبر">
-<meta name="author" content="اختصار روابط اكتوبر">
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph -->
-<meta property="og:title" content="موقع اختصار روابط اكتوبر - اربح من روابطك">
-<meta property="og:description" content="اختصر روابطك واربح المال. اسحب أرباحك عبر شحن شدات ببجي أو تحويلات بنكية.">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="ar_AR">
-
-<!-- Schema.org -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "موقع اختصار روابط اكتوبر",
-  "description": "أقوى موقع اختصار روابط عربي - اربح المال من روابطك",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "inLanguage": "ar"
-}
-</script>
-
-<title>موقع اختصار روابط اكتوبر | اربح المال من روابطك</title>
-
-<!-- Preconnect for performance -->
-<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://aktubar98.firebaseapp.com" crossorigin>
-<link rel="dns-prefetch" href="https://is.gd">
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a4d9e">
+<title>BluePost</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { -webkit-text-size-adjust:100%; }
 
-:root{
-  --aurora-1:#7c3aed;--aurora-2:#3b82f6;--aurora-3:#06b6d4;--aurora-4:#ec4899;--aurora-5:#8b5cf6;
-  --blue-light:#5ac8fa;--blue:#007aff;--blue-mid:#0a5cd6;--blue-dark:#003d82;
-  --violet:#7c3aed;--cyan:#06b6d4;--pink:#ec4899;
-  --black:#0d1117;--gray-1:#f2f2f7;--gray-2:#e5e5ea;--gray-3:#c7c7cc;--gray-4:#8e8e93;--gray-5:#48484a;--white:#fff;
-  --radius-xl:28px;--radius-lg:22px;--radius-md:16px;--radius-sm:12px;
-  --shadow-soft:0 10px 30px rgba(124,58,237,0.15);--shadow-card:0 4px 20px rgba(59,130,246,0.10);
-  --grad-aurora:linear-gradient(135deg,#7c3aed 0%,#3b82f6 35%,#06b6d4 65%,#ec4899 100%);
-  --grad-btn:linear-gradient(135deg,#7c3aed 0%,#3b82f6 100%);
-  --grad-cyan:linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%);
-  --grad-pink:linear-gradient(135deg,#ec4899 0%,#7c3aed 100%);
-}
-
-html,body{overflow-x:hidden}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-  background:#f7f8fc;color:var(--black);direction:rtl;min-height:100vh;
-  -webkit-font-smoothing:antialiased;position:relative;
+:root {
+  --blue:#0a4d9e; --blue-2:#1a5fb4; --blue-light:#4a90e2; --blue-bg:#e8f1fb;
+  --blue-glow:rgba(10,77,158,0.2);
+  --bg:#f5f7fa; --white:#fff;
+  --text:#1a1a1a; --text-dim:#6b7280; --text-muted:#9ca3af;
+  --border:#e5e7eb;
+  --green:#10b981; --red:#ef4444; --orange:#f59e0b; --purple:#8b5cf6;
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.04);
+  --shadow:0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg:0 8px 24px rgba(10,77,158,0.12);
+  --radius:16px; --radius-sm:12px; --radius-lg:22px;
+  --primary:var(--blue);
+  --primary-2:var(--blue-2);
+  --primary-glow:var(--blue-glow);
+  --primary-bg:var(--blue-bg);
 }
 
-/* Aurora background */
-body::before{
-  content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;
-  background:
-    radial-gradient(circle at 20% 30%,rgba(124,58,237,0.18),transparent 45%),
-    radial-gradient(circle at 80% 20%,rgba(59,130,246,0.18),transparent 45%),
-    radial-gradient(circle at 30% 80%,rgba(6,182,212,0.15),transparent 45%),
-    radial-gradient(circle at 85% 75%,rgba(236,72,153,0.15),transparent 45%);
-  z-index:-1;animation:auroraMove 20s ease-in-out infinite;pointer-events:none;
-}
-@keyframes auroraMove{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5%,-5%) scale(1.1)}}
-
-/* Dev credit */
-.dev-credit{
-  position:fixed;bottom:14px;left:14px;
-  background:var(--grad-aurora);color:#fff;padding:8px 14px;border-radius:30px;
-  font-size:11px;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:5px;
-  box-shadow:0 6px 18px rgba(124,58,237,0.4);z-index:7777;
-  transition:transform .2s ease;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
-.dev-credit:hover{transform:translateY(-2px)}
-.dev-credit:active{transform:scale(.95)}
-.dev-credit .dot{width:6px;height:6px;background:#fff;border-radius:50%;animation:pulse 1.6s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-
-/* ==================== AUTH SCREEN ==================== */
-.auth-wrapper{max-width:440px;width:100%;margin:auto;margin-top:30px;padding:16px 16px 80px;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.auth-card{
-  background:rgba(255,255,255,0.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-  border-radius:var(--radius-xl);padding:34px 24px 28px;box-shadow:var(--shadow-soft);
-  border:1px solid rgba(255,255,255,0.95);position:relative;overflow:hidden;width:100%;
-}
-.auth-card::before{
-  content:'';position:absolute;top:-60%;right:-60%;width:220%;height:220%;
-  background:radial-gradient(circle at 30% 20%,rgba(124,58,237,0.15),transparent 50%),
-             radial-gradient(circle at 80% 80%,rgba(6,182,212,0.12),transparent 50%),
-             radial-gradient(circle at 50% 50%,rgba(236,72,153,0.08),transparent 50%);
-  pointer-events:none;animation:auroraMove 15s ease-in-out infinite;
-}
-.auth-card>*{position:relative;z-index:1}
-.auth-header{text-align:center;margin-bottom:26px}
-.auth-header .logo-box{
-  width:76px;height:76px;margin:0 auto 14px;border-radius:24px;background:var(--grad-aurora);
-  display:flex;align-items:center;justify-content:center;font-size:36px;
-  box-shadow:0 14px 34px rgba(124,58,237,0.4);animation:floatIcon 3.5s ease-in-out infinite;
-}
-@keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.auth-header h1{font-size:22px;font-weight:800;letter-spacing:-.4px;background:var(--grad-aurora);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.auth-header .subtitle{font-size:13px;color:var(--gray-4);margin-top:4px}
-.auth-tabs{display:flex;background:var(--gray-1);border-radius:12px;padding:3px;margin-bottom:20px}
-.auth-tab{flex:1;text-align:center;padding:9px;font-size:14px;font-weight:600;cursor:pointer;border-radius:9px;color:var(--gray-4);transition:.25s;user-select:none}
-.auth-tab.active{background:#fff;color:var(--violet);box-shadow:0 3px 8px rgba(124,58,237,0.18)}
-.auth-form-group{margin-bottom:14px}
-.auth-form-group label{display:block;font-size:13px;font-weight:600;color:var(--gray-5);margin-bottom:6px;padding-right:4px}
-.auth-form-group input{
-  width:100%;padding:14px 16px;border:1.5px solid var(--gray-2);border-radius:var(--radius-md);
-  font-size:15px;transition:.2s;background:rgba(255,255,255,.7);font-family:inherit;
-  direction:ltr;text-align:left;color:var(--black);
-}
-.auth-form-group input:focus{outline:none;border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px rgba(124,58,237,0.15)}
-.auth-checkbox{display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--gray-5);cursor:pointer;user-select:none;padding-right:4px}
-.auth-checkbox input{width:18px;height:18px;cursor:pointer;accent-color:var(--violet)}
-.auth-btn{
-  width:100%;padding:15px;border:none;border-radius:var(--radius-md);font-size:15px;font-weight:700;
-  cursor:pointer;transition:transform .15s ease,opacity .15s ease;font-family:inherit;
-  display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;
-}
-.auth-btn:active{transform:scale(.97)}
-.auth-btn:disabled{opacity:.6;cursor:not-allowed}
-.auth-btn.primary{background:var(--grad-btn);color:#fff;box-shadow:0 10px 24px rgba(124,58,237,0.35)}
-.auth-btn.google{background:#fff;color:var(--gray-5);border:1.5px solid var(--gray-2)}
-.auth-link{text-align:center;font-size:13px;color:var(--violet);cursor:pointer;margin-top:6px;font-weight:600}
-.auth-link:hover{text-decoration:underline}
-.auth-divider{text-align:center;margin:16px 0;font-size:12px;color:var(--gray-3);position:relative}
-.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--gray-2)}
-.auth-divider::before{right:0}.auth-divider::after{left:0}
-.auth-msg{padding:11px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;margin-bottom:12px;display:none}
-.auth-msg.show{display:block}
-.auth-msg.error{background:rgba(255,59,48,.12);color:#d70015}
-.auth-msg.success{background:rgba(124,58,237,.12);color:var(--violet)}
-.auth-loader{display:none;text-align:center;padding:10px}
-.auth-loader.show{display:block}
-.auth-loader .spin{width:26px;height:26px;border:3px solid var(--gray-2);border-top-color:var(--violet);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
-@keyframes spin{to{transform:rotate(360deg)}}
-.footer-note{text-align:center;font-size:12px;color:var(--gray-3);margin-top:18px;line-height:1.6}
-
-/* ==================== MAIN LAYOUT (SIDEBAR + CONTENT) ==================== */
-#appView{display:none;width:100%;min-height:100vh}
-.app-shell{display:flex;min-height:100vh;width:100%}
-
-/* Sidebar */
-.sidebar{
-  width:260px;background:linear-gradient(180deg,#1a1f2e 0%,#0d1117 100%);
-  color:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:6px;
-  position:fixed;top:0;right:0;height:100vh;overflow-y:auto;z-index:1000;
-  transition:transform .3s cubic-bezier(.175,.885,.32,1.275);
-  box-shadow:-10px 0 40px rgba(0,0,0,.15);
-}
-.sidebar::-webkit-scrollbar{width:4px}
-.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
-.sidebar-brand{display:flex;align-items:center;gap:12px;padding:10px 8px 20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
-.sidebar-brand .brand-logo{
-  width:44px;height:44px;border-radius:14px;background:var(--grad-aurora);
-  display:flex;align-items:center;justify-content:center;font-size:22px;
-  box-shadow:0 6px 18px rgba(124,58,237,0.4);flex-shrink:0;
-}
-.sidebar-brand .brand-info h2{font-size:15px;font-weight:800;letter-spacing:-.3px}
-.sidebar-brand .brand-info span{font-size:11px;color:var(--gray-4);font-weight:500;display:block;margin-top:1px}
-
-.nav-item{
-  display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;
-  color:rgba(255,255,255,.72);font-size:14px;font-weight:600;cursor:pointer;
-  transition:.2s;position:relative;user-select:none;
-}
-.nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
-.nav-item.active{background:var(--grad-btn);color:#fff;box-shadow:0 6px 18px rgba(124,58,237,0.35)}
-.nav-item .nav-icon{font-size:18px;width:22px;text-align:center;flex-shrink:0}
-.nav-item .badge-new{
-  background:linear-gradient(135deg,#ec4899,#7c3aed);color:#fff;font-size:9px;font-weight:800;
-  padding:2px 7px;border-radius:20px;margin-right:auto;
-}
-.nav-sub{padding-right:36px;display:none}
-.nav-sub.open{display:block}
-.nav-sub .nav-item{font-size:13px;padding:10px 14px}
-
-.sidebar-footer{margin-top:auto;padding:14px 8px 0;border-top:1px solid rgba(255,255,255,.08)}
-.sidebar-footer .balance-box{
-  background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(6,182,212,.15));
-  border:1px solid rgba(124,58,237,.3);border-radius:14px;padding:12px;
-  display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;
-}
-.sidebar-footer .balance-box .bal-label{font-size:10px;color:var(--gray-4);font-weight:600}
-.sidebar-footer .balance-box .bal-num{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px}
-.sidebar-footer .logout-mini{
-  width:100%;padding:10px;border-radius:12px;background:rgba(255,59,48,.15);
-  color:#ff6b6b;border:1px solid rgba(255,59,48,.25);font-size:12px;font-weight:700;
-  cursor:pointer;font-family:inherit;transition:.15s;
-}
-.sidebar-footer .logout-mini:active{transform:scale(.97)}
-
-/* Main content */
-.main-area{
-  flex:1;margin-right:260px;padding:18px;min-height:100vh;transition:margin .3s;
+body {
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,'Noto Kufi Arabic',sans-serif;
+  background:var(--bg); color:var(--text); direction:rtl;
+  min-height:100vh; min-height:100dvh;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  overscroll-behavior-y:contain;
 }
 
-/* Mobile topbar */
-.mobile-topbar{
-  display:none;justify-content:space-between;align-items:center;
-  background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  padding:10px 14px;border-radius:16px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,.06);
-  position:sticky;top:10px;z-index:999;
+/* HEADER */
+.header {
+  position:sticky; top:0; z-index:100;
+  background:var(--white); padding-top:env(safe-area-inset-top);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
 }
-.mobile-topbar .menu-btn{
-  width:42px;height:42px;border-radius:12px;background:var(--grad-btn);color:#fff;
-  border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+.header-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 16px; height:56px; gap:8px;
 }
-.mobile-topbar .menu-btn:active{transform:scale(.92)}
-.mobile-topbar .mob-title{font-size:15px;font-weight:800;color:var(--black)}
-.mobile-topbar .mob-bal{
-  background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(6,182,212,.12));
-  padding:6px 12px;border-radius:20px;font-size:13px;font-weight:800;color:var(--violet);
+.header-logo {
+  display:flex; align-items:center; gap:8px;
+  font-size:22px; font-weight:900; letter-spacing:-0.5px;
+}
+.logo-icon {
+  width:36px; height:26px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:14px; font-weight:900;
+  box-shadow:0 4px 10px var(--primary-glow);
+}
+.header-actions { display:flex; align-items:center; gap:4px; }
+.header-icon-btn {
+  width:42px; height:42px; border:none; background:transparent;
+  color:var(--text); font-size:20px; cursor:pointer; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; font-family:inherit;
+}
+.header-icon-btn:active { background:var(--bg); }
+.header-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; cursor:pointer; border:2px solid var(--border);
+}
+.header-avatar img { width:100%; height:100%; object-fit:cover; }
+
+/* PAGES */
+.page {
+  display:none;
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity 0.28s ease, transform 0.28s ease;
+}
+.page.active {
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+.page.fade-out {
+  display:block;
+  opacity:0;
+  transform:translateY(-6px);
 }
 
-.overlay-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
-  z-index:999;display:none;
+/* FEED */
+.feed { padding:12px 12px 20px; }
+
+.post-card {
+  background:var(--white); border-radius:var(--radius);
+  margin-bottom:14px; overflow:hidden;
+  border:1px solid var(--border); box-shadow:var(--shadow-sm);
 }
-.overlay-backdrop.show{display:block}
-
-/* Page content */
-.page{display:none;animation:fadeSlide .3s ease}
-.page.active{display:block}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-.page-header{margin-bottom:20px;padding:0 4px}
-.page-header h1{font-size:22px;font-weight:800;color:var(--black);letter-spacing:-.4px;display:flex;align-items:center;gap:10px}
-.page-header p{font-size:13px;color:var(--gray-4);margin-top:4px}
-.breadcrumb{font-size:12px;color:var(--gray-4);margin-top:6px}
-.breadcrumb span{color:var(--violet);font-weight:600}
-
-/* Cards */
-.card{
-  background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-card);
-  border:1px solid rgba(255,255,255,0.95);margin-bottom:16px;
+.post-head {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px;
 }
-.card-title{font-size:15px;font-weight:700;color:var(--black);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-
-/* Stats Grid */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
-.stat-card{
-  background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(255,255,255,0.8));
-  border-radius:var(--radius-md);padding:16px 14px;text-align:center;
-  border:1px solid rgba(124,58,237,0.1);position:relative;overflow:hidden;transition:.2s;
+.post-head .avatar {
+  width:42px; height:42px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0; cursor:pointer;
+  transition:transform 0.15s;
 }
-.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,.12)}
-.stat-card::after{
-  content:'';position:absolute;top:0;right:0;width:60px;height:60px;
-  background:var(--grad-aurora);opacity:.08;border-radius:50%;transform:translate(30%,-30%);
+.post-head .avatar:active { transform:scale(0.94); }
+.post-head .avatar img { width:100%; height:100%; object-fit:cover; }
+.post-head .info { flex:1; min-width:0; cursor:pointer; }
+.post-head .info .name {
+  font-size:14px; font-weight:800;
+  display:flex; align-items:center; gap:4px;
 }
-.stat-card .num{font-size:22px;font-weight:800;color:var(--violet);letter-spacing:-.5px;line-height:1.1;position:relative;z-index:1}
-.stat-card .label{font-size:11px;font-weight:600;color:var(--gray-4);margin-top:4px;position:relative;z-index:1}
-
-/* Forms */
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-@media(max-width:600px){.form-row{grid-template-columns:1fr}}
-.dash-label{display:block;font-weight:600;font-size:12px;color:var(--gray-5);margin-bottom:6px;padding-right:2px}
-.dash-input,.dash-select,.dash-textarea{
-  width:100%;padding:13px 14px;border:1.5px solid var(--gray-2);border-radius:var(--radius-md);
-  font-size:14px;transition:.2s;background:rgba(255,255,255,.9);font-family:inherit;color:var(--black);
+.post-head .info .meta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.post-head .menu-btn {
+  width:34px; height:34px; border:none; background:transparent;
+  color:var(--text-dim); font-size:18px; cursor:pointer;
+  border-radius:50%; font-family:inherit;
 }
-.dash-input:focus,.dash-select:focus,.dash-textarea:focus{outline:none;border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px rgba(124,58,237,0.12)}
-.dash-textarea{min-height:80px;resize:vertical;direction:ltr;text-align:right}
-input[dir="ltr"],textarea[dir="ltr"]{direction:ltr;text-align:left}
 
-/* Buttons */
-.btn{
-  padding:13px 22px;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:700;
-  cursor:pointer;transition:transform .15s ease;font-family:inherit;display:inline-flex;
-  align-items:center;justify-content:center;gap:8px;
+.post-image {
+  width:100%; background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; position:relative;
 }
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.6;cursor:not-allowed}
-.btn-primary{background:var(--grad-btn);color:#fff;box-shadow:0 10px 24px rgba(124,58,237,0.3);width:100%}
-.btn-cyan{background:var(--grad-cyan);color:#fff;box-shadow:0 10px 24px rgba(6,182,212,0.3)}
-.btn-pink{background:var(--grad-pink);color:#fff;box-shadow:0 10px 24px rgba(236,72,153,0.3)}
-.btn-outline{background:transparent;color:var(--violet);border:1.5px solid var(--violet)}
-.btn-sm{padding:8px 14px;border:none;border-radius:40px;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
-.btn-sm:active{transform:scale(.95)}
-.btn-sm.copy{background:rgba(124,58,237,0.12);color:var(--violet)}
-.btn-sm.delete{background:rgba(255,59,48,0.1);color:#d70015}
-.btn-sm.visit{background:rgba(6,182,212,0.12);color:#0891b2}
-.btn-sm.edit{background:rgba(59,130,246,0.12);color:#2563eb}
+.post-image img { width:100%; height:auto; max-height:600px; object-fit:contain; display:block; }
 
-/* Link Cards */
-.link-card{
-  background:rgba(255,255,255,0.92);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;
-  border:1px solid var(--gray-2);display:flex;flex-direction:column;gap:12px;transition:.2s;
+.post-text {
+  padding:12px 14px 8px; font-size:14px;
+  line-height:1.7; word-break:break-word;
+  white-space:pre-wrap;
 }
-.link-card:hover{border-color:var(--violet);box-shadow:0 8px 24px rgba(124,58,237,0.1)}
-.link-card .top-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
-.link-card .info{flex:1;min-width:0}
-.link-card .link-id{font-size:12px;font-weight:800;color:var(--violet);background:rgba(124,58,237,0.1);padding:4px 12px;border-radius:40px;display:inline-block;margin-bottom:8px}
-.link-card .dest-url{font-size:13px;color:var(--gray-5);word-break:break-all;line-height:1.5}
-.link-card .dest-url span{font-weight:600;color:var(--black)}
-.link-card .youtube-info{font-size:12px;color:var(--gray-4);word-break:break-all;margin-top:2px}
-.mini-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:10px 8px;background:var(--gray-1);border-radius:var(--radius-md);border:1px solid rgba(0,0,0,.04)}
-@media(max-width:480px){.mini-stats{grid-template-columns:repeat(3,1fr)}}
-.mini-stat{text-align:center}
-.mini-stat .mnum{font-size:15px;font-weight:800;color:var(--violet);line-height:1.1}
-.mini-stat .mlabel{font-size:9px;font-weight:600;color:var(--gray-4);margin-top:2px}
-.link-card .actions{display:flex;gap:6px;flex-wrap:wrap}
-
-/* Pricing */
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:12px}
-.price-card{
-  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.85));
-  border-radius:var(--radius-lg);padding:18px;border:1.5px solid var(--gray-2);
-  transition:.25s;position:relative;overflow:hidden;
+.post-text a {
+  color:var(--primary); text-decoration:none;
+  font-weight:700; word-break:break-all;
 }
-.price-card:hover{border-color:var(--violet);transform:translateY(-3px);box-shadow:0 12px 30px rgba(124,58,237,.18)}
-.price-card .price-icon{font-size:32px;margin-bottom:8px}
-.price-card .price-name{font-size:15px;font-weight:800;color:var(--black);margin-bottom:4px}
-.price-card .price-amount{font-size:24px;font-weight:900;background:var(--grad-btn);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.5px}
-.price-card .price-desc{font-size:12px;color:var(--gray-4);margin-top:6px;line-height:1.5}
-.price-card.highlight{border-color:var(--violet);background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(6,182,212,.05))}
-.price-card .tag{position:absolute;top:12px;left:12px;background:var(--grad-pink);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px}
+.post-text a:active { opacity:0.7; }
 
-/* Withdraw Form */
-.withdraw-method-list{display:grid;gap:8px;margin-top:12px}
-.wm-item{
-  display:flex;justify-content:space-between;align-items:center;padding:12px 14px;
-  background:rgba(255,255,255,.7);border:1.5px solid var(--gray-2);border-radius:14px;
-  font-size:13px;font-weight:600;cursor:pointer;transition:.2s;
+.post-cat {
+  display:inline-block; margin:0 14px 8px;
+  background:var(--primary-bg); color:var(--primary);
+  padding:3px 10px; border-radius:12px;
+  font-size:11px; font-weight:800;
 }
-.wm-item:hover{border-color:var(--violet);background:rgba(124,58,237,.05)}
-.wm-item.selected{border-color:var(--violet);background:rgba(124,58,237,.08);color:var(--violet)}
-.wm-item .wm-name{display:flex;align-items:center;gap:8px}
-.wm-item .wm-min{font-size:11px;color:var(--gray-4);font-weight:700}
-.wm-item.selected .wm-min{color:var(--violet)}
 
-/* Empty state */
-.empty-state{text-align:center;padding:50px 20px;color:var(--gray-4)}
-.empty-state .big-icon{font-size:56px;display:block;margin-bottom:14px;opacity:.6}
-.empty-state p{font-size:14px;font-weight:600}
-.empty-state small{font-size:12px;color:var(--gray-3);display:block;margin-top:6px}
-
-/* Loader */
-.loader{display:none;text-align:center;padding:16px 0}
-.loader.show{display:block}
-.spinner{width:32px;height:32px;border:3px solid var(--gray-2);border-top-color:var(--violet);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
-
-/* Result box */
-.result-box{margin-top:12px;display:none;background:rgba(124,58,237,.08);padding:14px;border-radius:var(--radius-md);border-right:4px solid var(--violet)}
-.result-box.show{display:block}
-.result-box .title{font-weight:700;color:var(--violet);margin-bottom:6px;font-size:14px}
-.result-box .link-display{font-size:12px;color:var(--gray-5);word-break:break-all;background:#fff;padding:10px;border-radius:var(--radius-sm);margin:6px 0;direction:ltr;text-align:left;border:1px solid rgba(124,58,237,.2);font-family:'SF Mono',Consolas,monospace}
-
-/* Toast */
-.toast{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);
-  background:rgba(13,17,23,.95);backdrop-filter:blur(10px);color:#fff;padding:13px 22px;
-  border-radius:40px;font-size:14px;font-weight:600;z-index:9999;opacity:0;
-  transition:all .3s cubic-bezier(.175,.885,.32,1.275);pointer-events:none;text-align:center;max-width:90%;
+.post-actions {
+  display:flex; border-top:1px solid var(--border);
+  padding:6px 4px;
 }
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.post-actions button {
+  flex:1; padding:10px 6px; border:none; background:transparent;
+  color:var(--text-dim); font-size:13px; font-weight:700;
+  cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+  gap:5px; border-radius:8px;
+}
+.post-actions button:active { background:var(--bg); }
+.post-actions button.liked { color:var(--red); }
 
-/* Profile Avatar */
-.profile-avatar-box{position:relative;width:90px;height:90px;margin:0 auto 16px}
-.avatar-big{
-  width:90px;height:90px;border-radius:50%;background:var(--grad-aurora);display:flex;
-  align-items:center;justify-content:center;color:#fff;font-size:38px;font-weight:800;
-  box-shadow:0 12px 30px rgba(124,58,237,0.35);overflow:hidden;
+/* BOTTOM NAV */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0;
+  background:var(--white); border-top:1px solid var(--border);
+  display:flex; justify-content:space-around; align-items:center;
+  padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index:1000; box-shadow:0 -2px 12px rgba(0,0,0,0.05);
 }
-.avatar-big img{width:100%;height:100%;object-fit:cover}
-.avatar-edit{
-  position:absolute;bottom:-4px;left:-4px;width:32px;height:32px;border-radius:50%;
-  background:#fff;border:2px solid var(--violet);color:var(--violet);font-size:14px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
+.nav-item {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:3px; padding:5px 0; border:none; background:transparent;
+  color:var(--text-dim); font-size:10px; font-weight:700;
+  cursor:pointer; font-family:inherit; max-width:80px;
+  transition:color 0.2s;
 }
-.avatar-edit:active{transform:scale(.92)}
+.nav-item .nav-icon { font-size:22px; line-height:1; transition:transform 0.2s; }
+.nav-item.active { color:var(--primary); }
+.nav-item.active .nav-icon { transform:scale(1.15); }
+.nav-item.post-btn .nav-icon {
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; width:44px; height:44px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; box-shadow:0 6px 14px var(--primary-glow);
+  margin-top:-10px;
+}
+.nav-item.post-btn { color:var(--primary); font-weight:800; }
 
-/* Modal */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;
-  z-index:8000;padding:16px;
+/* AUTH SCREEN */
+#authScreen {
+  position:fixed; inset:0; z-index:5000;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2),var(--blue-light));
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  overflow-y:auto;
 }
-.modal-overlay.show{display:flex}
-.modal{background:rgba(255,255,255,.98);border-radius:28px;width:100%;max-width:460px;padding:24px;max-height:90vh;overflow-y:auto;animation:modalIn .3s cubic-bezier(.175,.885,.32,1.275)}
-@keyframes modalIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--gray-2)}
-.modal-header h2{font-size:19px;font-weight:800;color:var(--black)}
-.modal-close{width:34px;height:34px;border-radius:50%;background:var(--gray-1);border:none;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--violet)}
-.modal-close:active{transform:scale(.92)}
+.auth-card {
+  background:var(--white); border-radius:26px;
+  padding:34px 26px; width:100%; max-width:420px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.35);
+  text-align:center; margin:auto;
+}
+.auth-logo {
+  width:76px; height:76px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  border-radius:22px; margin:0 auto 18px;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:36px; font-weight:900;
+  box-shadow:0 12px 30px var(--primary-glow);
+}
+.auth-card h1 { font-size:24px; font-weight:900; margin-bottom:6px; }
+.auth-card .sub { color:var(--text-dim); font-size:13px; margin-bottom:22px; }
 
-.profile-section{background:var(--gray-1);border-radius:var(--radius-md);padding:14px;margin-bottom:14px;border:1px solid var(--gray-2)}
-.profile-section h3{font-size:13px;font-weight:700;color:var(--gray-5);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.profile-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:13px;gap:10px}
-.profile-row .key{color:var(--gray-4);font-weight:600;flex-shrink:0}
-.profile-row .val{color:var(--black);font-weight:700;word-break:break-all;text-align:left;direction:ltr}
-.profile-input{width:100%;padding:12px 14px;border:1.5px solid var(--gray-2);border-radius:var(--radius-md);font-size:14px;margin-bottom:10px;background:#fff;font-family:inherit;color:var(--black)}
-.profile-input:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 4px rgba(124,58,237,.12)}
-.modal-btn{width:100%;padding:13px;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;transition:transform .15s}
-.modal-btn:active{transform:scale(.97)}
-.modal-btn.primary{background:var(--grad-btn);color:#fff}
-.modal-btn.danger{background:rgba(255,59,48,.1);color:#d70015}
+.auth-btn {
+  width:100%; padding:14px 16px; border-radius:14px;
+  font-size:14px; font-weight:800; cursor:pointer;
+  font-family:inherit; display:flex; align-items:center;
+  justify-content:center; gap:10px; margin-bottom:10px;
+  border:1px solid var(--border);
+  transition:transform 0.15s;
+}
+.auth-btn:active { transform:scale(0.97); }
+.auth-btn.primary {
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border-color:var(--primary);
+  box-shadow:0 8px 20px var(--primary-glow);
+}
 
-/* Responsive */
-@media(max-width:900px){
-  .sidebar{transform:translateX(100%)}
-  .sidebar.open{transform:translateX(0)}
-  .main-area{margin-right:0;padding:12px}
-  .mobile-topbar{display:flex}
-  .page-header h1{font-size:19px}
+.auth-input {
+  width:100%; padding:14px 16px; border:1px solid var(--border);
+  border-radius:12px; font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  margin-bottom:10px; text-align:right;
+  transition:all 0.2s;
 }
-@media(max-width:480px){
-  .stat-card .num{font-size:18px}
-  .mini-stat .mnum{font-size:13px}
-  .auth-card{padding:26px 18px 22px}
-  .pricing-grid{grid-template-columns:1fr}
+.auth-input:focus {
+  border-color:var(--primary); background:#fff;
+  box-shadow:0 0 0 4px var(--primary-glow);
 }
+.auth-error {
+  color:var(--red); font-size:12px; font-weight:700;
+  min-height:18px; margin-bottom:8px;
+}
+.auth-toggle {
+  color:var(--primary); font-size:13px; font-weight:700;
+  cursor:pointer; margin-top:14px; display:inline-block;
+}
+
+/* MODAL */
+.modal-bg {
+  position:fixed; inset:0; background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(6px); z-index:4000;
+  display:none; align-items:flex-end; justify-content:center;
+  opacity:0;
+  transition:opacity 0.25s;
+}
+.modal-bg.show {
+  display:flex;
+  opacity:1;
+}
+.modal {
+  background:var(--white); border-radius:24px 24px 0 0;
+  width:100%; max-width:560px; max-height:92vh;
+  overflow-y:auto; padding:20px;
+  transform:translateY(20px);
+  transition:transform 0.28s cubic-bezier(0.34,1.2,0.64,1);
+}
+.modal-bg.show .modal { transform:translateY(0); }
+
+.modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:18px;
+}
+.modal-header h3 { font-size:18px; font-weight:900; }
+.modal-close {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--bg); border:none; color:var(--text-dim);
+  font-size:16px; cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* IMAGE UPLOAD */
+.image-upload {
+  width:100%; aspect-ratio:1/1; background:var(--bg);
+  border:2px dashed var(--border); border-radius:16px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  cursor:pointer; overflow:hidden; margin-bottom:14px;
+  transition:border-color 0.2s, background 0.2s;
+}
+.image-upload:hover { border-color:var(--primary); background:var(--primary-bg); }
+.image-upload img { width:100%; height:100%; object-fit:cover; }
+.image-upload .upload-hint {
+  text-align:center; color:var(--text-dim); padding:20px;
+}
+.image-upload .upload-hint .icon {
+  font-size:52px; display:block; margin-bottom:10px; opacity:0.5;
+}
+.image-upload .upload-hint strong {
+  display:block; font-size:15px; color:var(--text);
+  font-weight:800; margin-bottom:4px;
+}
+
+/* AVATAR UPLOAD */
+.avatar-upload {
+  width:110px; height:110px; border-radius:50%;
+  background:var(--bg); border:2px dashed var(--border);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; overflow:hidden; margin:0 auto 16px;
+  position:relative; transition:border-color 0.2s;
+}
+.avatar-upload:hover { border-color:var(--primary); }
+.avatar-upload img { width:100%; height:100%; object-fit:cover; }
+.avatar-upload .avatar-hint {
+  font-size:40px; color:var(--text-muted);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:6px;
+}
+.avatar-upload .avatar-hint small {
+  font-size:10px; color:var(--text-dim);
+  font-weight:700;
+}
+
+.field-row { margin-bottom:14px; }
+.field-row label {
+  display:block; font-size:12px; font-weight:800;
+  color:var(--text-dim); margin-bottom:6px;
+}
+.field-row textarea,
+.field-row input,
+.field-row select {
+  width:100%; padding:12px 14px;
+  border:1px solid var(--border); border-radius:12px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none; resize:vertical;
+  transition:all 0.2s;
+}
+.field-row textarea { min-height:80px; }
+.field-row textarea:focus,
+.field-row input:focus,
+.field-row select:focus {
+  border-color:var(--primary); background:#fff;
+  box-shadow:0 0 0 4px var(--primary-glow);
+}
+
+.btn {
+  padding:13px 18px; border:none; border-radius:12px;
+  font-size:14px; font-weight:800; cursor:pointer;
+  font-family:inherit; display:inline-flex;
+  align-items:center; justify-content:center; gap:8px;
+  transition:transform 0.15s;
+}
+.btn:active { transform:scale(0.97); }
+.btn-primary {
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; box-shadow:0 8px 20px var(--primary-glow);
+  width:100%;
+}
+.btn-secondary {
+  background:var(--bg); color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-danger { background:var(--red); color:#fff; }
+
+/* MENU */
+.menu-list {
+  display:flex; flex-direction:column; gap:6px;
+}
+.menu-item {
+  padding:14px 16px; border-radius:12px;
+  background:var(--bg); border:none;
+  font-size:14px; font-weight:700;
+  font-family:inherit; text-align:right;
+  cursor:pointer; display:flex;
+  align-items:center; gap:10px;
+}
+.menu-item:active { background:var(--border); }
+.menu-item.danger { color:var(--red); }
+
+/* SEARCH */
+.search-bar {
+  padding:12px 16px 8px;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+}
+.search-input {
+  width:100%; height:44px; padding:0 18px;
+  border:1px solid var(--border); border-radius:22px;
+  background:var(--bg); color:var(--text);
+  font-size:14px; font-family:inherit; outline:none;
+  transition:all 0.2s;
+}
+.search-input:focus {
+  border-color:var(--primary); background:#fff;
+  box-shadow:0 0 0 4px var(--primary-glow);
+}
+.users-list { padding:12px 16px 20px; }
+.user-row {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px; background:var(--white);
+  border-radius:14px; margin-bottom:10px;
+  border:1px solid var(--border); cursor:pointer;
+}
+.user-row .avatar {
+  width:48px; height:48px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0;
+}
+.user-row .avatar img { width:100%; height:100%; object-fit:cover; }
+.user-row .info { flex:1; min-width:0; }
+.user-row .info strong {
+  display:block; font-size:14px;
+  font-weight:800; margin-bottom:2px;
+}
+.user-row .info small { font-size:12px; color:var(--text-dim); }
+.user-row .follow-btn {
+  padding:7px 14px; border-radius:20px;
+  background:var(--primary); color:#fff;
+  border:none; font-size:12px; font-weight:800;
+  cursor:pointer; font-family:inherit;
+  white-space:nowrap;
+}
+
+/* CHAT */
+.chat-list { padding:0 0 20px; }
+.chat-row {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px; background:var(--white);
+  border-bottom:1px solid var(--border); cursor:pointer;
+}
+.chat-row .avatar {
+  width:52px; height:52px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:20px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0;
+}
+.chat-row .avatar img { width:100%; height:100%; object-fit:cover; }
+.chat-row .info { flex:1; min-width:0; }
+.chat-row .info strong {
+  display:block; font-size:14px; font-weight:800;
+  margin-bottom:3px;
+}
+.chat-row .info small {
+  font-size:12px; color:var(--text-dim);
+  display:block; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap;
+}
+.chat-row .menu-btn {
+  width:36px; height:36px; border:none; background:transparent;
+  color:var(--text-dim); font-size:18px; cursor:pointer;
+  border-radius:50%; font-family:inherit;
+}
+
+#chatView {
+  position:fixed; inset:0; z-index:4500;
+  background:var(--bg); display:none;
+  flex-direction:column;
+}
+#chatView.show { display:flex; }
+
+.chat-header {
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+  display:flex; align-items:center; gap:12px;
+}
+.chat-header .back-btn {
+  width:38px; height:38px; border:none; background:transparent;
+  font-size:20px; cursor:pointer; border-radius:50%;
+  font-family:inherit;
+}
+.chat-header .chat-user { flex:1; display:flex; align-items:center; gap:10px; }
+.chat-header .chat-user .avatar {
+  width:38px; height:38px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.chat-header .chat-user .avatar img { width:100%; height:100%; object-fit:cover; }
+.chat-header .chat-user strong { font-size:14px; font-weight:800; }
+.chat-header .chat-user small {
+  display:block; font-size:11px; color:var(--green);
+  font-weight:700;
+}
+
+.chat-messages {
+  flex:1; overflow-y:auto; padding:16px 14px;
+  display:flex; flex-direction:column; gap:8px;
+  scroll-behavior:smooth;
+}
+.msg {
+  max-width:78%; padding:10px 14px;
+  border-radius:18px; font-size:14px;
+  line-height:1.5; word-break:break-word;
+  position:relative;
+}
+.msg.me {
+  align-self:flex-start;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border-bottom-right-radius:4px;
+}
+.msg.other {
+  align-self:flex-end;
+  background:var(--white); color:var(--text);
+  border:1px solid var(--border);
+  border-bottom-left-radius:4px;
+}
+.msg .time {
+  font-size:10px; opacity:0.7;
+  margin-top:4px; display:block;
+  text-align:left;
+}
+.msg .msg-menu {
+  position:absolute; top:4px; left:4px;
+  background:rgba(0,0,0,0.2); color:#fff;
+  border:none; border-radius:50%; width:22px; height:22px;
+  font-size:12px; cursor:pointer; display:none;
+  align-items:center; justify-content:center;
+}
+.msg:active .msg-menu { display:flex; }
+.msg .msg-menu.show { display:flex; }
+
+/* Chat input - FIXED TO BOTTOM */
+.chat-input-bar {
+  background:var(--white); border-top:1px solid var(--border);
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  display:flex; gap:8px; align-items:flex-end;
+  position:sticky; bottom:0;
+  transition:transform 0.2s ease, padding 0.2s ease;
+}
+.chat-input-bar textarea {
+  flex:1; padding:10px 14px;
+  border:1px solid var(--border); border-radius:22px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  resize:none; max-height:120px; min-height:42px;
+}
+.chat-input-bar textarea:focus {
+  border-color:var(--primary); background:#fff;
+}
+.chat-input-bar button {
+  width:44px; height:44px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border:none; font-size:18px;
+  cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+/* PROFILE */
+.profile-header {
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:20px 16px 16px; text-align:center;
+}
+.profile-avatar {
+  width:96px; height:96px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:36px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; margin:0 auto 12px;
+  box-shadow:0 10px 30px var(--primary-glow);
+  border:3px solid var(--white);
+  cursor:pointer;
+}
+.profile-avatar img { width:100%; height:100%; object-fit:cover; }
+.profile-name {
+  font-size:20px; font-weight:900;
+  display:flex; align-items:center; justify-content:center;
+  gap:6px; margin-bottom:4px;
+}
+.profile-email { font-size:13px; color:var(--text-dim); margin-bottom:14px; }
+.profile-bio {
+  font-size:13px; color:var(--text-dim);
+  margin-bottom:14px; padding:0 10px; line-height:1.6;
+}
+
+.profile-stats {
+  display:flex; justify-content:space-around;
+  padding:14px 0; border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border); margin-bottom:14px;
+}
+.profile-stat { text-align:center; }
+.profile-stat .num {
+  font-size:18px; font-weight:900;
+  color:var(--primary); line-height:1;
+}
+.profile-stat .lbl {
+  font-size:11px; color:var(--text-dim);
+  font-weight:700; margin-top:4px;
+}
+
+.profile-actions {
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+}
+.profile-actions .btn {
+  padding:9px 14px; font-size:12px;
+}
+
+/* Profile links */
+.profile-links {
+  display:flex; flex-direction:column; gap:6px;
+  margin-bottom:14px;
+}
+.profile-link-item {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 12px; background:var(--primary-bg);
+  border-radius:10px; font-size:13px; font-weight:700;
+  color:var(--primary); text-decoration:none;
+  cursor:pointer; border:none; font-family:inherit;
+  text-align:right;
+}
+.profile-link-item .link-icon { font-size:16px; }
+.profile-link-item .link-name { flex:1; }
+
+.profile-tabs {
+  display:flex; background:var(--white);
+  border-bottom:1px solid var(--border); margin-bottom:12px;
+}
+.profile-tab {
+  flex:1; padding:14px 8px;
+  background:transparent; border:none;
+  font-size:13px; font-weight:800;
+  color:var(--text-dim); cursor:pointer;
+  font-family:inherit; position:relative;
+}
+.profile-tab.active { color:var(--primary); }
+.profile-tab.active::after {
+  content:''; position:absolute; bottom:0; right:20%; left:20%;
+  height:3px; background:var(--primary); border-radius:3px 3px 0 0;
+}
+
+.posts-grid-mini {
+  display:grid; grid-template-columns:repeat(3, 1fr);
+  gap:2px; padding:2px;
+}
+.posts-grid-mini .mini {
+  aspect-ratio:1/1; background:var(--bg);
+  overflow:hidden; position:relative; cursor:pointer;
+}
+.posts-grid-mini .mini img {
+  width:100%; height:100%; object-fit:cover;
+}
+.posts-grid-mini .mini.text-only {
+  display:flex; align-items:center; justify-content:center;
+  padding:10px; background:var(--primary-bg);
+  color:var(--primary); font-size:12px;
+  font-weight:800; text-align:center;
+  overflow:hidden;
+}
+.posts-grid-mini .mini .mini-stats {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+  color:#fff; padding:6px 8px;
+  font-size:11px; font-weight:800;
+  display:flex; gap:10px;
+}
+
+/* EMPTY */
+.empty { text-align:center; padding:60px 20px; color:var(--text-dim); }
+.empty .icon { font-size:64px; display:block; margin-bottom:14px; opacity:0.4; }
+.empty h3 { font-size:16px; color:var(--text); font-weight:800; margin-bottom:6px; }
+.empty p { font-size:13px; }
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:calc(env(safe-area-inset-bottom) + 90px);
+  left:50%; transform:translateX(-50%) translateY(100px);
+  background:var(--text); color:#fff;
+  padding:12px 22px; border-radius:30px;
+  font-size:13px; font-weight:700;
+  z-index:9999; opacity:0;
+  transition:0.3s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none; max-width:90%;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.success { background:var(--green); }
+.toast.error { background:var(--red); }
+.toast.warn { background:var(--orange); }
+
+/* REPORT */
+.report-reasons {
+  display:flex; flex-direction:column; gap:8px; margin-bottom:14px;
+}
+.report-reason {
+  padding:12px 14px; border-radius:10px;
+  border:1px solid var(--border); background:var(--white);
+  cursor:pointer; font-size:13px; font-weight:700;
+  font-family:inherit; text-align:right;
+}
+.report-reason.selected {
+  border-color:var(--primary); background:var(--primary-bg);
+  color:var(--primary);
+}
+
+/* Comments section in post viewer */
+.comment-item {
+  padding:10px; background:var(--bg); border-radius:10px; margin-bottom:6px;
+  position:relative;
+}
+.comment-item .comment-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:4px;
+}
+.comment-item .comment-author {
+  font-size:12px; font-weight:800;
+}
+.comment-item .comment-menu-btn {
+  width:28px; height:28px; border:none; background:transparent;
+  color:var(--text-dim); font-size:14px; cursor:pointer;
+  border-radius:50%; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+}
+.comment-item .comment-text {
+  font-size:13px; margin-top:4px; line-height:1.6;
+}
+.comment-item .comment-time {
+  font-size:10px; color:var(--text-dim); margin-top:4px; display:block;
+}
+.comment-item .comment-actions {
+  display:flex; gap:8px; margin-top:8px; padding-top:8px;
+  border-top:1px solid var(--border);
+}
+.comment-item .comment-actions button {
+  padding:5px 10px; border-radius:8px; border:none;
+  font-size:11px; font-weight:700; font-family:inherit;
+  cursor:pointer;
+}
+.comment-item .comment-actions .edit-btn {
+  background:var(--primary-bg); color:var(--primary);
+}
+.comment-item .comment-actions .delete-btn {
+  background:#fee; color:var(--red);
+}
+
+/* Profile viewer modal */
+.profile-viewer-card {
+  text-align:center; padding:10px;
+}
+.profile-viewer-avatar {
+  width:100px; height:100px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; font-weight:800; font-size:38px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; margin:0 auto 14px;
+  border:3px solid var(--white);
+  box-shadow:0 10px 30px var(--primary-glow);
+}
+.profile-viewer-avatar img { width:100%; height:100%; object-fit:cover; }
+.profile-viewer-name {
+  font-size:20px; font-weight:900; margin-bottom:4px;
+}
+.profile-viewer-username {
+  font-size:13px; color:var(--text-dim); margin-bottom:10px;
+}
+.profile-viewer-bio {
+  font-size:13px; color:var(--text-dim);
+  margin-bottom:14px; line-height:1.6;
+}
+.profile-viewer-stats {
+  display:flex; justify-content:space-around;
+  padding:14px 0; border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border); margin-bottom:14px;
+}
+.profile-viewer-stats .stat { text-align:center; }
+.profile-viewer-stats .stat .num {
+  font-size:18px; font-weight:900; color:var(--primary);
+}
+.profile-viewer-stats .stat .lbl {
+  font-size:11px; color:var(--text-dim); font-weight:700;
+  margin-top:4px;
+}
+.profile-viewer-actions {
+  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+}
+.profile-viewer-actions .btn {
+  padding:10px 16px; font-size:12px;
+}
+
+/* Color picker */
+.color-grid {
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;
+  margin-bottom:16px;
+}
+.color-swatch {
+  width:100%; aspect-ratio:1/1; border-radius:50%;
+  border:3px solid transparent; cursor:pointer;
+  transition:transform 0.2s;
+}
+.color-swatch:active { transform:scale(0.9); }
+.color-swatch.selected {
+  border-color:var(--text);
+  box-shadow:0 0 0 3px var(--white), 0 0 0 6px var(--primary);
+}
+
+/* Spacing helpers for input above keyboard */
+.page-content-padded {
+  padding-bottom:90px;
+}
+
+/* When keyboard open - adjust positions */
+body.keyboard-open .chat-input-bar {
+  padding-bottom:calc(10px + env(safe-area-inset-bottom) + 60px);
+}
+body.keyboard-open .post-comment-bar {
+  padding-bottom:calc(10px + env(safe-area-inset-bottom) + 60px);
+}
+body.keyboard-open .chat-messages {
+  padding-bottom:80px;
+}
+
+/* Comment input bar at bottom */
+.post-comment-bar {
+  position:fixed; bottom:72px; left:0; right:0;
+  background:var(--white); border-top:1px solid var(--border);
+  padding:10px 12px;
+  display:flex; gap:8px; align-items:flex-end;
+  z-index:500;
+  transition:transform 0.2s ease, padding 0.2s ease;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.04);
+}
+.post-comment-bar textarea {
+  flex:1; padding:10px 14px;
+  border:1px solid var(--border); border-radius:22px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  resize:none; max-height:100px; min-height:42px;
+}
+.post-comment-bar textarea:focus {
+  border-color:var(--primary); background:#fff;
+}
+.post-comment-bar button {
+  width:44px; height:44px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff; border:none; font-size:18px;
+  cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+/* Post viewer needs padding for comment bar */
+#postViewerModal .modal {
+  padding-bottom:80px;
+}
+
+/* Link input group */
+.link-input-group {
+  display:flex; gap:8px; margin-bottom:10px;
+}
+.link-input-group input {
+  flex:1;
+}
+.link-input-group .link-icon-select {
+  width:60px; padding:12px 8px;
+  border:1px solid var(--border); border-radius:12px;
+  font-size:14px; font-family:inherit;
+  background:var(--bg); outline:none;
+  text-align:center;
+}
+
+/* Settings list */
+.settings-section {
+  margin-bottom:20px;
+}
+.settings-section h4 {
+  font-size:13px; font-weight:800; color:var(--text-dim);
+  margin-bottom:10px; padding:0 4px;
+}
+.settings-item {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px; background:var(--bg);
+  border-radius:12px; margin-bottom:6px;
+  border:none; font-family:inherit; font-size:14px;
+  font-weight:700; cursor:pointer; width:100%;
+  text-align:right;
+}
+.settings-item:active { background:var(--border); }
+.settings-item .icon { font-size:18px; }
+.settings-item .arrow { margin-right:auto; color:var(--text-muted); }
 </style>
 </head>
 <body>
 
-<!-- ==================== AUTH VIEW ==================== -->
-<main id="authView" class="auth-wrapper" aria-label="تسجيل الدخول">
-  <section class="auth-card" aria-labelledby="authTitle">
-    <header class="auth-header">
-      <div class="logo-box" aria-hidden="true">🔗</div>
-      <h1 id="authTitle">اختصار روابط اكتوبر</h1>
-      <p class="subtitle">✨ سجّل دخولك لإدارة روابطك وربحك</p>
-    </header>
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">▶</div>
+    <h1>BluePost</h1>
+    <p class="sub">شارك لحظاتك مع العالم</p>
 
-    <nav class="auth-tabs" role="tablist" aria-label="تبويبات الدخول">
-      <button class="auth-tab active" id="tabLogin" role="tab" aria-selected="true" type="button">🔐 دخول</button>
-      <button class="auth-tab" id="tabSignup" role="tab" aria-selected="false" type="button">✨ حساب جديد</button>
-    </nav>
+    <div id="authLoginForm">
+      <input type="text" id="loginUsername" class="auth-input" placeholder="👤 اسم المستخدم" autocomplete="off" autocorrect="off" autocapitalize="off">
+      <input type="password" id="loginPassword" class="auth-input" placeholder="🔑 الرمز السري" autocomplete="new-password">
+      <div class="auth-error" id="loginError"></div>
+      <button class="auth-btn primary" id="loginBtn">🔓 دخول</button>
+      <span class="auth-toggle" id="goToSignup">ليس لديك حساب؟ أنشئ حساباً</span>
+    </div>
 
-    <div class="auth-msg" id="authMsg" role="alert" aria-live="polite"></div>
-
-    <form id="loginForm" onsubmit="return false;">
-      <div class="auth-form-group">
-        <label for="loginEmail">📧 البريد الإلكتروني</label>
-        <input type="email" id="loginEmail" name="email" placeholder="your@email.com" autocomplete="username" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" required>
-      </div>
-      <div class="auth-form-group">
-        <label for="loginPassword">🔒 كلمة السر</label>
-        <input type="password" id="loginPassword" name="password" placeholder="••••••••" autocomplete="current-password" required>
-      </div>
-      <label class="auth-checkbox">
-        <input type="checkbox" id="rememberMe" checked>
-        <span>💾 تذكرني في هذا الجهاز</span>
-      </label>
-      <button class="auth-btn primary" id="loginBtn" type="submit">🔐 تسجيل الدخول</button>
-      <div class="auth-link" id="forgotBtn">🔑 نسيت كلمة السر؟</div>
-    </form>
-
-    <form id="signupForm" style="display:none" onsubmit="return false;">
-      <div class="auth-form-group">
-        <label for="signupEmail">📧 البريد الإلكتروني</label>
-        <input type="email" id="signupEmail" name="email" placeholder="your@email.com" autocomplete="username" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" required>
-      </div>
-      <div class="auth-form-group">
-        <label for="signupPassword">🔒 كلمة السر <span style="font-weight:400;color:#8e8e93;font-size:11px">(6 أحرف على الأقل)</span></label>
-        <input type="password" id="signupPassword" name="new-password" placeholder="••••••••" autocomplete="new-password" required>
-      </div>
-      <div class="auth-form-group">
-        <label for="signupPasswordConfirm">🔒 تأكيد كلمة السر</label>
-        <input type="password" id="signupPasswordConfirm" name="new-password-confirm" placeholder="••••••••" autocomplete="new-password" required>
-      </div>
-      <button class="auth-btn primary" id="signupBtn" type="submit">✨ إنشاء حساب</button>
-    </form>
-
-    <div class="auth-divider" role="separator">أو</div>
-
-    <button class="auth-btn google" id="googleBtn" type="button">
-      <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.1-11.3-7.6l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.6l6.2 5.2C41 35.7 44 30.2 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
-      🌐 الدخول بجوجل
-    </button>
-
-    <div class="auth-loader" id="authLoader" aria-live="polite"><div class="spin"></div></div>
-    <div class="footer-note">🔒 محمي بتشفير آمن • موقع اختصار روابط اكتوبر</div>
-  </section>
-</main>
-
-<!-- ==================== APP VIEW ==================== -->
-<div id="appView">
-  <div class="app-shell">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar" aria-label="القائمة الرئيسية">
-      <div class="sidebar-brand">
-        <div class="brand-logo" aria-hidden="true">🔗</div>
-        <div class="brand-info">
-          <h2>اختصار اكتوبر</h2>
-          <span>لوحة التحكم</span>
-        </div>
-      </div>
-
-      <nav aria-label="التنقل">
-        <div class="nav-item active" data-page="dashboard" role="button" tabindex="0">
-          <span class="nav-icon" aria-hidden="true">📊</span><span>لوحة التحكم</span>
-        </div>
-        <div class="nav-item" data-page="levels" role="button" tabindex="0">
-          <span class="nav-icon" aria-hidden="true">⬆️</span><span>المستويات</span>
-          <span class="badge-new">جديد</span>
-        </div>
-        <div class="nav-item" data-page="manage-links" role="button" tabindex="0">
-          <span class="nav-icon" aria-hidden="true">🔗</span><span>إدارة الروابط</span>
-        </div>
-        <div class="nav-item" data-page="withdraw" role="button" tabindex="0">
-          <span class="nav-icon" aria-hidden="true">💸</span><span>طلب السحب</span>
-        </div>
-        <div class="nav-item" data-page="transactions" role="button" tabindex="0">
-          <span class="nav-icon" aria-hidden="true">📜</span><span>جميع الحالات</span>
-        </div>
-        <div class="nav-item" data-page="settings" role="button" tabindex="0">
-          <span class="nav-icon" aria-hidden="true">⚙️</span><span>الإعدادات</span>
-        </div>
-        <div class="nav-item" data-page="support" role="button" tabindex="0">
-          <span class="nav-icon" aria-hidden="true">🎧</span><span>الدعم</span>
-        </div>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="balance-box">
-          <div>
-            <div class="bal-label">رصيدك الحالي</div>
-            <div class="bal-num" id="sidebarBalance">$0.00</div>
-          </div>
-          <span style="font-size:24px" aria-hidden="true">💰</span>
-        </div>
-        <button class="logout-mini" id="sidebarLogout" type="button">🚪 تسجيل الخروج</button>
-      </div>
-    </aside>
-    <div class="overlay-backdrop" id="overlayBackdrop"></div>
-
-    <!-- MAIN AREA -->
-    <main class="main-area" aria-label="محتوى الصفحة">
-
-      <header class="mobile-topbar">
-        <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة" type="button">☰</button>
-        <div class="mob-title">اختصار اكتوبر</div>
-        <div class="mob-bal" id="mobileBalance">$0.00</div>
-      </header>
-
-      <!-- PAGE: DASHBOARD -->
-      <section class="page active" id="page-dashboard" aria-labelledby="dashH1">
-        <div class="page-header">
-          <h1 id="dashH1">📊 لوحة التحكم</h1>
-          <p class="breadcrumb">🏠 الرئيسية <span>›</span> لوحة التحكم</p>
-          <p id="greetingText">👋 مرحباً بك</p>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card"><div class="num" id="totalVisits">0</div><div class="label">👁️ زوار</div></div>
-          <div class="stat-card"><div class="num" id="totalCompleted">0</div><div class="label">✅ أكملوا</div></div>
-          <div class="stat-card"><div class="num" id="totalLinks">0</div><div class="label">📦 روابط</div></div>
-          <div class="stat-card"><div class="num" id="totalLikes">0</div><div class="label">👍 لايكات</div></div>
-          <div class="stat-card"><div class="num" id="totalComments">0</div><div class="label">💬 تعليقات</div></div>
-          <div class="stat-card"><div class="num" id="totalEarnings">$0.00</div><div class="label">💵 أرباح</div></div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">➕ إنشاء رابط جديد</div>
-          <div class="form-row">
-            <div>
-              <label class="dash-label" for="youtubeUrlInput">▶️ رابط يوتيوب</label>
-              <input type="url" id="youtubeUrlInput" class="dash-input" placeholder="https://youtu.be/..." dir="ltr" inputmode="url">
-            </div>
-            <div>
-              <label class="dash-label" for="mainUrlInput">🔗 رابط التحويل</label>
-              <input type="url" id="mainUrlInput" class="dash-input" placeholder="https://example.com" dir="ltr" inputmode="url">
-            </div>
-          </div>
-          <button class="btn btn-primary" id="createLinkBtn" type="button">⚡ اختصار الرابط</button>
-          <div id="createLoader" class="loader"><div class="spinner"></div><span style="color:var(--gray-4);font-size:13px">⏳ جاري الإنشاء...</span></div>
-          <div class="result-box" id="newLinkResult">
-            <div class="title">✅ تم إنشاء الرابط!</div>
-            <div class="link-display" id="generatedLinkDisplay"></div>
-            <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
-              <button class="btn-sm copy" id="copyNewLinkBtn" type="button">📋 نسخ</button>
-              <button class="btn-sm visit" id="openNewLinkBtn" type="button">🔗 فتح</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PAGE: LEVELS -->
-      <section class="page" id="page-levels" aria-labelledby="lvlH1">
-        <div class="page-header">
-          <h1 id="lvlH1">⬆️ المستويات</h1>
-          <p class="breadcrumb">🏠 الرئيسية <span>›</span> المستويات</p>
-          <p>ارفع مستواك بزيادة عدد الزوار لتفتح مزايا وربح أعلى</p>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card"><div class="num" id="lvCurrent">1</div><div class="label">المستوى الحالي</div></div>
-          <div class="stat-card"><div class="num" id="lvNext">2</div><div class="label">المستوى القادم</div></div>
-          <div class="stat-card"><div class="num" id="lvProgress">0%</div><div class="label">التقدم</div></div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🎯 شريط التقدم</div>
-          <div style="background:var(--gray-1);height:14px;border-radius:40px;overflow:hidden">
-            <div id="lvProgressBar" style="background:var(--grad-btn);height:100%;width:0%;transition:width .6s ease;border-radius:40px"></div>
-          </div>
-          <p style="font-size:12px;color:var(--gray-4);margin-top:10px" id="lvHint">تحتاج إلى 0 زائر إضافي للمستوى القادم</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">📋 مستويات الربح</div>
-          <div class="pricing-grid">
-            <div class="price-card"><div class="price-icon">🥉</div><div class="price-name">المستوى 1</div><div class="price-amount">$0.5</div><div class="price-desc">لكل 1000 زيارة • 0 - 999 زائر</div></div>
-            <div class="price-card"><div class="price-icon">🥈</div><div class="price-name">المستوى 2</div><div class="price-amount">$1.0</div><div class="price-desc">لكل 1000 زيارة • 1,000 - 9,999 زائر</div></div>
-            <div class="price-card highlight"><div class="tag">🔥 الأكثر</div><div class="price-icon">🥇</div><div class="price-name">المستوى 3</div><div class="price-amount">$2.0</div><div class="price-desc">لكل 1000 زيارة • 10,000 - 49,999 زائر</div></div>
-            <div class="price-card"><div class="price-icon">💎</div><div class="price-name">المستوى 4</div><div class="price-amount">$3.0</div><div class="price-desc">لكل 1000 زيارة • 50,000+ زائر</div></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PAGE: MANAGE LINKS -->
-      <section class="page" id="page-manage-links" aria-labelledby="mlH1">
-        <div class="page-header">
-          <h1 id="mlH1">🔗 إدارة الروابط</h1>
-          <p class="breadcrumb">🏠 الرئيسية <span>›</span> إدارة الروابط</p>
-          <p>جميع روابطك مع الإحصائيات الكاملة وإمكانية التعديل</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">
-            📋 روابطي
-            <span style="background:var(--grad-btn);color:#fff;font-size:11px;padding:2px 10px;border-radius:40px;font-weight:700;margin-right:auto" id="linksCount">0</span>
-          </div>
-          <div id="linksContainer">
-            <div class="empty-state">
-              <span class="big-icon">📭</span>
-              <p>لا توجد روابط بعد</p>
-              <small>أنشئ أول رابط من لوحة التحكم</small>
-            </div>
-          </div>
-          <div id="listLoader" class="loader"><div class="spinner"></div><span style="color:var(--gray-4);font-size:13px">⏳ جاري التحميل...</span></div>
-        </div>
-      </section>
-
-      <!-- PAGE: WITHDRAW -->
-      <section class="page" id="page-withdraw" aria-labelledby="wdH1">
-        <div class="page-header">
-          <h1 id="wdH1">💸 طلب السحب</h1>
-          <p class="breadcrumb">🏠 الرئيسية <span>›</span> طلب السحب</p>
-          <p>اسحب أرباحك عبر شحن شدات ببجي موبايل أو تحويلات أخرى</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">💰 رصيدك المتاح للسحب</div>
-          <div style="text-align:center;padding:14px 0">
-            <div style="font-size:36px;font-weight:900;background:var(--grad-btn);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent" id="withdrawBalance">$0.00</div>
-            <div style="font-size:12px;color:var(--gray-4);margin-top:4px">الحد الأدنى للسحب: $6.00</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🎮 طرق السحب المتاحة - شحن شدات ببجي موبايل</div>
-          <div class="pricing-grid">
-            <div class="price-card" data-uc="360">
-              <div class="price-icon">💎</div>
-              <div class="price-name">360 UC</div>
-              <div class="price-amount">$6</div>
-              <div class="price-desc">شحن مباشر لحساب ببجي موبايل</div>
-              <button class="btn btn-primary" style="margin-top:10px" onclick="selectUC(360,6)">اختيار</button>
-            </div>
-            <div class="price-card" data-uc="660">
-              <div class="price-icon">💎💎</div>
-              <div class="price-name">660 UC</div>
-              <div class="price-amount">$12</div>
-              <div class="price-desc">شحن مباشر لحساب ببجي موبايل</div>
-              <button class="btn btn-primary" style="margin-top:10px" onclick="selectUC(660,12)">اختيار</button>
-            </div>
-            <div class="price-card highlight" data-uc="1800">
-              <div class="tag">تواصل</div>
-              <div class="price-icon">💎💎💎</div>
-              <div class="price-name">1800 UC</div>
-              <div class="price-amount">تواصل معنا</div>
-              <div class="price-desc">يتم الاتفاق عبر تيليجرام</div>
-              <button class="btn btn-pink" style="margin-top:10px" onclick="contactTelegram(1800)">📩 تواصل</button>
-            </div>
-            <div class="price-card highlight" data-uc="3800">
-              <div class="tag">تواصل</div>
-              <div class="price-icon">💎💎💎💎</div>
-              <div class="price-name">3800 UC</div>
-              <div class="price-amount">تواصل معنا</div>
-              <div class="price-desc">يتم الاتفاق عبر تيليجرام</div>
-              <button class="btn btn-pink" style="margin-top:10px" onclick="contactTelegram(3800)">📩 تواصل</button>
-            </div>
-          </div>
-          <p style="font-size:12px;color:var(--gray-4);margin-top:14px;text-align:center">
-            💡 يمكنك شحن تطبيقات أخرى (فري فاير، وغيرها) عبر التواصل معنا على تيليجرام
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">📝 معلومات السحب</div>
-          <div class="form-row">
-            <div>
-              <label class="dash-label" for="wdUcAmount">💎 الكمية (UC)</label>
-              <select class="dash-select" id="wdUcAmount">
-                <option value="">-- اختر الكمية --</option>
-                <option value="360">360 UC - $6</option>
-                <option value="660">660 UC - $12</option>
-                <option value="1800">1800 UC - تواصل</option>
-                <option value="3800">3800 UC - تواصل</option>
-              </select>
-            </div>
-            <div>
-              <label class="dash-label" for="wdPubgId">🎮 ID حساب ببجي</label>
-              <input type="text" id="wdPubgId" class="dash-input" placeholder="مثال: 5123456789" dir="ltr" inputmode="numeric" autocomplete="off">
-            </div>
-          </div>
-          <div class="form-row">
-            <div>
-              <label class="dash-label" for="wdFullName">👤 الاسم الكامل</label>
-              <input type="text" id="wdFullName" class="dash-input" placeholder="اسمك" autocomplete="name">
-            </div>
-            <div>
-              <label class="dash-label" for="wdPhone">📱 رقم الهاتف / تيليجرام</label>
-              <input type="text" id="wdPhone" class="dash-input" placeholder="+20..." dir="ltr" autocomplete="tel" inputmode="tel">
-            </div>
-          </div>
-          <div class="form-row">
-            <div>
-              <label class="dash-label" for="wdCountry">🌍 البلد</label>
-              <select class="dash-select" id="wdCountry" autocomplete="country-name">
-                <option value="سوريا">🇸🇾 سوريا</option>
-                <option value="مصر">🇪🇬 مصر</option>
-                <option value="الجزائر">🇩🇿 الجزائر</option>
-                <option value="المغرب">🇲🇦 المغرب</option>
-                <option value="السعودية">🇸🇦 السعودية</option>
-                <option value="العراق">🇮🇶 العراق</option>
-                <option value="اليمن">🇾🇪 اليمن</option>
-                <option value="فلسطين">🇵🇸 فلسطين</option>
-                <option value="الأردن">🇯🇴 الأردن</option>
-                <option value="لبنان">🇱🇧 لبنان</option>
-                <option value="تونس">🇹🇳 تونس</option>
-                <option value="ليبيا">🇱🇾 ليبيا</option>
-                <option value="السودان">🇸🇩 السودان</option>
-                <option value="أخرى">🌍 أخرى</option>
-              </select>
-            </div>
-            <div>
-              <label class="dash-label" for="wdCity">🏙️ المدينة</label>
-              <input type="text" id="wdCity" class="dash-input" placeholder="اسم المدينة" autocomplete="address-level2">
-            </div>
-          </div>
-          <div>
-            <label class="dash-label" for="wdAddress">🏠 العنوان الكامل</label>
-            <textarea id="wdAddress" class="dash-textarea" placeholder="العنوان بالتفصيل" autocomplete="street-address"></textarea>
-          </div>
-          <button class="btn btn-primary" style="margin-top:14px" id="wdSubmitBtn" type="button">📤 إرسال طلب السحب</button>
-        </div>
-      </section>
-
-      <!-- PAGE: TRANSACTIONS -->
-      <section class="page" id="page-transactions" aria-labelledby="txH1">
-        <div class="page-header">
-          <h1 id="txH1">📜 جميع الحالات</h1>
-          <p class="breadcrumb">🏠 الرئيسية <span>›</span> جميع الحالات</p>
-          <p>سجل كامل لطلبات السحب وحالتها</p>
-        </div>
-        <div class="card">
-          <div id="txContainer">
-            <div class="empty-state">
-              <span class="big-icon">📭</span>
-              <p>لا توجد عمليات بعد</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PAGE: SETTINGS -->
-      <section class="page" id="page-settings" aria-labelledby="stH1">
-        <div class="page-header">
-          <h1 id="stH1">⚙️ الإعدادات</h1>
-          <p class="breadcrumb">🏠 الرئيسية <span>›</span> الإعدادات</p>
-          <p>إدارة حسابك وبياناتك الشخصية</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">👤 الملف الشخصي</div>
-          <div class="profile-avatar-box">
-            <div class="avatar-big" id="settingsAvatar">؟</div>
-            <label class="avatar-edit" for="avatarUpload" title="تغيير الصورة">📷
-              <input type="file" id="avatarUpload" accept="image/*" style="display:none">
-            </label>
-          </div>
-          <div style="margin-top:12px">
-            <label class="dash-label" for="settingsName">✏️ الاسم</label>
-            <input type="text" id="settingsName" class="dash-input" placeholder="اسمك" maxlength="30" autocomplete="name">
-          </div>
-          <div style="margin-top:10px">
-            <label class="dash-label" for="settingsEmail">📧 البريد (غير قابل للتعديل)</label>
-            <input type="email" id="settingsEmail" class="dash-input" disabled style="opacity:.6" autocomplete="email">
-          </div>
-          <button class="btn btn-primary" style="margin-top:12px" id="saveProfileBtn" type="button">💾 حفظ التعديلات</button>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🔐 تغيير كلمة المرور</div>
-          <input type="password" id="currentPassInput" class="dash-input" placeholder="كلمة السر الحالية" style="margin-bottom:10px" autocomplete="current-password">
-          <input type="password" id="newPassInput" class="dash-input" placeholder="كلمة السر الجديدة" style="margin-bottom:10px" autocomplete="new-password">
-          <input type="password" id="newPassConfirmInput" class="dash-input" placeholder="تأكيد كلمة السر الجديدة" style="margin-bottom:10px" autocomplete="new-password">
-          <button class="btn btn-primary" id="changePassBtn" type="button">🔐 تغيير كلمة المرور</button>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🔗 رمز الإحالة الخاص بك</div>
-          <p style="font-size:12px;color:var(--gray-4);margin-bottom:10px">شارك هذا الرمز واكسب من إحالاتك</p>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input type="text" id="referralCode" class="dash-input" readonly dir="ltr" style="text-align:center;font-weight:800;color:var(--violet)">
-            <button class="btn btn-cyan" id="copyRefBtn" type="button" style="white-space:nowrap">📋 نسخ</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- PAGE: SUPPORT -->
-      <section class="page" id="page-support" aria-labelledby="spH1">
-        <div class="page-header">
-          <h1 id="spH1">🎧 الدعم</h1>
-          <p class="breadcrumb">🏠 الرئيسية <span>›</span> الدعم</p>
-          <p>تواصل معنا لأي استفسار أو مشكلة</p>
-        </div>
-        <div class="card">
-          <div class="card-title">📩 تواصل مع فريق الدعم</div>
-          <p style="font-size:13px;color:var(--gray-5);line-height:1.8;margin-bottom:14px">
-            نرد على استفساراتك خلال 24 ساعة. يمكنك التواصل عبر:
-          </p>
-          <a href="https://t.me/telegr800" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;margin-bottom:10px">📱 تيليجرام: @telegr800</a>
-        </div>
-      </section>
-
-    </main>
+    <div id="authSignupForm" style="display:none;">
+      <input type="text" id="signupUsername" class="auth-input" placeholder="👤 اسم المستخدم (بالإنجليزية)" autocomplete="off" autocorrect="off" autocapitalize="off">
+      <input type="password" id="signupPassword" class="auth-input" placeholder="🔑 الرمز السري (6+)" autocomplete="new-password">
+      <input type="password" id="signupPassword2" class="auth-input" placeholder="🔑 تأكيد الرمز" autocomplete="new-password">
+      <div class="auth-error" id="signupError"></div>
+      <button class="auth-btn primary" id="signupBtn">✨ إنشاء الحساب</button>
+      <span class="auth-toggle" id="goToLogin">لديك حساب؟ سجّل الدخول</span>
+    </div>
   </div>
 </div>
 
-<!-- ==================== MODAL: EDIT LINK ==================== -->
-<div class="modal-overlay" id="editLinkModal" role="dialog" aria-modal="true" aria-labelledby="editLinkTitle">
+<!-- APP -->
+<div id="appScreen" style="display:none;">
+  <div class="header">
+    <div class="header-row">
+      <div class="header-logo">
+        <div class="logo-icon">▶</div>
+        <span>BluePost</span>
+      </div>
+      <div class="header-actions">
+        <button class="header-icon-btn" id="notifBtn">🔔</button>
+        <div class="header-avatar" id="headerAvatar" onclick="switchTab('profile')"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page active" data-page="home">
+    <div class="feed" id="feedContainer"></div>
+  </div>
+
+  <div class="page" data-page="search">
+    <div class="search-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث عن أشخاص...">
+    </div>
+    <div class="users-list" id="searchResults"></div>
+  </div>
+
+  <div class="page" data-page="chat">
+    <div class="chat-list" id="chatList"></div>
+  </div>
+
+  <div class="page" data-page="profile">
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar" onclick="openAvatarViewer()"></div>
+      <div class="profile-name" id="profileName"></div>
+      <div class="profile-email" id="profileEmail"></div>
+      <div class="profile-bio" id="profileBio"></div>
+      <div class="profile-links" id="profileLinks"></div>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="num" id="profilePostsCount">0</div>
+          <div class="lbl">منشور</div>
+        </div>
+        <div class="profile-stat" onclick="openMyFriends()">
+          <div class="num" id="profileFriendsCount">0</div>
+          <div class="lbl">أصدقاء</div>
+        </div>
+        <div class="profile-stat">
+          <div class="num" id="profileFollowersCount">0</div>
+          <div class="lbl">متابع</div>
+        </div>
+        <div class="profile-stat">
+          <div class="num" id="profileFollowingCount">0</div>
+          <div class="lbl">يتابع</div>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn btn-primary" onclick="openEditProfile()">✏️ تعديل</button>
+        <button class="btn btn-secondary" onclick="openChangePassword()">🔑 الرمز</button>
+        <button class="btn btn-secondary" onclick="openSettings()">⚙️</button>
+        <button class="btn btn-secondary" onclick="logout()">🚪 خروج</button>
+        <button class="btn btn-danger" onclick="deleteMyAccount()">🗑 حذف</button>
+      </div>
+    </div>
+
+    <div class="posts-grid-mini" id="profilePostsGrid"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-item active" data-tab="home" onclick="switchTab('home')">
+      <span class="nav-icon">🏠</span>
+      <span>الرئيسية</span>
+    </button>
+    <button class="nav-item" data-tab="search" onclick="switchTab('search')">
+      <span class="nav-icon">🔍</span>
+      <span>بحث</span>
+    </button>
+    <button class="nav-item post-btn" data-tab="post" onclick="openCreatePost()">
+      <span class="nav-icon">＋</span>
+      <span>نشر</span>
+    </button>
+    <button class="nav-item" data-tab="chat" onclick="switchTab('chat')">
+      <span class="nav-icon">💌</span>
+      <span>رسائل</span>
+    </button>
+    <button class="nav-item" data-tab="profile" onclick="switchTab('profile')">
+      <span class="nav-icon">👤</span>
+      <span>حسابي</span>
+    </button>
+  </div>
+</div>
+
+<!-- CREATE POST MODAL -->
+<div class="modal-bg" id="createPostModal">
   <div class="modal">
     <div class="modal-header">
-      <h2 id="editLinkTitle">✏️ تعديل الرابط</h2>
-      <button class="modal-close" id="editLinkClose" aria-label="إغلاق" type="button">✕</button>
+      <h3>📝 منشور جديد</h3>
+      <button class="modal-close" onclick="closeModal('createPostModal')">✕</button>
     </div>
-    <input type="hidden" id="editLinkId">
-    <label class="dash-label" for="editMainUrl">🔗 رابط التحويل</label>
-    <input type="url" id="editMainUrl" class="dash-input" dir="ltr" style="margin-bottom:10px">
-    <label class="dash-label" for="editYoutubeUrl">▶️ رابط يوتيوب</label>
-    <input type="url" id="editYoutubeUrl" class="dash-input" dir="ltr" style="margin-bottom:10px">
-    <button class="modal-btn primary" id="saveEditLinkBtn" type="button">💾 حفظ التعديلات</button>
+
+    <div class="image-upload" id="imageUploadArea">
+      <div class="upload-hint" id="uploadHint">
+        <span class="icon">📷</span>
+        <strong>إضافة صورة (اختياري)</strong>
+        <small>اضغط لاختيار صورة</small>
+      </div>
+      <input type="file" id="postImageInput" accept="image/*" style="display:none;">
+    </div>
+
+    <div class="field-row">
+      <label>نص المنشور</label>
+      <textarea id="postText" placeholder="اكتب شيئاً... أو الصق رابطاً (YouTube, Telegram, Google, Facebook)"></textarea>
+    </div>
+
+    <button class="btn btn-primary" id="publishBtn">📤 نشر</button>
   </div>
 </div>
 
-<!-- ==================== DEV CREDIT ==================== -->
-<a class="dev-credit" href="https://www.facebook.com/share/1Dn4faW1Ay/" target="_blank" rel="noopener">
-  <span class="dot"></span>
-  <span>مطوّر الموقع</span>
-</a>
+<!-- REPORT MODAL -->
+<div class="modal-bg" id="reportModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🚨 إبلاغ</h3>
+      <button class="modal-close" onclick="closeModal('reportModal')">✕</button>
+    </div>
+    <div class="report-reasons" id="reportReasons"></div>
+    <div class="field-row">
+      <label>وصف إضافي (اختياري)</label>
+      <textarea id="reportDesc" placeholder="اشرح المشكلة..."></textarea>
+    </div>
+    <button class="btn btn-primary" id="submitReportBtn">📤 إرسال البلاغ</button>
+  </div>
+</div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- POST MENU MODAL -->
+<div class="modal-bg" id="postMenuModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>خيارات المنشور</h3>
+      <button class="modal-close" onclick="closeModal('postMenuModal')">✕</button>
+    </div>
+    <div class="menu-list" id="postMenuList"></div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-bg" id="editProfileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>✏️ تعديل الملف</h3>
+      <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+    </div>
+
+    <div class="avatar-upload" id="avatarUploadArea">
+      <div class="avatar-hint" id="avatarHint">
+        <span>📷</span>
+        <small>صورة البروفايل</small>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+    </div>
+
+    <div class="field-row">
+      <label>الاسم</label>
+      <input type="text" id="editName">
+    </div>
+    <div class="field-row">
+      <label>نبذة</label>
+      <textarea id="editBio" placeholder="اكتب نبذة..."></textarea>
+    </div>
+
+    <div class="field-row">
+      <label>الرابط الأول (مثال: قناتي على YouTube)</label>
+      <div class="link-input-group">
+        <input type="text" id="editLink1Icon" class="link-icon-select" placeholder="▶️" maxlength="2">
+        <input type="text" id="editLink1Name" placeholder="اسم الرابط">
+      </div>
+      <input type="url" id="editLink1Url" placeholder="https://..." style="margin-top:8px;">
+    </div>
+
+    <div class="field-row">
+      <label>الرابط الثاني (مثال: موقعي المفضل)</label>
+      <div class="link-input-group">
+        <input type="text" id="editLink2Icon" class="link-icon-select" placeholder="🔗" maxlength="2">
+        <input type="text" id="editLink2Name" placeholder="اسم الرابط">
+      </div>
+      <input type="url" id="editLink2Url" placeholder="https://..." style="margin-top:8px;">
+    </div>
+
+    <button class="btn btn-primary" id="saveProfileBtn">💾 حفظ</button>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal-bg" id="changePassModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🔑 تغيير الرمز السري</h3>
+      <button class="modal-close" onclick="closeModal('changePassModal')">✕</button>
+    </div>
+    <div class="field-row">
+      <label>الرمز القديم</label>
+      <input type="password" id="oldPass" placeholder="••••••">
+    </div>
+    <div class="field-row">
+      <label>الرمز الجديد</label>
+      <input type="password" id="newPass" placeholder="••••••">
+    </div>
+    <div class="field-row">
+      <label>تأكيد الرمز الجديد</label>
+      <input type="password" id="newPass2" placeholder="••••••">
+    </div>
+    <div class="auth-error" id="changePassError"></div>
+    <button class="btn btn-primary" id="savePassBtn">💾 حفظ</button>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-bg" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>⚙️ الإعدادات</h3>
+      <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+    </div>
+
+    <div class="settings-section">
+      <h4>🎨 لون التطبيق</h4>
+      <div class="color-grid" id="colorGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- POST VIEWER MODAL -->
+<div class="modal-bg" id="postViewerModal">
+  <div class="modal" style="padding:0; padding-bottom:80px;">
+    <div id="postViewerContent"></div>
+  </div>
+</div>
+
+<!-- PROFILE VIEWER MODAL -->
+<div class="modal-bg" id="profileViewerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>الملف الشخصي</h3>
+      <button class="modal-close" onclick="closeModal('profileViewerModal')">✕</button>
+    </div>
+    <div id="profileViewerContent"></div>
+  </div>
+</div>
+
+<!-- FRIENDS MODAL -->
+<div class="modal-bg" id="friendsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>👥 أصدقائي</h3>
+      <button class="modal-close" onclick="closeModal('friendsModal')">✕</button>
+    </div>
+    <div id="friendsList"></div>
+  </div>
+</div>
+
+<!-- COMMENT MENU MODAL -->
+<div class="modal-bg" id="commentMenuModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>خيارات التعليق</h3>
+      <button class="modal-close" onclick="closeModal('commentMenuModal')">✕</button>
+    </div>
+    <div class="menu-list" id="commentMenuList"></div>
+  </div>
+</div>
+
+<!-- CHAT VIEW -->
+<div id="chatView">
+  <div class="chat-header">
+    <button class="back-btn" onclick="closeChat()">←</button>
+    <div class="chat-user" onclick="openProfileViewer(STATE.currentChatUser)">
+      <div class="avatar" id="chatHeaderAvatar"></div>
+      <div>
+        <strong id="chatHeaderName"></strong>
+        <small>🟢 متصل</small>
+      </div>
+    </div>
+    <button class="header-icon-btn" onclick="openChatMenu()">⋯</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-bar">
+    <textarea id="chatInput" placeholder="اكتب رسالة..." rows="1"></textarea>
+    <button id="chatSendBtn">➤</button>
+  </div>
+</div>
+
+<!-- COMMENT INPUT BAR (fixed) -->
+<div class="post-comment-bar" id="postCommentBar" style="display:none;">
+  <textarea id="commentInputBar" placeholder="اكتب تعليقاً..." rows="1"></textarea>
+  <button onclick="addCommentFromBar()">➤</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-/* ============================================================
-   اختصار روابط اكتوبر - الكود الكامل
-   ============================================================ */
-(function(){
-'use strict';
-
-/* ---------- Firebase Config ---------- */
+/* ============================================
+   🔥 FIREBASE CONFIG
+   ============================================ */
 var FIREBASE_CONFIG = {
   apiKey: "AIzaSyBHnknMBiVdigipFyLMNkdFcm_tOQKWc-4",
   authDomain: "aktubar98.firebaseapp.com",
@@ -890,648 +1234,1553 @@ var FIREBASE_CONFIG = {
   appId: "1:679902534827:android:03edb9ea18b42eaef7abee"
 };
 
-var DB=null, AUTH=null;
-var YT_KEY='AIzaSyCUnKNsevt64NbW3xg7RMsmbF5v6-Twixs';
-var VERIFY_PAGE_URL='https://1digital360.blogspot.com/p/margin-0-padding-0-box-sizing-border.html?id=';
-var RATE_PER_1000=3.00;
-var MIN_WITHDRAW=6.00;
-var MAX_ACCOUNTS_PER_IP=3;
-var TELEGRAM_USER='telegr800';
+firebase.initializeApp(FIREBASE_CONFIG);
+var db = firebase.database();
 
-var $=function(id){return document.getElementById(id)};
-var currentUser=null, currentProfile=null, currentGeneratedLink='';
-var allLinksCache={};
-var selectedUC=null;
+var $ = function(id) { return document.getElementById(id); };
 
-/* ---------- Init Firebase (بعد defer) ---------- */
-function initFirebase(){
-  try{
-    if(typeof firebase==='undefined'){setTimeout(initFirebase,100);return}
-    firebase.initializeApp(FIREBASE_CONFIG);
-    DB=firebase.database();
-    AUTH=firebase.auth();
-    AUTH.onAuthStateChanged(onAuthChanged);
-  }catch(e){console.error('Firebase init error',e);setTimeout(initFirebase,300)}
-}
+var STATE = {
+  user: null,
+  users: {},
+  posts: [],
+  currentChatUser: null,
+  reportTarget: null,
+  reportReason: null,
+  uploadingImage: null,
+  uploadingAvatar: null,
+  menuPostId: null,
+  menuCommentId: null,
+  currentPostId: null,
+  viewingProfileId: null,
+  chatRef: null
+};
 
-/* ---------- Toasts ---------- */
-function showToast(msg,type){
-  var t=$('toast');
-  t.textContent=msg;
-  t.style.background=type==='success'?'linear-gradient(135deg,#7c3aed,#3b82f6)':
-                     type==='error'?'rgba(255,59,48,.95)':'rgba(13,17,23,.95)';
-  t.className='toast show';
-  clearTimeout(t._t);t._t=setTimeout(function(){t.className='toast'},3000);
-}
-function showAuthMsg(msg,type){
-  var a=$('authMsg');a.textContent=msg;
-  a.className='auth-msg show '+(type==='success'?'success':'error');
-  setTimeout(function(){a.className='auth-msg'},5000);
-}
-function setAuthLoading(s){$('authLoader').classList.toggle('show',s)}
+/* ============================================
+   🎨 THEME
+   ============================================ */
+var THEMES = [
+  { name:'Blue',    c1:'#0a4d9e', c2:'#1a5fb4', bg:'#e8f1fb' },
+  { name:'Purple',  c1:'#7c3aed', c2:'#8b5cf6', bg:'#f3e8ff' },
+  { name:'Pink',    c1:'#db2777', c2:'#ec4899', bg:'#fce7f3' },
+  { name:'Red',     c1:'#dc2626', c2:'#ef4444', bg:'#fee2e2' },
+  { name:'Orange',  c1:'#ea580c', c2:'#f97316', bg:'#ffedd5' },
+  { name:'Green',   c1:'#059669', c2:'#10b981', bg:'#d1fae5' },
+  { name:'Teal',    c1:'#0d9488', c2:'#14b8a6', bg:'#ccfbf1' },
+  { name:'Indigo',  c1:'#4338ca', c2:'#6366f1', bg:'#e0e7ff' },
+  { name:'Gray',    c1:'#374151', c2:'#4b5563', bg:'#f3f4f6' },
+  { name:'Black',   c1:'#000000', c2:'#1f2937', bg:'#e5e7eb' },
+  { name:'Cyan',    c1:'#0891b2', c2:'#06b6d4', bg:'#cffafe' },
+  { name:'Lime',    c1:'#65a30d', c2:'#84cc16', bg:'#ecfccb' }
+];
 
-function generateId(){
-  var c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',r='';
-  for(var i=0;i<7;i++)r+=c.charAt(Math.floor(Math.random()*c.length));
-  return r;
-}
-function extractVideoId(url){
-  var m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&?#]+)/);
-  return m?m[1]:null;
-}
-function formatDate(ts){
-  if(!ts)return '—';
-  var d=new Date(ts);
-  return d.toLocaleDateString('ar-EG')+' '+d.toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'});
-}
-function formatDateShort(ts){
-  if(!ts)return '—';
-  return new Date(ts).toLocaleDateString('ar-EG');
-}
-function copyText(txt){
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(txt).then(function(){showToast('📋 تم النسخ!','success')})
-    .catch(function(){fallbackCopy(txt)});
-  }else{fallbackCopy(txt)}
-}
-function fallbackCopy(txt){
-  var ta=document.createElement('textarea');ta.value=txt;
-  document.body.appendChild(ta);ta.select();
-  try{document.execCommand('copy');showToast('📋 تم النسخ!','success')}catch(e){showToast('❌ فشل النسخ','error')}
-  ta.remove();
-}
-function getInitial(t){return t?t.trim().charAt(0).toUpperCase():'؟'}
-function escapeHtml(s){
-  if(s==null)return'';
-  return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]});
+function applyTheme(theme) {
+  var root = document.documentElement;
+  root.style.setProperty('--primary', theme.c1);
+  root.style.setProperty('--primary-2', theme.c2);
+  root.style.setProperty('--primary-bg', theme.bg);
+  root.style.setProperty('--primary-glow', hexToRgba(theme.c1, 0.2));
+  localStorage.setItem('bp_theme', JSON.stringify(theme));
 }
 
-/* ---------- Shortener ---------- */
-function shortenUrl(longUrl){
-  return fetch('https://is.gd/create.php?format=json&url='+encodeURIComponent(longUrl))
-    .then(function(r){if(!r.ok)throw 0;return r.json()})
-    .then(function(d){return d.shorturl||longUrl})
-    .catch(function(){return longUrl});
+function hexToRgba(hex, alpha) {
+  var r = parseInt(hex.slice(1,3),16);
+  var g = parseInt(hex.slice(3,5),16);
+  var b = parseInt(hex.slice(5,7),16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
 }
 
-/* ---------- IP protection ---------- */
-function getIP(){
-  return fetch('https://api.ipify.org?format=json')
-    .then(function(r){return r.json()}).then(function(d){return d.ip})
-    .catch(function(){return null});
-}
-function hashIP(ip){return ip.replace(/\./g,'_').replace(/:/g,'-')}
-function checkIPLimit(){
-  return getIP().then(function(ip){
-    if(!ip)return{allowed:true,key:null};
-    var key=hashIP(ip);
-    return DB.ref('ipAccounts/'+key).once('value').then(function(s){
-      var c=s.val()?Object.keys(s.val()).length:0;
-      return{allowed:c<MAX_ACCOUNTS_PER_IP,key:key,count:c};
-    });
-  });
-}
-function registerIPAccount(uid){
-  return getIP().then(function(ip){
-    if(!ip)return;
-    var key=hashIP(ip);
-    return DB.ref('ipAccounts/'+key+'/'+uid).set({createdAt:Date.now()});
-  });
-}
-
-/* ---------- Auth UI ---------- */
-function bindAuthUI(){
-  $('tabLogin').addEventListener('click',function(){
-    $('tabLogin').classList.add('active');$('tabSignup').classList.remove('active');
-    $('loginForm').style.display='block';$('signupForm').style.display='none';
-    $('tabLogin').setAttribute('aria-selected','true');$('tabSignup').setAttribute('aria-selected','false');
-  });
-  $('tabSignup').addEventListener('click',function(){
-    $('tabSignup').classList.add('active');$('tabLogin').classList.remove('active');
-    $('signupForm').style.display='block';$('loginForm').style.display='none';
-    $('tabSignup').setAttribute('aria-selected','true');$('tabLogin').setAttribute('aria-selected','false');
-  });
-
-  $('loginForm').addEventListener('submit',function(e){e.preventDefault();doLogin()});
-  $('signupForm').addEventListener('submit',function(e){e.preventDefault();doSignup()});
-  $('loginBtn').addEventListener('click',function(e){e.preventDefault();doLogin()});
-  $('signupBtn').addEventListener('click',function(e){e.preventDefault();doSignup()});
-  $('forgotBtn').addEventListener('click',doForgot);
-  $('googleBtn').addEventListener('click',doGoogle);
-}
-
-function doLogin(){
-  var email=$('loginEmail').value.trim();
-  var pass=$('loginPassword').value;
-  var rem=$('rememberMe').checked;
-  if(!email||!pass){showAuthMsg('⚠️ أدخل البريد وكلمة السر');return}
-  setAuthLoading(true);
-  var persist=rem?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION;
-  AUTH.setPersistence(persist).then(function(){return AUTH.signInWithEmailAndPassword(email,pass)})
-    .then(function(){showAuthMsg('✅ تم تسجيل الدخول','success')})
-    .catch(function(err){
-      var m='❌ خطأ في تسجيل الدخول';
-      if(err.code==='auth/user-not-found')m='❌ لا يوجد حساب بهذا البريد';
-      else if(err.code==='auth/wrong-password')m='❌ كلمة السر غير صحيحة';
-      else if(err.code==='auth/invalid-email')m='❌ البريد غير صحيح';
-      else if(err.code==='auth/too-many-requests')m='⚠️ محاولات كثيرة، حاول لاحقاً';
-      else if(err.code==='auth/invalid-credential')m='❌ البريد أو كلمة السر غير صحيحة';
-      showAuthMsg(m);
-    }).then(function(){setAuthLoading(false)});
-}
-function doSignup(){
-  var email=$('signupEmail').value.trim();
-  var pass=$('signupPassword').value;
-  var conf=$('signupPasswordConfirm').value;
-  if(!email||!pass||!conf){showAuthMsg('⚠️ املأ الحقول');return}
-  if(pass.length<6){showAuthMsg('⚠️ كلمة السر 6 أحرف على الأقل');return}
-  if(pass!==conf){showAuthMsg('⚠️ كلمتا السر غير متطابقتين');return}
-  setAuthLoading(true);
-  checkIPLimit().then(function(ip){
-    if(!ip.allowed){showAuthMsg('🚫 الحد الأقصى '+MAX_ACCOUNTS_PER_IP+' حسابات لهذا الجهاز');setAuthLoading(false);return}
-    return AUTH.createUserWithEmailAndPassword(email,pass).then(function(cred){
-      if(cred.user){
-        return registerIPAccount(cred.user.uid).then(function(){
-          return DB.ref('users/'+cred.user.uid+'/profile').set({
-            email:email,name:email.split('@')[0],createdAt:Date.now(),ipHash:ip.key||null
-          });
-        });
-      }
-    }).then(function(){showAuthMsg('✅ تم إنشاء الحساب','success')});
-  }).catch(function(err){
-    var m='❌ خطأ في إنشاء الحساب';
-    if(err.code==='auth/email-already-in-use')m='❌ البريد مستخدم';
-    else if(err.code==='auth/weak-password')m='⚠️ كلمة السر ضعيفة';
-    else if(err.code==='auth/invalid-email')m='❌ البريد غير صحيح';
-    showAuthMsg(m);
-  }).then(function(){setAuthLoading(false)});
-}
-function doForgot(){
-  var email=$('loginEmail').value.trim();
-  if(!email){showAuthMsg('⚠️ اكتب بريدك أولاً');return}
-  AUTH.sendPasswordResetEmail(email).then(function(){showAuthMsg('✅ تم إرسال رابط إعادة التعيين','success')})
-    .catch(function(){showAuthMsg('❌ تعذر الإرسال')});
-}
-function doGoogle(){
-  setAuthLoading(true);
-  var provider=new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({prompt:'select_account'});
-  checkIPLimit().then(function(ip){
-    if(!ip.allowed){showAuthMsg('🚫 الحد الأقصى '+MAX_ACCOUNTS_PER_IP+' حسابات لهذا الجهاز');setAuthLoading(false);return}
-    return AUTH.signInWithPopup(provider).then(function(res){
-      if(res.user){
-        return DB.ref('users/'+res.user.uid+'/profile').once('value').then(function(s){
-          if(!s.exists()){
-            return registerIPAccount(res.user.uid).then(function(){
-              return DB.ref('users/'+res.user.uid+'/profile').set({
-                email:res.user.email,
-                name:res.user.displayName||res.user.email.split('@')[0],
-                createdAt:Date.now(),ipHash:ip.key||null,provider:'google'
-              });
-            });
-          }
-        });
-      }
-    });
-  }).catch(function(err){
-    if(err.code!=='auth/popup-closed-by-user')showAuthMsg('❌ فشل الدخول بجوجل');
-  }).then(function(){setAuthLoading(false)});
-}
-
-/* ---------- On Auth Changed ---------- */
-function onAuthChanged(user){
-  if(user){
-    currentUser=user;
-    $('authView').style.display='none';
-    $('appView').style.display='block';
-    loadProfile();
-    loadLinks();
-  }else{
-    currentUser=null;currentProfile=null;
-    $('authView').style.display='flex';
-    $('appView').style.display='none';
-    $('loginPassword').value='';
-    $('signupPassword').value='';
-    $('signupPasswordConfirm').value='';
-    closeSidebar();
+function loadTheme() {
+  var saved = localStorage.getItem('bp_theme');
+  if (saved) {
+    try { applyTheme(JSON.parse(saved)); } catch(e) {}
   }
 }
 
-/* ---------- Load Profile ---------- */
-function loadProfile(){
-  if(!currentUser)return;
-  DB.ref('users/'+currentUser.uid+'/profile').once('value').then(function(s){
-    currentProfile=s.val()||{};
-    var name=currentProfile.name||(currentUser.email?currentUser.email.split('@')[0]:'مستخدم');
-    var initial=getInitial(name);
-    $('greetingText').textContent='👋 مرحباً، '+name;
-    $('sidebarBalance').textContent='$'+(currentProfile.balance||0).toFixed(2);
-    $('mobileBalance').textContent='$'+(currentProfile.balance||0).toFixed(2);
-    $('withdrawBalance').textContent='$'+(currentProfile.balance||0).toFixed(2);
-    $('settingsAvatar').innerHTML=currentProfile.avatar
-      ?'<img src="'+currentProfile.avatar+'" alt="صورة الملف الشخصي">'
-      :initial;
-    $('settingsName').value=name;
-    $('settingsEmail').value=currentUser.email||'—';
-    $('referralCode').value=currentUser.uid.substring(0,10).toUpperCase();
-  });
+function renderColorGrid() {
+  var grid = $('colorGrid');
+  var current = localStorage.getItem('bp_theme');
+  var currentName = '';
+  if (current) {
+    try { currentName = JSON.parse(current).name; } catch(e) {}
+  }
+
+  grid.innerHTML = THEMES.map(function(t, i) {
+    var selected = t.name === currentName ? 'selected' : '';
+    return '<div class="color-swatch ' + selected + '" ' +
+      'style="background:linear-gradient(135deg,' + t.c1 + ',' + t.c2 + ');" ' +
+      'onclick="selectTheme(' + i + ')" title="' + t.name + '"></div>';
+  }).join('');
 }
 
-/* ---------- Sidebar / Navigation ---------- */
-function closeSidebar(){
-  $('sidebar').classList.remove('open');
-  $('overlayBackdrop').classList.remove('show');
-}
-function openSidebar(){
-  $('sidebar').classList.add('open');
-  $('overlayBackdrop').classList.add('show');
-}
-function bindNavigation(){
-  var items=document.querySelectorAll('.nav-item[data-page]');
-  items.forEach(function(el){
-    el.addEventListener('click',function(){
-      var page=el.getAttribute('data-page');
-      items.forEach(function(x){x.classList.remove('active')});
-      el.classList.add('active');
-      document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
-      var target=$('page-'+page);
-      if(target)target.classList.add('active');
-      if(window.innerWidth<=900)closeSidebar();
-      if(page==='manage-links')loadLinks();
-      if(page==='transactions')loadTransactions();
-      window.scrollTo({top:0,behavior:'smooth'});
-    });
-    el.addEventListener('keydown',function(e){
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}
-    });
-  });
-  $('menuBtn').addEventListener('click',openSidebar);
-  $('overlayBackdrop').addEventListener('click',closeSidebar);
-  $('sidebarLogout').addEventListener('click',doLogout);
-}
-function doLogout(){
-  if(!confirm('هل تريد تسجيل الخروج؟'))return;
-  AUTH.signOut();
+function selectTheme(index) {
+  var t = THEMES[index];
+  applyTheme(t);
+  renderColorGrid();
+  showToast('🎨 تم تغيير اللون', 'success');
 }
 
-/* ---------- Create Link ---------- */
-function bindCreateLink(){
-  $('createLinkBtn').addEventListener('click',createLink);
-  ['mainUrlInput','youtubeUrlInput'].forEach(function(id){
-    $(id).addEventListener('keydown',function(e){if(e.key==='Enter')createLink()});
-  });
-  $('copyNewLinkBtn').addEventListener('click',function(){
-    copyText($('generatedLinkDisplay').textContent);
-  });
-  $('openNewLinkBtn').addEventListener('click',function(){
-    window.open($('generatedLinkDisplay').textContent,'_blank');
-  });
+/* ============================================
+   🛠️ HELPERS
+   ============================================ */
+function showToast(msg, type) {
+  var t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(function() { t.className = 'toast'; }, 2500);
 }
-function createLink(){
-  if(!currentUser)return;
-  var mainUrl=$('mainUrlInput').value.trim();
-  var ytUrl=$('youtubeUrlInput').value.trim();
-  if(!mainUrl){showToast('⚠️ أدخل الرابط الأساسي','error');$('mainUrlInput').focus();return}
-  if(!ytUrl){showToast('⚠️ أدخل رابط يوتيوب','error');$('youtubeUrlInput').focus();return}
-  var vid=extractVideoId(ytUrl);
-  if(!vid){showToast('⚠️ رابط يوتيوب غير صحيح','error');return}
-  var btn=$('createLinkBtn');btn.disabled=true;btn.style.opacity='.6';
-  $('createLoader').classList.add('show');
-  $('newLinkResult').classList.remove('show');
-  fetch('https://www.googleapis.com/youtube/v3/videos?part=statistics&id='+vid+'&key='+YT_KEY)
-    .then(function(r){return r.json()})
-    .then(function(data){
-      var likes=0,comments=0;
-      if(data.items&&data.items.length>0){
-        likes=parseInt(data.items[0].statistics.likeCount)||0;
-        comments=parseInt(data.items[0].statistics.commentCount)||0;
+
+function escapeHtml(t) {
+  var d = document.createElement('div');
+  d.textContent = t == null ? '' : t;
+  return d.innerHTML;
+}
+
+function timeAgo(ts) {
+  if (!ts) return '';
+  var diff = (Date.now() - ts) / 1000;
+  if (diff < 60) return 'الآن';
+  if (diff < 3600) return Math.floor(diff / 60) + ' د';
+  if (diff < 86400) return Math.floor(diff / 3600) + ' س';
+  if (diff < 2592000) return Math.floor(diff / 86400) + ' يوم';
+  if (diff < 31536000) return Math.floor(diff / 2592000) + ' شهر';
+  return Math.floor(diff / 31536000) + ' سنة';
+}
+
+function getDeviceId() {
+  var id = localStorage.getItem('bp_device_id');
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+    localStorage.setItem('bp_device_id', id);
+  }
+  return id;
+}
+
+function getTodayKey() {
+  var d = new Date();
+  return d.getFullYear() + '_' + (d.getMonth() + 1) + '_' + d.getDate();
+}
+
+function showModal(id) { $(id).classList.add('show'); }
+function closeModal(id) { $(id).classList.remove('show'); }
+
+/* ============================================
+   🖼️ IMAGE COMPRESSION
+   ============================================ */
+function compressImage(file, maxSize, quality, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var w = img.width, h = img.height;
+
+      if (w > h) {
+        if (w > maxSize) { h = h * maxSize / w; w = maxSize; }
+      } else {
+        if (h > maxSize) { w = w * maxSize / h; h = maxSize; }
       }
-      var linkId=generateId();
-      var linkData={
-        mainUrl:mainUrl,youtubeUrl:ytUrl,videoId:vid,
-        initialLikes:likes,initialComments:comments,
-        createdAt:Date.now(),visits:0,completed:0,addedLikes:0,addedComments:0,
-        ownerUid:currentUser.uid,ownerEmail:currentUser.email||''
-      };
-      return DB.ref('links/'+linkId).set(linkData).then(function(){
-        return shortenUrl(VERIFY_PAGE_URL+linkId);
-      }).then(function(short){
-        currentGeneratedLink=short;
-        $('generatedLinkDisplay').textContent=short;
-        $('newLinkResult').classList.add('show');
-        return DB.ref('links/'+linkId+'/shortUrl').set(short);
-      }).then(function(){
-        $('mainUrlInput').value='';$('youtubeUrlInput').value='';
-        showToast('✅ تم إنشاء الرابط!','success');
-        loadLinks();
-      });
-    }).catch(function(err){
-      console.error(err);showToast('❌ حدث خطأ','error');
-    }).then(function(){
-      btn.disabled=false;btn.style.opacity='1';
-      $('createLoader').classList.remove('show');
-    });
+
+      canvas.width = w;
+      canvas.height = h;
+
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+
+      var compressed = canvas.toDataURL('image/jpeg', quality);
+      callback(compressed);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
-/* ---------- Load & Render Links ---------- */
-function loadLinks(){
-  if(!currentUser)return;
-  $('listLoader').classList.add('show');
-  DB.ref('links').orderByChild('ownerUid').equalTo(currentUser.uid).once('value')
-    .then(function(snap){
-      $('listLoader').classList.remove('show');
-      allLinksCache=snap.val()||{};
-      renderLinks(allLinksCache);
-    }).catch(function(){
-      DB.ref('links').once('value').then(function(snap){
-        $('listLoader').classList.remove('show');
-        var all=snap.val()||{},f={};
-        for(var k in all){if(all[k].ownerUid===currentUser.uid)f[k]=all[k]}
-        allLinksCache=f;renderLinks(f);
-      });
-    });
+/* ============================================
+   🔗 SMART LINKIFY
+   ============================================ */
+function linkifyText(text) {
+  if (!text) return '';
+  var escaped = escapeHtml(text);
+  var urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  return escaped.replace(urlRegex, function(url) {
+    var cleanUrl = url.replace(/[.,;!?]+$/, '');
+    var type = detectLinkType(cleanUrl);
+    var icon = '';
+    var label = '';
+
+    if (type === 'youtube') { icon = '▶️ '; label = 'فتح في YouTube'; }
+    else if (type === 'telegram') { icon = '✈️ '; label = 'فتح في Telegram'; }
+    else if (type === 'google') { icon = '🔍 '; label = 'فتح في Google'; }
+    else if (type === 'facebook') { icon = '📘 '; label = 'فتح في Facebook'; }
+    else if (type === 'instagram') { icon = '📷 '; label = 'فتح في Instagram'; }
+    else if (type === 'whatsapp') { icon = '💬 '; label = 'فتح في WhatsApp'; }
+    else if (type === 'twitter') { icon = '🐦 '; label = 'فتح في Twitter'; }
+    else { icon = '🔗 '; label = 'فتح الرابط'; }
+
+    return '<a href="javascript:void(0)" onclick="openSmartLink(\'' + cleanUrl.replace(/'/g, '\\\'') + '\')" title="' + label + '">' + icon + cleanUrl + '</a>';
+  });
 }
-function renderLinks(data){
-  var keys=Object.keys(data);
-  var tVisits=0,tCompleted=0,tLikes=0,tComments=0;
-  if(keys.length===0){
-    $('linksContainer').innerHTML='<div class="empty-state"><span class="big-icon">📭</span><p>لا توجد روابط بعد</p><small>أنشئ أول رابط من لوحة التحكم</small></div>';
-    $('totalLinks').textContent='0';$('totalVisits').textContent='0';
-    $('totalCompleted').textContent='0';$('totalLikes').textContent='0';
-    $('totalComments').textContent='0';$('totalEarnings').textContent='$0.00';
-    $('linksCount').textContent='0';
+
+function detectLinkType(url) {
+  var u = url.toLowerCase();
+  if (u.indexOf('youtube.com') !== -1 || u.indexOf('youtu.be') !== -1) return 'youtube';
+  if (u.indexOf('t.me') !== -1 || u.indexOf('telegram') !== -1) return 'telegram';
+  if (u.indexOf('google.') !== -1 || u.indexOf('maps.google') !== -1) return 'google';
+  if (u.indexOf('facebook.com') !== -1 || u.indexOf('fb.com') !== -1) return 'facebook';
+  if (u.indexOf('instagram.com') !== -1) return 'instagram';
+  if (u.indexOf('wa.me') !== -1 || u.indexOf('whatsapp.com') !== -1) return 'whatsapp';
+  if (u.indexOf('twitter.com') !== -1 || u.indexOf('x.com') !== -1) return 'twitter';
+  return 'generic';
+}
+
+function openSmartLink(url) {
+  if (window.AndroidApp && window.AndroidApp.openUrl) {
+    window.AndroidApp.openUrl(url);
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
+/* ============================================
+   🔐 AUTH
+   ============================================ */
+$('goToSignup').onclick = function() {
+  $('authLoginForm').style.display = 'none';
+  $('authSignupForm').style.display = 'block';
+  $('signupError').textContent = '';
+};
+
+$('goToLogin').onclick = function() {
+  $('authSignupForm').style.display = 'none';
+  $('authLoginForm').style.display = 'block';
+  $('loginError').textContent = '';
+};
+
+$('loginBtn').onclick = function() {
+  var username = $('loginUsername').value.trim().toLowerCase();
+  var pass = $('loginPassword').value;
+  var err = $('loginError');
+
+  if (!username || !pass) {
+    err.textContent = '⚠️ املأ جميع الحقول';
     return;
   }
-  keys.sort(function(a,b){return (data[b].createdAt||0)-(data[a].createdAt||0)});
-  var html='';
-  for(var i=0;i<keys.length;i++){
-    var key=keys[i],link=data[key];
-    var visits=link.visits||0,completed=link.completed||0;
-    var addedLikes=link.addedLikes||0,addedComments=link.addedComments||0;
-    var incomplete=Math.max(0,visits-completed);
-    tVisits+=visits;tCompleted+=completed;tLikes+=addedLikes;tComments+=addedComments;
-    var mainDisplay=link.mainUrl?
-      (link.mainUrl.length>45?link.mainUrl.substring(0,45)+'...':link.mainUrl):'غير محدد';
-    var full=link.shortUrl||(VERIFY_PAGE_URL+key);
-    html+='<div class="link-card">'+
-      '<div class="top-row"><div class="info">'+
-        '<div class="link-id">🆔 '+key+'</div>'+
-        '<div class="dest-url"><span>🎯</span> '+escapeHtml(mainDisplay)+'</div>'+
-        '<div class="youtube-info">▶️ '+escapeHtml(link.youtubeUrl||'—')+'</div>'+
-      '</div></div>'+
-      '<div class="mini-stats">'+
-        '<div class="mini-stat"><div class="mnum">'+visits+'</div><div class="mlabel">👁️ زوار</div></div>'+
-        '<div class="mini-stat"><div class="mnum">'+completed+'</div><div class="mlabel">✅ أكملوا</div></div>'+
-        '<div class="mini-stat"><div class="mnum">'+incomplete+'</div><div class="mlabel">⏳ لم يكملوا</div></div>'+
-        '<div class="mini-stat"><div class="mnum">'+addedLikes+'</div><div class="mlabel">👍 لايكات</div></div>'+
-        '<div class="mini-stat"><div class="mnum">'+addedComments+'</div><div class="mlabel">💬 تعليقات</div></div>'+
-      '</div>'+
-      '<div class="actions">'+
-        '<button class="btn-sm copy" data-act="copy" data-link="'+escapeHtml(full)+'">📋 نسخ</button>'+
-        '<button class="btn-sm visit" data-act="open" data-link="'+escapeHtml(full)+'">🔗 فتح</button>'+
-        '<button class="btn-sm edit" data-act="edit" data-id="'+key+'">✏️ تعديل</button>'+
-        '<button class="btn-sm delete" data-act="delete" data-id="'+key+'">🗑️ حذف</button>'+
-      '</div>'+
-    '</div>';
-  }
-  $('linksContainer').innerHTML=html;
-  $('totalLinks').textContent=keys.length;
-  $('totalVisits').textContent=tVisits;
-  $('totalCompleted').textContent=tCompleted;
-  $('totalLikes').textContent=tLikes;
-  $('totalComments').textContent=tComments;
-  $('totalEarnings').textContent='$'+(tVisits/1000*RATE_PER_1000).toFixed(2);
-  $('linksCount').textContent=keys.length;
 
-  $('linksContainer').querySelectorAll('[data-act]').forEach(function(b){
-    b.addEventListener('click',function(){
-      var act=b.getAttribute('data-act');
-      if(act==='copy')copyText(b.getAttribute('data-link'));
-      else if(act==='open')window.open(b.getAttribute('data-link'),'_blank');
-      else if(act==='edit')openEditLink(b.getAttribute('data-id'));
-      else if(act==='delete')deleteLink(b.getAttribute('data-id'));
-    });
-  });
-}
-function deleteLink(id){
-  if(!currentUser)return;
-  if(!confirm('⚠️ تأكيد حذف الرابط؟'))return;
-  DB.ref('links/'+id).once('value').then(function(s){
-    if(!s.exists()){showToast('❌ غير موجود','error');return}
-    if(s.val().ownerUid!==currentUser.uid){showToast('🚫 لا يمكنك حذف هذا الرابط','error');return}
-    return DB.ref('links/'+id).remove();
-  }).then(function(){showToast('🗑️ تم الحذف','success');loadLinks()})
-    .catch(function(){showToast('❌ فشل الحذف','error')});
-}
+  err.textContent = '⏳ جاري الدخول...';
 
-/* ---------- Edit Link ---------- */
-function openEditLink(id){
-  var l=allLinksCache[id];if(!l)return;
-  $('editLinkId').value=id;
-  $('editMainUrl').value=l.mainUrl||'';
-  $('editYoutubeUrl').value=l.youtubeUrl||'';
-  $('editLinkModal').classList.add('show');
-}
-function bindEditLink(){
-  $('editLinkClose').addEventListener('click',function(){$('editLinkModal').classList.remove('show')});
-  $('editLinkModal').addEventListener('click',function(e){
-    if(e.target===$('editLinkModal'))$('editLinkModal').classList.remove('show');
-  });
-  $('saveEditLinkBtn').addEventListener('click',function(){
-    var id=$('editLinkId').value;
-    var main=$('editMainUrl').value.trim();
-    var yt=$('editYoutubeUrl').value.trim();
-    if(!main||!yt){showToast('⚠️ املأ الحقول','error');return}
-    DB.ref('links/'+id).update({mainUrl:main,youtubeUrl:yt})
-      .then(function(){
-        showToast('✅ تم الحفظ','success');
-        $('editLinkModal').classList.remove('show');
-        loadLinks();
-      }).catch(function(){showToast('❌ فشل الحفظ','error')});
-  });
-}
-
-/* ---------- Withdraw ---------- */
-function selectUC(uc,amount){
-  if(amount&&amount>0){
-    if((currentProfile&&currentProfile.balance||0)<amount){
-      showToast('⚠️ رصيدك غير كافٍ. تحتاج $'+amount,'error');return;
-    }
-    selectedUC=uc;
-    $('wdUcAmount').value=String(uc);
-    showToast('✅ تم اختيار '+uc+' UC','success');
-    var card=$('page-withdraw');if(card)card.scrollIntoView({behavior:'smooth'});
-  }else{
-    var bal=(currentProfile&&currentProfile.balance||0);
-    if(bal>=amount){
-      selectedUC=uc;$('wdUcAmount').value=String(uc);
-      showToast('✅ تم اختيار '+uc+' UC','success');
-    }
-  }
-}
-function contactTelegram(uc){
-  var msg=encodeURIComponent('مرحباً، أريد شحن '+uc+' UC لحساب ببجي. رصيدي: $'+((currentProfile&&currentProfile.balance)||0).toFixed(2));
-  window.open('https://t.me/'+TELEGRAM_USER+'?text='+msg,'_blank');
-}
-function bindWithdraw(){
-  $('wdSubmitBtn').addEventListener('click',submitWithdraw);
-}
-function submitWithdraw(){
-  if(!currentUser)return;
-  var uc=$('wdUcAmount').value;
-  var pubgId=$('wdPubgId').value.trim();
-  var name=$('wdFullName').value.trim();
-  var phone=$('wdPhone').value.trim();
-  var country=$('wdCountry').value;
-  var city=$('wdCity').value.trim();
-  var address=$('wdAddress').value.trim();
-  if(!uc){showToast('⚠️ اختر كمية UC','error');return}
-  if(!pubgId){showToast('⚠️ أدخل ID حساب ببجي','error');return}
-  if(!name){showToast('⚠️ أدخل اسمك الكامل','error');return}
-  if(!phone){showToast('⚠️ أدخل رقم الهاتف/تيليجرام','error');return}
-  var bal=(currentProfile&&currentProfile.balance||0);
-  var need=uc==='360'?6:uc==='660'?12:0;
-  if(need>0&&bal<need){showToast('⚠️ رصيدك غير كافٍ ($'+need+' مطلوب)','error');return}
-  var req={
-    uid:currentUser.uid,
-    email:currentUser.email||'',
-    uc:uc,price:need,pubgId:pubgId,name:name,phone:phone,
-    country:country,city:city,address:address,
-    status:'pending',createdAt:Date.now()
-  };
-  DB.ref('withdrawals').push(req).then(function(){
-    showToast('✅ تم إرسال الطلب، سيراجعه الفريق','success');
-    $('wdPubgId').value='';$('wdFullName').value='';$('wdPhone').value='';
-    $('wdCity').value='';$('wdAddress').value='';$('wdUcAmount').value='';
-  }).catch(function(){showToast('❌ فشل الإرسال','error')});
-}
-
-/* ---------- Transactions ---------- */
-function loadTransactions(){
-  if(!currentUser)return;
-  DB.ref('withdrawals').orderByChild('uid').equalTo(currentUser.uid).once('value')
-    .then(function(s){
-      var data=s.val()||{};
-      var keys=Object.keys(data);
-      if(keys.length===0){
-        $('txContainer').innerHTML='<div class="empty-state"><span class="big-icon">📭</span><p>لا توجد عمليات بعد</p></div>';
+  db.ref('users').orderByChild('username').equalTo(username).once('value')
+    .then(function(snap) {
+      if (!snap.exists()) {
+        err.textContent = '❌ المستخدم غير موجود';
         return;
       }
-      keys.sort(function(a,b){return (data[b].createdAt||0)-(data[a].createdAt||0)});
-      var html='';
-      keys.forEach(function(k){
-        var r=data[k];
-        var statusMap={pending:'⏳ قيد المراجعة',approved:'✅ تمت الموافقة',rejected:'❌ مرفوض',completed:'🎉 مكتمل'};
-        var status=statusMap[r.status]||r.status;
-        html+='<div class="link-card">'+
-          '<div class="top-row"><div class="info">'+
-            '<div class="link-id">💎 '+escapeHtml(r.uc)+' UC</div>'+
-            '<div class="dest-url"><span>🎮</span> ID: '+escapeHtml(r.pubgId)+'</div>'+
-            '<div class="youtube-info">👤 '+escapeHtml(r.name)+' • 📱 '+escapeHtml(r.phone)+'</div>'+
-          '</div></div>'+
-          '<div class="mini-stats" style="grid-template-columns:repeat(3,1fr)">'+
-            '<div class="mini-stat"><div class="mnum">$'+(r.price||0)+'</div><div class="mlabel">💰 السعر</div></div>'+
-            '<div class="mini-stat"><div class="mnum" style="font-size:12px">'+status+'</div><div class="mlabel">📌 الحالة</div></div>'+
-            '<div class="mini-stat"><div class="mnum" style="font-size:12px">'+formatDateShort(r.createdAt)+'</div><div class="mlabel">📅 التاريخ</div></div>'+
-          '</div>'+
-        '</div>';
+
+      var found = null;
+      snap.forEach(function(child) {
+        found = { id: child.key, data: child.val() };
       });
-      $('txContainer').innerHTML=html;
+
+      if (!found) {
+        err.textContent = '❌ خطأ';
+        return;
+      }
+
+      if (found.data.password !== pass) {
+        err.textContent = '❌ الرمز السري خطأ';
+        return;
+      }
+
+      if (found.data.status === 'banned') {
+        err.textContent = '🚫 حسابك محظور';
+        return;
+      }
+
+      if (found.data.status === 'suspended') {
+        var until = found.data.suspendedUntil || 0;
+        if (Date.now() < until) {
+          err.textContent = '⏸ حسابك موقوف مؤقتاً';
+          return;
+        }
+      }
+
+      localStorage.setItem('bp_user_id', found.id);
+      STATE.user = { id: found.id, data: found.data };
+      enterApp();
+    })
+    .catch(function(e) {
+      err.textContent = '❌ خطأ: ' + e.message;
     });
+};
+
+$('signupBtn').onclick = function() {
+  var username = $('signupUsername').value.trim().toLowerCase();
+  var pass = $('signupPassword').value;
+  var pass2 = $('signupPassword2').value;
+  var err = $('signupError');
+
+  if (!username || !pass || !pass2) {
+    err.textContent = '⚠️ املأ جميع الحقول';
+    return;
+  }
+  if (username.length < 3) {
+    err.textContent = '⚠️ اسم المستخدم 3 أحرف على الأقل';
+    return;
+  }
+  if (!/^[a-z0-9_]+$/.test(username)) {
+    err.textContent = '⚠️ حروف إنجليزية وأرقام فقط';
+    return;
+  }
+  if (pass.length < 6) {
+    err.textContent = '⚠️ الرمز 6 أحرف على الأقل';
+    return;
+  }
+  if (pass !== pass2) {
+    err.textContent = '⚠️ الرمزان غير متطابقين';
+    return;
+  }
+
+  err.textContent = '⏳ جاري إنشاء الحساب...';
+
+  var deviceId = getDeviceId();
+  var todayKey = getTodayKey();
+
+  db.ref('settings/app').once('value').then(function(snap) {
+    var settings = snap.val() || {};
+    var maxAccounts = settings.maxAccountsPerDevice || 5;
+
+    return db.ref('users').orderByChild('username').equalTo(username).once('value')
+      .then(function(userSnap) {
+        if (userSnap.exists()) {
+          throw new Error('اسم المستخدم محجوز');
+        }
+        return db.ref('device_accounts/' + deviceId + '/' + todayKey).once('value');
+      })
+      .then(function(deviceSnap) {
+        var count = deviceSnap.val() || 0;
+        if (count >= maxAccounts) {
+          throw new Error('وصلت الحد الأقصى (' + maxAccounts + ') من هذا الجهاز اليوم');
+        }
+
+        var newUser = {
+          username: username,
+          name: username,
+          password: pass,
+          deviceId: deviceId,
+          createdAt: Date.now(),
+          status: 'active',
+          followers: 0,
+          following: 0,
+          friends: {},
+          verified: false,
+          photo: '',
+          bio: '',
+          links: {}
+        };
+
+        return db.ref('users').push(newUser).then(function(ref) {
+          return db.ref('device_accounts/' + deviceId + '/' + todayKey)
+            .set(count + 1)
+            .then(function() { return ref.key; });
+        });
+      });
+  })
+  .then(function(userId) {
+    localStorage.setItem('bp_user_id', userId);
+    return db.ref('users/' + userId).once('value');
+  })
+  .then(function(userSnap) {
+    STATE.user = { id: userSnap.key, data: userSnap.val() };
+    err.textContent = '';
+    enterApp();
+  })
+  .catch(function(e) {
+    err.textContent = '❌ ' + e.message;
+  });
+};
+
+/* ============================================
+   🚀 ENTER / LOGOUT
+   ============================================ */
+function enterApp() {
+  $('authScreen').style.display = 'none';
+  $('appScreen').style.display = 'block';
+  updateHeaderAvatar();
+  loadAllData();
+  showToast('👋 مرحباً ' + (STATE.user.data.name || STATE.user.data.username), 'success');
 }
 
-/* ---------- Settings ---------- */
-function bindSettings(){
-  $('saveProfileBtn').addEventListener('click',saveProfile);
-  $('changePassBtn').addEventListener('click',changePass);
-  $('copyRefBtn').addEventListener('click',function(){copyText($('referralCode').value)});
-  $('avatarUpload').addEventListener('change',uploadAvatar);
+function logout() {
+  if (!confirm('هل تريد الخروج؟')) return;
+  localStorage.removeItem('bp_user_id');
+  location.reload();
 }
-function saveProfile(){
-  var name=$('settingsName').value.trim();
-  if(!name){showToast('⚠️ أدخل الاسم','error');return}
-  DB.ref('users/'+currentUser.uid+'/profile/name').set(name).then(function(){
-    currentProfile.name=name;
-    $('greetingText').textContent='👋 مرحباً، '+name;
-    $('settingsAvatar').innerHTML=currentProfile.avatar
-      ?'<img src="'+currentProfile.avatar+'" alt="صورة الملف الشخصي">'
-      :getInitial(name);
-    showToast('✅ تم حفظ الاسم','success');
-  }).catch(function(){showToast('❌ فشل الحفظ','error')});
+
+function updateHeaderAvatar() {
+  var name = STATE.user.data.name || STATE.user.data.username || '؟';
+  var avatar = $('headerAvatar');
+  if (STATE.user.data.photo) {
+    avatar.innerHTML = '<img src="' + STATE.user.data.photo + '">';
+  } else {
+    avatar.textContent = name.charAt(0).toUpperCase();
+  }
 }
-function uploadAvatar(e){
-  var f=e.target.files[0];if(!f)return;
-  if(f.size>500*1024){showToast('⚠️ الصورة كبيرة (الحد 500KB)','error');return}
-  var r=new FileReader();
-  r.onload=function(){
-    var img=r.result;
-    DB.ref('users/'+currentUser.uid+'/profile/avatar').set(img).then(function(){
-      currentProfile.avatar=img;
-      $('settingsAvatar').innerHTML='<img src="'+img+'" alt="صورة الملف الشخصي">';
-      showToast('✅ تم رفع الصورة','success');
-    }).catch(function(){showToast('❌ فشل الرفع','error')});
-  };
-  r.readAsDataURL(f);
-}
-function changePass(){
-  var cur=$('currentPassInput').value;
-  var np=$('newPassInput').value;
-  var npc=$('newPassConfirmInput').value;
-  if(!cur||!np||!npc){showToast('⚠️ املأ جميع الحقول','error');return}
-  if(np.length<6){showToast('⚠️ كلمة السر 6 أحرف على الأقل','error');return}
-  if(np!==npc){showToast('⚠️ كلمتا السر غير متطابقتين','error');return}
-  var cred=firebase.auth.EmailAuthProvider.credential(currentUser.email,cur);
-  currentUser.reauthenticateWithCredential(cred).then(function(){
-    return currentUser.updatePassword(np);
-  }).then(function(){
-    $('currentPassInput').value='';$('newPassInput').value='';$('newPassConfirmInput').value='';
-    showToast('✅ تم تغيير كلمة المرور','success');
-  }).catch(function(err){
-    if(err.code==='auth/wrong-password')showToast('❌ كلمة السر الحالية خاطئة','error');
-    else if(err.code==='auth/requires-recent-login')showToast('⚠️ يرجى إعادة تسجيل الدخول','error');
-    else showToast('❌ فشل تغيير كلمة المرور','error');
+
+/* ============================================
+   📥 LOAD DATA
+   ============================================ */
+function loadAllData() {
+  db.ref('users').on('value', function(snap) {
+    STATE.users = snap.val() || {};
+    if (STATE.user && STATE.users[STATE.user.id]) {
+      STATE.user.data = STATE.users[STATE.user.id];
+    }
+    renderFeed();
+    renderProfile();
+    renderChatList();
+    updateHeaderAvatar();
+  });
+
+  db.ref('posts').on('value', function(snap) {
+    var data = snap.val() || {};
+    STATE.posts = Object.keys(data).map(function(k) {
+      var p = data[k];
+      p.id = k;
+      return p;
+    }).sort(function(a, b) {
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    });
+    renderFeed();
+    renderProfile();
   });
 }
 
-/* ---------- Levels ---------- */
-function updateLevels(){
-  var v=parseInt($('totalVisits').textContent)||0;
-  var lv=v<1000?1:v<10000?2:v<50000?3:4;
-  var next=lv+1;
-  var prevLimit=[0,1000,10000,50000][lv-1]||0;
-  var nextLimit=[1000,10000,50000,Infinity][lv-1]||Infinity;
-  $('lvCurrent').textContent=lv;
-  $('lvNext').textContent=lv<4?next:'—';
-  var pct=lv>=4?100:Math.min(100,Math.round((v-prevLimit)/(nextLimit-prevLimit)*100));
-  $('lvProgress').textContent=pct+'%';
-  $('lvProgressBar').style.width=pct+'%';
-  $('lvHint').textContent=lv>=4?'🎉 وصلت لأعلى مستوى!':('تحتاج '+(nextLimit-v)+' زائر إضافي للمستوى '+next);
+/* ============================================
+   🏠 FEED
+   ============================================ */
+function renderFeed() {
+  var feed = $('feedContainer');
+  if (!STATE.posts.length) {
+    feed.innerHTML = '<div class="empty"><span class="icon">📭</span><h3>لا توجد منشورات</h3><p>كن أول من ينشر شيئاً</p></div>';
+    return;
+  }
+
+  feed.innerHTML = STATE.posts.map(function(p) {
+    return postCardHtml(p);
+  }).join('');
 }
 
-/* ---------- Event Hooks for cross updates ---------- */
-var _origRenderLinks=renderLinks;
-renderLinks=function(d){_origRenderLinks(d);updateLevels()};
+function postCardHtml(p) {
+  var author = STATE.users[p.userId] || {};
+  var authorName = author.name || author.username || 'مستخدم';
+  var firstLetter = authorName.charAt(0).toUpperCase();
+  var avatarHtml = author.photo
+    ? '<img src="' + author.photo + '">'
+    : firstLetter;
 
-/* ---------- Boot ---------- */
-function boot(){
-  initFirebase();
-  bindAuthUI();
-  bindNavigation();
-  bindCreateLink();
-  bindEditLink();
-  bindWithdraw();
-  bindSettings();
-  setInterval(function(){if(currentUser)loadLinks()},30000);
-  console.log('🚀 Dashboard Loaded');
+  var liked = p.likes && p.likes[STATE.user.id];
+  var likesCount = p.likes ? Object.keys(p.likes).length : 0;
+  var commentsCount = p.comments ? Object.keys(p.comments).length : 0;
+  var isMine = p.userId === STATE.user.id;
+
+  return '<div class="post-card" data-post-id="' + p.id + '">' +
+    '<div class="post-head">' +
+      '<div class="avatar" onclick="openProfileViewer(\'' + p.userId + '\')">' + avatarHtml + '</div>' +
+      '<div class="info" onclick="openProfileViewer(\'' + p.userId + '\')">' +
+        '<div class="name">' + escapeHtml(authorName) + (author.verified ? ' ⭐' : '') + '</div>' +
+        '<div class="meta">' + timeAgo(p.createdAt) + '</div>' +
+      '</div>' +
+      '<button class="menu-btn" onclick="openPostMenu(\'' + p.id + '\', ' + (isMine ? 'true' : 'false') + ')">⋯</button>' +
+    '</div>' +
+    (p.image ? '<div class="post-image"><img src="' + p.image + '" loading="lazy"></div>' : '') +
+    (p.text ? '<div class="post-text">' + linkifyText(p.text) + '</div>' : '') +
+    '<div class="post-actions">' +
+      '<button class="' + (liked ? 'liked' : '') + '" onclick="toggleLike(\'' + p.id + '\')">' +
+        (liked ? '❤️' : '🤍') + ' ' + likesCount +
+      '</button>' +
+      '<button onclick="viewPost(\'' + p.id + '\')">💬 ' + commentsCount + '</button>' +
+      '<button onclick="sharePost(\'' + p.id + '\')">📤 مشاركة</button>' +
+    '</div>' +
+  '</div>';
 }
 
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
-else boot();
+/* ============================================
+   ⋯ POST MENU
+   ============================================ */
+function openPostMenu(postId, isMine) {
+  STATE.menuPostId = postId;
 
-/* Expose functions used in HTML inline handlers */
-window.selectUC=selectUC;
-window.contactTelegram=contactTelegram;
-})();
+  var menu = $('postMenuList');
+  var html = '';
+
+  if (isMine) {
+    html += '<button class="menu-item" onclick="deleteMyPost(\'' + postId + '\')">🗑 حذف المنشور</button>';
+    html += '<button class="menu-item" onclick="editMyPost(\'' + postId + '\')">✏️ تعديل النص</button>';
+  }
+
+  html += '<button class="menu-item" onclick="copyPostLink(\'' + postId + '\')">🔗 نسخ الرابط</button>';
+  html += '<button class="menu-item danger" onclick="openReportFromMenu(\'' + postId + '\')">🚨 إبلاغ</button>';
+
+  menu.innerHTML = html;
+  showModal('postMenuModal');
+}
+
+function deleteMyPost(postId) {
+  if (!confirm('حذف هذا المنشور نهائياً؟')) return;
+  db.ref('posts/' + postId).remove().then(function() {
+    closeModal('postMenuModal');
+    showToast('🗑 تم الحذف', 'success');
+  });
+}
+
+function editMyPost(postId) {
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+
+  var newText = prompt('تعديل النص:', p.text || '');
+  if (newText === null) return;
+
+  db.ref('posts/' + postId + '/text').set(newText.trim()).then(function() {
+    closeModal('postMenuModal');
+    showToast('✅ تم التعديل', 'success');
+  });
+}
+
+function copyPostLink(postId) {
+  var link = 'bluepost://post/' + postId;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(function() {
+      closeModal('postMenuModal');
+      showToast('📋 تم نسخ الرابط', 'success');
+    });
+  } else {
+    showToast('📋 ' + link);
+  }
+}
+
+function openReportFromMenu(postId) {
+  closeModal('postMenuModal');
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+  var author = STATE.users[p.userId] || {};
+  openReport('post', postId, author.name || author.username || 'مستخدم');
+}
+
+/* ============================================
+   ❤️ LIKE
+   ============================================ */
+function toggleLike(postId) {
+  var post = STATE.posts.find(function(p) { return p.id === postId; });
+  if (!post) return;
+
+  var likes = post.likes || {};
+  if (likes[STATE.user.id]) {
+    delete likes[STATE.user.id];
+  } else {
+    likes[STATE.user.id] = true;
+  }
+
+  db.ref('posts/' + postId + '/likes').set(likes);
+}
+
+/* ============================================
+   📝 CREATE POST
+   ============================================ */
+function openCreatePost() {
+  STATE.uploadingImage = null;
+  $('uploadHint').style.display = 'block';
+  var existingImg = $('imageUploadArea').querySelector('img');
+  if (existingImg) existingImg.remove();
+  $('postText').value = '';
+  $('postImageInput').value = '';
+  showModal('createPostModal');
+}
+
+$('imageUploadArea').onclick = function() {
+  $('postImageInput').click();
+};
+
+$('postImageInput').onchange = function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+
+  showToast('⏳ جاري معالجة الصورة...');
+
+  compressImage(file, 1000, 0.7, function(compressed) {
+    STATE.uploadingImage = compressed;
+    $('uploadHint').style.display = 'none';
+
+    var existingImg = $('imageUploadArea').querySelector('img');
+    if (existingImg) existingImg.remove();
+
+    var img = document.createElement('img');
+    img.src = compressed;
+    $('imageUploadArea').appendChild(img);
+    showToast('✅ تم');
+  });
+};
+
+$('publishBtn').onclick = function() {
+  var text = $('postText').value.trim();
+
+  if (!text && !STATE.uploadingImage) {
+    showToast('⚠️ اكتب نصاً أو أضف صورة', 'warn');
+    return;
+  }
+
+  var newPost = {
+    userId: STATE.user.id,
+    authorName: STATE.user.data.name || STATE.user.data.username,
+    text: text,
+    image: STATE.uploadingImage || '',
+    createdAt: Date.now(),
+    likes: {},
+    comments: {}
+  };
+
+  showToast('⏳ جاري النشر...');
+
+  db.ref('posts').push(newPost).then(function() {
+    closeModal('createPostModal');
+    showToast('✅ تم النشر', 'success');
+  }).catch(function(e) {
+    showToast('❌ خطأ: ' + e.message, 'error');
+  });
+};
+
+/* ============================================
+   👤 PROFILE
+   ============================================ */
+function renderProfile() {
+  if (!STATE.user) return;
+
+  var name = STATE.user.data.name || STATE.user.data.username;
+  var avatar = $('profileAvatar');
+
+  if (STATE.user.data.photo) {
+    avatar.innerHTML = '<img src="' + STATE.user.data.photo + '">';
+  } else {
+    avatar.innerHTML = escapeHtml(name.charAt(0).toUpperCase());
+  }
+
+  $('profileName').textContent = name;
+  $('profileEmail').textContent = '@' + STATE.user.data.username;
+  $('profileBio').textContent = STATE.user.data.bio || '';
+
+  // Render profile links
+  var linksEl = $('profileLinks');
+  var links = STATE.user.data.links || {};
+  var linksHtml = '';
+  if (links.link1 && links.link1.url) {
+    linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + links.link1.url.replace(/'/g, '\\\'') + '\')">' +
+      '<span class="link-icon">' + (links.link1.icon || '🔗') + '</span>' +
+      '<span class="link-name">' + escapeHtml(links.link1.name || 'رابط') + '</span>' +
+    '</button>';
+  }
+  if (links.link2 && links.link2.url) {
+    linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + links.link2.url.replace(/'/g, '\\\'') + '\')">' +
+      '<span class="link-icon">' + (links.link2.icon || '🔗') + '</span>' +
+      '<span class="link-name">' + escapeHtml(links.link2.name || 'رابط') + '</span>' +
+    '</button>';
+  }
+  linksEl.innerHTML = linksHtml;
+
+  var myPosts = STATE.posts.filter(function(p) {
+    return p.userId === STATE.user.id;
+  });
+
+  $('profilePostsCount').textContent = myPosts.length;
+  $('profileFollowersCount').textContent = STATE.user.data.followers || 0;
+  $('profileFollowingCount').textContent = STATE.user.data.following || 0;
+  $('profileFriendsCount').textContent = STATE.user.data.friends ? Object.keys(STATE.user.data.friends).length : 0;
+
+  var grid = $('profilePostsGrid');
+  if (!myPosts.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1;"><span class="icon">📷</span><h3>لا توجد منشورات</h3></div>';
+    return;
+  }
+
+  grid.innerHTML = myPosts.map(function(p) {
+    var likesCount = p.likes ? Object.keys(p.likes).length : 0;
+    if (p.image) {
+      return '<div class="mini" onclick="viewPost(\'' + p.id + '\')">' +
+        '<img src="' + p.image + '">' +
+        '<div class="mini-stats">❤️ ' + likesCount + '</div>' +
+      '</div>';
+    } else {
+      return '<div class="mini text-only" onclick="viewPost(\'' + p.id + '\')">' +
+        escapeHtml((p.text || '').substring(0, 40)) +
+      '</div>';
+    }
+  }).join('');
+}
+
+function openAvatarViewer() {
+  if (STATE.user.data.photo) {
+    // Simple: open in new tab or show toast
+    showToast('📷 صورتك');
+  } else {
+    openEditProfile();
+  }
+}
+
+/* ============================================
+   ✏️ EDIT PROFILE + AVATAR
+   ============================================ */
+function openEditProfile() {
+  STATE.uploadingAvatar = STATE.user.data.photo || null;
+  $('editName').value = STATE.user.data.name || STATE.user.data.username;
+  $('editBio').value = STATE.user.data.bio || '';
+
+  var links = STATE.user.data.links || {};
+  if (links.link1) {
+    $('editLink1Icon').value = links.link1.icon || '🔗';
+    $('editLink1Name').value = links.link1.name || '';
+    $('editLink1Url').value = links.link1.url || '';
+  } else {
+    $('editLink1Icon').value = '';
+    $('editLink1Name').value = '';
+    $('editLink1Url').value = '';
+  }
+  if (links.link2) {
+    $('editLink2Icon').value = links.link2.icon || '🔗';
+    $('editLink2Name').value = links.link2.name || '';
+    $('editLink2Url').value = links.link2.url || '';
+  } else {
+    $('editLink2Icon').value = '';
+    $('editLink2Name').value = '';
+    $('editLink2Url').value = '';
+  }
+
+  var hint = $('avatarHint');
+  var existing = $('avatarUploadArea').querySelector('img');
+  if (existing) existing.remove();
+
+  if (STATE.uploadingAvatar) {
+    hint.style.display = 'none';
+    var img = document.createElement('img');
+    img.src = STATE.uploadingAvatar;
+    $('avatarUploadArea').appendChild(img);
+  } else {
+    hint.style.display = 'flex';
+  }
+
+  showModal('editProfileModal');
+}
+
+$('avatarUploadArea').onclick = function() {
+  $('avatarInput').click();
+};
+
+$('avatarInput').onchange = function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+
+  showToast('⏳ جاري معالجة الصورة...');
+
+  compressImage(file, 400, 0.75, function(compressed) {
+    STATE.uploadingAvatar = compressed;
+    $('avatarHint').style.display = 'none';
+
+    var existing = $('avatarUploadArea').querySelector('img');
+    if (existing) existing.remove();
+
+    var img = document.createElement('img');
+    img.src = compressed;
+    $('avatarUploadArea').appendChild(img);
+    showToast('✅ تم');
+  });
+};
+
+$('saveProfileBtn').onclick = function() {
+  var name = $('editName').value.trim();
+  var bio = $('editBio').value.trim();
+
+  if (!name) {
+    showToast('⚠️ اكتب الاسم', 'warn');
+    return;
+  }
+
+  var links = {};
+  var l1Icon = $('editLink1Icon').value.trim() || '🔗';
+  var l1Name = $('editLink1Name').value.trim();
+  var l1Url = $('editLink1Url').value.trim();
+  if (l1Name && l1Url) {
+    links.link1 = { icon: l1Icon, name: l1Name, url: l1Url };
+  }
+
+  var l2Icon = $('editLink2Icon').value.trim() || '🔗';
+  var l2Name = $('editLink2Name').value.trim();
+  var l2Url = $('editLink2Url').value.trim();
+  if (l2Name && l2Url) {
+    links.link2 = { icon: l2Icon, name: l2Name, url: l2Url };
+  }
+
+  var updates = {
+    name: name,
+    bio: bio,
+    photo: STATE.uploadingAvatar || '',
+    links: links
+  };
+
+  db.ref('users/' + STATE.user.id).update(updates).then(function() {
+    STATE.user.data.name = name;
+    STATE.user.data.bio = bio;
+    STATE.user.data.photo = updates.photo;
+    STATE.user.data.links = links;
+    updateHeaderAvatar();
+    renderProfile();
+    closeModal('editProfileModal');
+    showToast('✅ تم الحفظ', 'success');
+  }).catch(function(e) {
+    showToast('❌ خطأ', 'error');
+  });
+};
+
+/* ============================================
+   🔑 CHANGE PASSWORD
+   ============================================ */
+function openChangePassword() {
+  $('oldPass').value = '';
+  $('newPass').value = '';
+  $('newPass2').value = '';
+  $('changePassError').textContent = '';
+  showModal('changePassModal');
+}
+
+$('savePassBtn').onclick = function() {
+  var oldP = $('oldPass').value;
+  var newP = $('newPass').value;
+  var newP2 = $('newPass2').value;
+  var err = $('changePassError');
+
+  if (!oldP || !newP || !newP2) {
+    err.textContent = '⚠️ املأ جميع الحقول';
+    return;
+  }
+  if (oldP !== STATE.user.data.password) {
+    err.textContent = '❌ الرمز القديم خطأ';
+    return;
+  }
+  if (newP.length < 6) {
+    err.textContent = '⚠️ الرمز الجديد 6+';
+    return;
+  }
+  if (newP !== newP2) {
+    err.textContent = '⚠️ غير متطابقين';
+    return;
+  }
+
+  db.ref('users/' + STATE.user.id + '/password').set(newP)
+    .then(function() {
+      STATE.user.data.password = newP;
+      closeModal('changePassModal');
+      showToast('✅ تم تغيير الرمز', 'success');
+    })
+    .catch(function() {
+      err.textContent = '❌ خطأ';
+    });
+};
+
+/* ============================================
+   ⚙️ SETTINGS
+   ============================================ */
+function openSettings() {
+  renderColorGrid();
+  showModal('settingsModal');
+}
+
+/* ============================================
+   🗑 DELETE ACCOUNT
+   ============================================ */
+function deleteMyAccount() {
+  if (!confirm('هل أنت متأكد؟ سيتم حذف حسابك نهائياً!')) return;
+  if (!confirm('تأكيد أخير؟')) return;
+
+  showToast('⏳ جاري الحذف...');
+
+  db.ref('users/' + STATE.user.id).remove()
+    .then(function() {
+      return db.ref('posts').orderByChild('userId').equalTo(STATE.user.id).once('value');
+    })
+    .then(function(snap) {
+      var promises = [];
+      snap.forEach(function(child) {
+        promises.push(db.ref('posts/' + child.key).remove());
+      });
+      return Promise.all(promises);
+    })
+    .then(function() {
+      localStorage.removeItem('bp_user_id');
+      location.reload();
+    });
+}
+
+/* ============================================
+   🔍 SEARCH
+   ============================================ */
+$('searchInput').oninput = function() {
+  var q = this.value.trim().toLowerCase();
+  var results = $('searchResults');
+
+  if (!q) {
+    results.innerHTML = '<div class="empty"><span class="icon">🔍</span><h3>ابحث عن أشخاص</h3></div>';
+    return;
+  }
+
+  var matches = Object.keys(STATE.users).filter(function(id) {
+    var u = STATE.users[id];
+    return (u.username || '').toLowerCase().indexOf(q) !== -1 ||
+           (u.name || '').toLowerCase().indexOf(q) !== -1;
+  }).filter(function(id) { return id !== STATE.user.id; });
+
+  if (!matches.length) {
+    results.innerHTML = '<div class="empty"><span class="icon">👤</span><h3>لا نتائج</h3></div>';
+    return;
+  }
+
+  results.innerHTML = matches.map(function(id) {
+    var u = STATE.users[id];
+    var name = u.name || u.username;
+    var avatarHtml = u.photo
+      ? '<img src="' + u.photo + '">'
+      : name.charAt(0).toUpperCase();
+
+    return '<div class="user-row" onclick="openProfileViewer(\'' + id + '\')">' +
+      '<div class="avatar">' + avatarHtml + '</div>' +
+      '<div class="info">' +
+        '<strong>' + escapeHtml(name) + (u.verified ? ' ⭐' : '') + '</strong>' +
+        '<small>@' + escapeHtml(u.username) + '</small>' +
+      '</div>' +
+      '<button class="follow-btn" onclick="event.stopPropagation();openChat(\'' + id + '\')">💌 مراسلة</button>' +
+    '</div>';
+  }).join('');
+};
+
+/* ============================================
+   👤 PROFILE VIEWER (للأشخاص الآخرين)
+   ============================================ */
+function openProfileViewer(userId) {
+  if (!userId) return;
+  if (userId === STATE.user.id) {
+    switchTab('profile');
+    return;
+  }
+
+  var u = STATE.users[userId];
+  if (!u) { showToast('❌ المستخدم غير موجود', 'error'); return; }
+
+  STATE.viewingProfileId = userId;
+  var name = u.name || u.username;
+  var isFriend = STATE.user.data.friends && STATE.user.data.friends[userId];
+  var isFollowing = u.followersList && u.followersList[STATE.user.id];
+  var isFollowingMe = STATE.user.data.followingList && STATE.user.data.followingList[userId];
+
+  var avatarHtml = u.photo
+    ? '<img src="' + u.photo + '">'
+    : name.charAt(0).toUpperCase();
+
+  // Count friends
+  var friendsCount = u.friends ? Object.keys(u.friends).length : 0;
+
+  // Links
+  var linksHtml = '';
+  if (u.links) {
+    if (u.links.link1 && u.links.link1.url) {
+      linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + u.links.link1.url.replace(/'/g, '\\\'') + '\')">' +
+        '<span class="link-icon">' + (u.links.link1.icon || '🔗') + '</span>' +
+        '<span class="link-name">' + escapeHtml(u.links.link1.name || 'رابط') + '</span>' +
+      '</button>';
+    }
+    if (u.links.link2 && u.links.link2.url) {
+      linksHtml += '<button class="profile-link-item" onclick="openSmartLink(\'' + u.links.link2.url.replace(/'/g, '\\\'') + '\')">' +
+        '<span class="link-icon">' + (u.links.link2.icon || '🔗') + '</span>' +
+        '<span class="link-name">' + escapeHtml(u.links.link2.name || 'رابط') + '</span>' +
+      '</button>';
+    }
+  }
+
+  var posts = STATE.posts.filter(function(p) { return p.userId === userId; });
+
+  $('profileViewerContent').innerHTML =
+    '<div class="profile-viewer-card">' +
+      '<div class="profile-viewer-avatar">' + avatarHtml + '</div>' +
+      '<div class="profile-viewer-name">' + escapeHtml(name) + (u.verified ? ' ⭐' : '') + '</div>' +
+      '<div class="profile-viewer-username">@' + escapeHtml(u.username) + '</div>' +
+      (u.bio ? '<div class="profile-viewer-bio">' + escapeHtml(u.bio) + '</div>' : '') +
+      '<div class="profile-links" style="margin-bottom:14px;">' + linksHtml + '</div>' +
+      '<div class="profile-viewer-stats">' +
+        '<div class="stat"><div class="num">' + posts.length + '</div><div class="lbl">منشور</div></div>' +
+        '<div class="stat"><div class="num">' + (u.followers || 0) + '</div><div class="lbl">متابع</div></div>' +
+        '<div class="stat"><div class="num">' + (u.following || 0) + '</div><div class="lbl">يتابع</div></div>' +
+        '<div class="stat"><div class="num">' + friendsCount + '</div><div class="lbl">أصدقاء</div></div>' +
+      '</div>' +
+      '<div class="profile-viewer-actions">' +
+        '<button class="btn btn-primary" onclick="toggleFriend(\'' + userId + '\')">' +
+          (isFriend ? '👥 إزالة صديق' : '➕ إضافة صديق') +
+        '</button>' +
+        '<button class="btn btn-secondary" onclick="toggleFollow(\'' + userId + '\')">' +
+          (isFollowing ? '✅ متابعة' : '➕ متابعة') +
+        '</button>' +
+        '<button class="btn btn-secondary" onclick="openChat(\'' + userId + '\');closeModal(\'profileViewerModal\')">💌 مراسلة</button>' +
+        '<button class="btn btn-danger" onclick="openReportUser(\'' + userId + '\')">🚨 إبلاغ</button>' +
+      '</div>' +
+    '</div>';
+
+  showModal('profileViewerModal');
+}
+
+function toggleFriend(userId) {
+  if (userId === STATE.user.id) return;
+  var isFriend = STATE.user.data.friends && STATE.user.data.friends[userId];
+
+  if (isFriend) {
+    db.ref('users/' + STATE.user.id + '/friends/' + userId).remove();
+    db.ref('users/' + userId + '/friends/' + STATE.user.id).remove();
+    showToast('👥 تم إزالة الصداقة');
+  } else {
+    db.ref('users/' + STATE.user.id + '/friends/' + userId).set(true);
+    db.ref('users/' + userId + '/friends/' + STATE.user.id).set(true);
+    showToast('✅ تمت إضافة صديق', 'success');
+  }
+
+  setTimeout(function() {
+    if (STATE.viewingProfileId === userId) openProfileViewer(userId);
+  }, 300);
+}
+
+function toggleFollow(userId) {
+  var u = STATE.users[userId];
+  if (!u) return;
+  var isFollowing = u.followersList && u.followersList[STATE.user.id];
+
+  if (isFollowing) {
+    db.ref('users/' + userId + '/followersList/' + STATE.user.id).remove();
+    db.ref('users/' + STATE.user.id + '/followingList/' + userId).remove();
+    db.ref('users/' + userId + '/followers').transaction(function(v) { return Math.max(0, (v || 0) - 1); });
+    db.ref('users/' + STATE.user.id + '/following').transaction(function(v) { return Math.max(0, (v || 0) - 1); });
+    showToast('تم إلغاء المتابعة');
+  } else {
+    db.ref('users/' + userId + '/followersList/' + STATE.user.id).set(true);
+    db.ref('users/' + STATE.user.id + '/followingList/' + userId).set(true);
+    db.ref('users/' + userId + '/followers').transaction(function(v) { return (v || 0) + 1; });
+    db.ref('users/' + STATE.user.id + '/following').transaction(function(v) { return (v || 0) + 1; });
+    showToast('✅ تمت المتابعة', 'success');
+  }
+
+  setTimeout(function() {
+    if (STATE.viewingProfileId === userId) openProfileViewer(userId);
+  }, 300);
+}
+
+function openReportUser(userId) {
+  var u = STATE.users[userId];
+  openReport('user', userId, u.name || u.username);
+}
+
+function openMyFriends() {
+  var friends = STATE.user.data.friends || {};
+  var ids = Object.keys(friends);
+  var list = $('friendsList');
+
+  if (!ids.length) {
+    list.innerHTML = '<div class="empty"><span class="icon">👥</span><h3>لا أصدقاء</h3><p>ابحث عن أشخاص وأضفهم</p></div>';
+  } else {
+    list.innerHTML = ids.map(function(id) {
+      var u = STATE.users[id];
+      if (!u) return '';
+      var name = u.name || u.username;
+      var avatarHtml = u.photo ? '<img src="' + u.photo + '">' : name.charAt(0).toUpperCase();
+      return '<div class="user-row" onclick="closeModal(\'friendsModal\');openProfileViewer(\'' + id + '\')">' +
+        '<div class="avatar">' + avatarHtml + '</div>' +
+        '<div class="info">' +
+          '<strong>' + escapeHtml(name) + '</strong>' +
+          '<small>@' + escapeHtml(u.username) + '</small>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  showModal('friendsModal');
+}
+
+/* ============================================
+   💬 VIEW POST (with comments)
+   ============================================ */
+function viewPost(postId) {
+  STATE.currentPostId = postId;
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+
+  var author = STATE.users[p.userId] || {};
+  var authorName = author.name || author.username || 'مستخدم';
+  var authorAvatar = author.photo
+    ? '<img src="' + author.photo + '" style="width:100%;height:100%;object-fit:cover;">'
+    : authorName.charAt(0).toUpperCase();
+
+  var likesCount = p.likes ? Object.keys(p.likes).length : 0;
+
+  var comments = p.comments ? Object.keys(p.comments).map(function(k) {
+    var c = p.comments[k];
+    c.id = k;
+    var isMyComment = c.userId === STATE.user.id;
+    return '<div class="comment-item" data-comment-id="' + k + '">' +
+      '<div class="comment-head">' +
+        '<strong class="comment-author">' + escapeHtml(c.name) + '</strong>' +
+        (isMyComment ? '<button class="comment-menu-btn" onclick="openCommentMenu(\'' + postId + '\',\'' + k + '\')">⋯</button>' : '') +
+      '</div>' +
+      '<div class="comment-text">' + linkifyText(c.text) + '</div>' +
+      '<small class="comment-time">' + timeAgo(c.time) + '</small>' +
+    '</div>';
+  }).join('') : '';
+
+  $('postViewerContent').innerHTML =
+    '<div style="padding:20px;">' +
+      '<div class="modal-header">' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+          '<div style="width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;overflow:hidden;cursor:pointer;" onclick="closeModal(\'postViewerModal\');openProfileViewer(\'' + p.userId + '\')">' + authorAvatar + '</div>' +
+          '<h3 style="cursor:pointer;" onclick="closeModal(\'postViewerModal\');openProfileViewer(\'' + p.userId + '\')">' + escapeHtml(authorName) + '</h3>' +
+        '</div>' +
+        '<button class="modal-close" onclick="closeModal(\'postViewerModal\');hideCommentBar()">✕</button>' +
+      '</div>' +
+      (p.image ? '<img src="' + p.image + '" style="width:100%;border-radius:14px;margin-bottom:12px;">' : '') +
+      (p.text ? '<p style="font-size:14px;line-height:1.7;margin-bottom:12px;">' + linkifyText(p.text) + '</p>' : '') +
+      '<p style="font-size:12px;color:var(--text-dim);margin-bottom:14px;">❤️ ' + likesCount + ' · ' + timeAgo(p.createdAt) + '</p>' +
+      '<div style="border-top:1px solid var(--border);padding-top:12px;">' +
+        '<h4 style="margin-bottom:10px;">💬 التعليقات (' + (p.comments ? Object.keys(p.comments).length : 0) + ')</h4>' +
+        '<div id="commentsList">' + (comments || '<p style="font-size:12px;color:var(--text-dim);">لا توجد تعليقات</p>') + '</div>' +
+      '</div>' +
+    '</div>';
+
+  showModal('postViewerModal');
+  showCommentBar(postId);
+}
+
+function showCommentBar(postId) {
+  var bar = $('postCommentBar');
+  bar.style.display = 'flex';
+  $('commentInputBar').value = '';
+  $('commentInputBar').focus();
+}
+
+function hideCommentBar() {
+  $('postCommentBar').style.display = 'none';
+  STATE.currentPostId = null;
+}
+
+function addCommentFromBar() {
+  var input = $('commentInputBar');
+  var text = input.value.trim();
+  if (!text || !STATE.currentPostId) return;
+
+  db.ref('posts/' + STATE.currentPostId + '/comments').push({
+    userId: STATE.user.id,
+    name: STATE.user.data.name || STATE.user.data.username,
+    text: text,
+    time: Date.now()
+  }).then(function() {
+    input.value = '';
+    showToast('✅ تم التعليق', 'success');
+    // Refresh post viewer
+    setTimeout(function() {
+      var postId = STATE.currentPostId;
+      viewPost(postId);
+    }, 200);
+  });
+}
+
+function openCommentMenu(postId, commentId) {
+  STATE.menuCommentId = commentId;
+  var menu = $('commentMenuList');
+  menu.innerHTML =
+    '<button class="menu-item" onclick="editComment(\'' + postId + '\',\'' + commentId + '\')">✏️ تعديل التعليق</button>' +
+    '<button class="menu-item danger" onclick="deleteComment(\'' + postId + '\',\'' + commentId + '\')">🗑 حذف التعليق</button>';
+  showModal('commentMenuModal');
+}
+
+function editComment(postId, commentId) {
+  closeModal('commentMenuModal');
+  db.ref('posts/' + postId + '/comments/' + commentId).once('value').then(function(snap) {
+    var c = snap.val();
+    if (!c) return;
+    var newText = prompt('تعديل التعليق:', c.text || '');
+    if (newText === null) return;
+    db.ref('posts/' + postId + '/comments/' + commentId + '/text').set(newText.trim()).then(function() {
+      showToast('✅ تم التعديل', 'success');
+      setTimeout(function() { viewPost(postId); }, 200);
+    });
+  });
+}
+
+function deleteComment(postId, commentId) {
+  closeModal('commentMenuModal');
+  if (!confirm('حذف هذا التعليق؟')) return;
+  db.ref('posts/' + postId + '/comments/' + commentId).remove().then(function() {
+    showToast('🗑 تم الحذف', 'success');
+    setTimeout(function() { viewPost(postId); }, 200);
+  });
+}
+
+/* ============================================
+   📤 SHARE
+   ============================================ */
+function sharePost(postId) {
+  var p = STATE.posts.find(function(x) { return x.id === postId; });
+  if (!p) return;
+
+  var author = STATE.users[p.userId] || {};
+  var authorName = author.name || author.username || 'مستخدم';
+
+  var shareText = '📝 منشور من ' + authorName + ' على BluePost:\n\n' +
+    (p.text ? p.text + '\n\n' : '') +
+    'bluepost://post/' + postId;
+
+  if (window.AndroidApp && window.AndroidApp.shareText) {
+    window.AndroidApp.shareText(shareText);
+  } else {
+    showToast('📤 جاهز للمشاركة');
+  }
+}
+
+/* ============================================
+   💌 CHAT
+   ============================================ */
+function renderChatList() {
+  if (!STATE.user) return;
+
+  db.ref('messages').once('value').then(function(snap) {
+    var data = snap.val() || {};
+    var chats = {};
+
+    Object.keys(data).forEach(function(key) {
+      var parts = key.split('_');
+      var u1 = parts[0], u2 = parts[1];
+
+      if (u1 === STATE.user.id) chats[u2] = data[key];
+      else if (u2 === STATE.user.id) chats[u1] = data[key];
+    });
+
+    var list = $('chatList');
+    var keys = Object.keys(chats);
+
+    if (!keys.length) {
+      list.innerHTML = '<div class="empty"><span class="icon">💌</span><h3>لا توجد محادثات</h3><p>ابحث عن أشخاص وابدأ محادثة</p></div>';
+      return;
+    }
+
+    list.innerHTML = keys.map(function(uid) {
+      var u = STATE.users[uid] || {};
+      var name = u.name || u.username || 'مستخدم';
+      var avatarHtml = u.photo
+        ? '<img src="' + u.photo + '">'
+        : name.charAt(0).toUpperCase();
+
+      var msgs = chats[uid];
+      var lastKey = Object.keys(msgs).pop();
+      var lastMsg = msgs[lastKey];
+
+      return '<div class="chat-row" onclick="openChat(\'' + uid + '\')">' +
+        '<div class="avatar">' + avatarHtml + '</div>' +
+        '<div class="info">' +
+          '<strong>' + escapeHtml(name) + '</strong>' +
+          '<small>' + escapeHtml(lastMsg.text || '') + '</small>' +
+        '</div>' +
+        '<button class="menu-btn" onclick="event.stopPropagation();openChatDeleteMenu(\'' + uid + '\')">⋯</button>' +
+      '</div>';
+    }).join('');
+  });
+}
+
+function openChatDeleteMenu(userId) {
+  var u = STATE.users[userId] || {};
+  var name = u.name || u.username;
+  if (!confirm('حذف الدردشة بالكامل مع ' + name + '؟')) return;
+  var key = [STATE.user.id, userId].sort().join('_');
+  db.ref('messages/' + key).remove().then(function() {
+    showToast('🗑 تم حذف الدردشة', 'success');
+    renderChatList();
+  });
+}
+
+function openChat(userId) {
+  if (!userId || userId === STATE.user.id) return;
+
+  STATE.currentChatUser = userId;
+  var u = STATE.users[userId] || {};
+  var name = u.name || u.username || 'مستخدم';
+
+  var avatarEl = $('chatHeaderAvatar');
+  if (u.photo) {
+    avatarEl.innerHTML = '<img src="' + u.photo + '">';
+  } else {
+    avatarEl.textContent = name.charAt(0).toUpperCase();
+  }
+
+  $('chatHeaderName').textContent = name;
+  $('chatView').classList.add('show');
+  loadMessages(userId);
+}
+
+function loadMessages(userId) {
+  var key = [STATE.user.id, userId].sort().join('_');
+
+  if (STATE.chatRef) STATE.chatRef.off();
+  STATE.chatRef = db.ref('messages/' + key);
+
+  STATE.chatRef.on('value', function(snap) {
+    var data = snap.val() || {};
+    var msgs = Object.keys(data).map(function(k) {
+      var m = data[k];
+      m.id = k;
+      return m;
+    }).sort(function(a, b) {
+      return (a.time || 0) - (b.time || 0);
+    });
+
+    var container = $('chatMessages');
+    container.innerHTML = msgs.map(function(m) {
+      var mine = m.from === STATE.user.id;
+      return '<div class="msg ' + (mine ? 'me' : 'other') + '">' +
+        escapeHtml(m.text) +
+        '<span class="time">' + timeAgo(m.time) + '</span>' +
+        '<button class="msg-menu" onclick="openMsgMenu(\'' + m.id + '\')">⋯</button>' +
+      '</div>';
+    }).join('');
+
+    container.scrollTop = container.scrollHeight;
+  });
+}
+
+function openMsgMenu(msgId) {
+  if (!confirm('حذف هذه الرسالة؟')) return;
+  var key = [STATE.user.id, STATE.currentChatUser].sort().join('_');
+  db.ref('messages/' + key + '/' + msgId).remove().then(function() {
+    showToast('🗑 تم حذف الرسالة', 'success');
+  });
+}
+
+function openChatMenu() {
+  if (!STATE.currentChatUser) return;
+  var items = [
+    { label: '👤 عرض الملف', action: function() { closeChat(); openProfileViewer(STATE.currentChatUser); } },
+    { label: '🗑 حذف الدردشة بالكامل', action: function() { openChatDeleteMenu(STATE.currentChatUser); }, danger: true }
+  ];
+  // Use simple prompt for now
+  if (confirm('حذف الدردشة بالكامل؟')) {
+    var key = [STATE.user.id, STATE.currentChatUser].sort().join('_');
+    db.ref('messages/' + key).remove().then(function() {
+      showToast('🗑 تم حذف الدردشة', 'success');
+      closeChat();
+      renderChatList();
+    });
+  }
+}
+
+function closeChat() {
+  $('chatView').classList.remove('show');
+  if (STATE.chatRef) {
+    STATE.chatRef.off();
+    STATE.chatRef = null;
+  }
+  STATE.currentChatUser = null;
+}
+
+$('chatSendBtn').onclick = function() {
+  var text = $('chatInput').value.trim();
+  if (!text || !STATE.currentChatUser) return;
+
+  var key = [STATE.user.id, STATE.currentChatUser].sort().join('_');
+
+  db.ref('messages/' + key).push({
+    from: STATE.user.id,
+    to: STATE.currentChatUser,
+    text: text,
+    time: Date.now()
+  });
+
+  $('chatInput').value = '';
+};
+
+/* ============================================
+   🚨 REPORT
+   ============================================ */
+var REPORT_REASONS = [
+  'محتوى مخالف',
+  'إزعاج / تحرش',
+  'سبام',
+  'انتحال شخصية',
+  'محتوى مسيء',
+  'شيء آخر'
+];
+
+function openReport(type, targetId, targetName) {
+  STATE.reportTarget = { type: type, id: targetId, name: targetName };
+  STATE.reportReason = null;
+
+  var container = $('reportReasons');
+  container.innerHTML = REPORT_REASONS.map(function(r) {
+    return '<button class="report-reason" data-reason="' + r + '">' + r + '</button>';
+  }).join('');
+
+  container.querySelectorAll('.report-reason').forEach(function(btn) {
+    btn.onclick = function() {
+      container.querySelectorAll('.report-reason').forEach(function(b) {
+        b.classList.remove('selected');
+      });
+      btn.classList.add('selected');
+      STATE.reportReason = btn.dataset.reason;
+    };
+  });
+
+  $('reportDesc').value = '';
+  showModal('reportModal');
+}
+
+$('submitReportBtn').onclick = function() {
+  if (!STATE.reportReason) {
+    showToast('⚠️ اختر سبباً', 'warn');
+    return;
+  }
+
+  db.ref('reports').push({
+    type: STATE.reportTarget.type,
+    targetId: STATE.reportTarget.id,
+    targetName: STATE.reportTarget.name,
+    reporterId: STATE.user.id,
+    reporterName: STATE.user.data.name || STATE.user.data.username,
+    reason: STATE.reportReason,
+    description: $('reportDesc').value.trim(),
+    status: 'pending',
+    createdAt: Date.now()
+  }).then(function() {
+    closeModal('reportModal');
+    showToast('✅ تم إرسال البلاغ', 'success');
+  });
+};
+
+/* ============================================
+   🔄 TABS (مع Fade Transition)
+   ============================================ */
+function switchTab(tab) {
+  if (tab === 'post') { openCreatePost(); return; }
+
+  var currentPage = document.querySelector('.page.active');
+  var nextPage = document.querySelector('.page[data-page="' + tab + '"]');
+
+  if (!nextPage) return;
+  if (currentPage === nextPage) return;
+
+  if (currentPage) {
+    currentPage.classList.add('fade-out');
+    currentPage.classList.remove('active');
+    setTimeout(function() { currentPage.classList.remove('fade-out'); }, 300);
+  }
+
+  nextPage.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(function(n) {
+    n.classList.remove('active');
+  });
+  var navBtn = document.querySelector('.nav-item[data-tab="' + tab + '"]');
+  if (navBtn) navBtn.classList.add('active');
+
+  if (tab === 'profile') renderProfile();
+  if (tab === 'chat') renderChatList();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================
+   🔙 ANDROID BACK BUTTON
+   ============================================ */
+window.handleAndroidBack = function() {
+  if ($('postCommentBar').style.display === 'flex') {
+    hideCommentBar();
+    return 'handled';
+  }
+  if ($('chatView').classList.contains('show')) {
+    closeChat();
+    return 'handled';
+  }
+  if (document.querySelector('.modal-bg.show')) {
+    document.querySelectorAll('.modal-bg.show').forEach(function(m) {
+      m.classList.remove('show');
+    });
+    return 'handled';
+  }
+  var activePage = document.querySelector('.page.active');
+  if (activePage && activePage.dataset.page !== 'home') {
+    switchTab('home');
+    return 'handled';
+  }
+  return 'exit';
+};
+
+/* ============================================
+   🔔 NOTIFICATIONS (تجريبي)
+   ============================================ */
+$('notifBtn').onclick = function() {
+  showToast('🔔 لا توجد إشعارات جديدة');
+};
+
+/* ============================================
+   ⌨️ KEYBOARD HANDLING
+   ============================================ */
+var initialHeight = window.innerHeight;
+
+window.addEventListener('resize', function() {
+  var currentHeight = window.innerHeight;
+  if (currentHeight < initialHeight - 150) {
+    document.body.classList.add('keyboard-open');
+  } else {
+    document.body.classList.remove('keyboard-open');
+  }
+
+  // Auto-scroll chat
+  var container = $('chatMessages');
+  if (container && $('chatView').classList.contains('show')) {
+    setTimeout(function() {
+      container.scrollTop = container.scrollHeight;
+    }, 100);
+  }
+});
+
+// Auto-resize textareas
+document.addEventListener('input', function(e) {
+  if (e.target.tagName === 'TEXTAREA') {
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+  }
+});
+
+/* ============================================
+   🚦 BOOT
+   ============================================ */
+window.addEventListener('load', function() {
+  loadTheme();
+
+  var savedUserId = localStorage.getItem('bp_user_id');
+
+  if (savedUserId) {
+    db.ref('users/' + savedUserId).once('value').then(function(snap) {
+      if (snap.exists()) {
+        var data = snap.val();
+        if (data.status === 'banned') {
+          localStorage.removeItem('bp_user_id');
+          location.reload();
+          return;
+        }
+        STATE.user = { id: savedUserId, data: data };
+        enterApp();
+      } else {
+        localStorage.removeItem('bp_user_id');
+      }
+    }).catch(function() {
+      localStorage.removeItem('bp_user_id');
+    });
+  }
+});
 </script>
+
 </body>
 </html>
